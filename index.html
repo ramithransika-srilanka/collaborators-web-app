@@ -22,8 +22,6 @@
 
     /* desktop layout */
     --gutter:24px; --page:1128px; --header:52px; --shell:1128px;
-    /* bar under the top menu (invite status tabs) */
-    --subbar:36px;
     /* invite card surfaces */
     --inv-tag:#e1e7fb; --inv-desc:#f5f5f5;
   }
@@ -63,15 +61,6 @@
   .hicon .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:100px;background:var(--pink-500);border:1.5px solid #fff;}
   .top-av{display:block;width:32px;height:32px;border-radius:100px;object-fit:cover;border:1px solid var(--grey-200);transition:transform .2s cubic-bezier(.16,1,.3,1);}
   .top-av:active{transform:scale(.94);}
-
-  /* ================= Secondary bar: invite status (same height rhythm as the top menu) ================= */
-  .subnav{position:sticky;top:var(--header);z-index:19;height:var(--subbar);display:flex;align-items:center;justify-content:center;gap:4px;padding:0 var(--gutter);background:var(--grey-800);}
-  .subnav a{height:26px;padding:0 11px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;line-height:20px;color:var(--grey-500);transition:color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
-  .subnav a:hover{color:var(--grey-200);}
-  .subnav a.active{color:#fff;}
-  .subnav a:active{transform:scale(.96);}
-  .subnav .n{min-width:18px;height:18px;padding:0 5px;border-radius:75px;background:var(--grey-700);font-size:12px;font-weight:600;line-height:18px;text-align:center;color:var(--grey-200);transition:background .25s ease,color .25s ease;}
-  .subnav a.active .n{background:var(--blue-500);color:#fff;}
 
   .content{width:100%;max-width:calc(var(--page) + var(--gutter) * 2);margin:0 auto;padding:18px var(--gutter) 60px;}
 
@@ -145,8 +134,6 @@
   .inv-cta{flex:1;height:48px;border-radius:100px;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--blue-500);font-size:15px;font-weight:500;line-height:20px;color:#fff;box-shadow:2px 4px 9px rgba(21,72,235,.2);transition:background .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
   .inv-cta:hover{background:var(--blue-600);}
   .inv-cta:active{transform:scale(.98);}
-  .inv-cta.ghost{background:#fff;color:var(--grey-800);border:1px solid var(--grey-200);box-shadow:none;}
-  .inv-cta.ghost:hover{background:var(--grey-100);}
   .inv-x:disabled,.inv-cta:disabled{opacity:.4;cursor:default;transform:none;}
   .inv-foot{padding:9px 18px 11px;text-align:center;font-size:13px;font-weight:400;line-height:18px;color:#fff;}
   .inv-foot.soon{color:#ff8fd2;}
@@ -191,7 +178,7 @@
 </head>
 <body>
 <header class="topbar" id="topbar">
-  <a class="brand" href="#/open" aria-label="UGC Platform home"><svg viewBox="0 0 269 184" fill="none" aria-hidden="true"><path d="M121.556 4.06404C141.556 -7.48297 166.556 6.9505 166.556 30.0445C166.556 31.0921 165.899 32.0212 164.936 32.4319C152.062 37.9179 143.037 50.6867 143.037 65.564V116.564C143.037 131.086 151.636 143.598 164.02 149.29C165.519 149.979 166.556 151.435 166.556 153.085C166.555 176.178 141.556 190.612 121.556 179.065L15 117.545C-5 105.998 -5 77.1306 15 65.5836L121.556 4.06404Z" fill="currentColor"/><path d="M227.969 0.278931C250.418 0.27893 268.617 18.478 268.617 40.9274V140.409C268.617 162.858 250.418 181.056 227.969 181.056C210.666 181.056 195.891 170.245 190.025 155.01C189.233 152.955 190.505 150.769 192.546 149.942C205.734 144.6 215.037 131.669 215.037 116.564V65.5641C215.037 50.3684 205.621 37.3734 192.306 32.0911C190.279 31.2867 188.994 29.1414 189.737 27.0903C195.397 11.453 210.378 0.278951 227.969 0.278931Z" fill="currentColor"/></svg></a>
+  <a class="brand" href="#/" aria-label="UGC Platform home"><svg viewBox="0 0 269 184" fill="none" aria-hidden="true"><path d="M121.556 4.06404C141.556 -7.48297 166.556 6.9505 166.556 30.0445C166.556 31.0921 165.899 32.0212 164.936 32.4319C152.062 37.9179 143.037 50.6867 143.037 65.564V116.564C143.037 131.086 151.636 143.598 164.02 149.29C165.519 149.979 166.556 151.435 166.556 153.085C166.555 176.178 141.556 190.612 121.556 179.065L15 117.545C-5 105.998 -5 77.1306 15 65.5836L121.556 4.06404Z" fill="currentColor"/><path d="M227.969 0.278931C250.418 0.27893 268.617 18.478 268.617 40.9274V140.409C268.617 162.858 250.418 181.056 227.969 181.056C210.666 181.056 195.891 170.245 190.025 155.01C189.233 152.955 190.505 150.769 192.546 149.942C205.734 144.6 215.037 131.669 215.037 116.564V65.5641C215.037 50.3684 205.621 37.3734 192.306 32.0911C190.279 31.2867 188.994 29.1414 189.737 27.0903C195.397 11.453 210.378 0.278951 227.969 0.278931Z" fill="currentColor"/></svg></a>
   <nav class="tnav" id="tnav" aria-label="Main"></nav>
   <div class="top-right">
     <button class="hicon" id="search-btn" data-search aria-label="Search" aria-expanded="false"></button>
@@ -199,11 +186,6 @@
     <a data-act="soon" aria-label="Profile"><img class="top-av" data-a="pfAvatar" data-label="C" alt=""></a>
   </div>
 </header>
-<nav class="subnav" id="subnav" aria-label="Invite status">
-  <a href="#/open" data-tab="open">Open <span class="n" data-count="open"></span></a>
-  <a href="#/chatting" data-tab="chatting">Chatting <span class="n" data-count="chatting"></span></a>
-  <a href="#/declined" data-tab="declined">Declined <span class="n" data-count="declined"></span></a>
-</nav>
 <main class="content" id="view"></main>
 
 <div class="pop" id="pop-notifs"><div class="nt-title">Notifications</div><div class="nt-list" id="nt-list"></div></div>
@@ -260,7 +242,6 @@ const INVITES=[
     desc:'On-ground coverage for a live concert at Port City Colombo. Manage 10 creators on the night for reels and stories.'},
 ];
 INVITES.forEach(v=>{v.status=v.status||'open';});
-const TABS={open:'Invites',chatting:'Chatting',declined:'Declined invites'};
 
 const notifications=[
   {logo:'uberLogo',type:'invite',brand:'Uber Sri Lanka',time:'5 min ago'},
@@ -270,7 +251,7 @@ const notifications=[
   {logo:'dominos',type:'closing',brand:'Domino’s Pizza LK',time:'3 hrs ago'},
 ];
 
-const state={tab:'open',q:'',searchOpen:false,loaded:false};
+const state={q:'',searchOpen:false,loaded:false};
 
 /* ================= Templates ================= */
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -282,21 +263,12 @@ function closesIn(v){
   const text=d?`Closes in ${d} d ${h} h`:h?`Closes in ${h} h ${m} min`:`Closes in ${Math.max(m,1)} min`;
   return {text,cls:left<H?'soon':''};
 }
-function footHTML(v){
-  if(v.status==='chatting') return {text:'Chat started',cls:'done'};
-  if(v.status==='declined') return {text:closesIn(v).cls==='done'?'Declined':'Declined · '+closesIn(v).text.toLowerCase(),cls:'done'};
-  return closesIn(v);
-}
 
 function inviteHTML(v,i){
-  const f=footHTML(v);
-  const closed=closesIn(v).cls==='done';
-  const actions=v.status==='open'
-    ?`<button class="inv-x" type="button" data-decline="${v.id}" aria-label="Decline invite from ${esc(v.brand)}"${closed?' disabled':''}>${ICON.x}</button>
-      <button class="inv-cta" type="button" data-chat="${v.id}"${closed?' disabled':''}>Start Chat</button>`
-    :v.status==='chatting'
-    ?`<button class="inv-cta" type="button" data-act="soon">Open Chat</button>`
-    :`<button class="inv-cta ghost" type="button" data-restore="${v.id}"${closed?' disabled':''}>Restore invite</button>`;
+  const f=closesIn(v);
+  const closed=f.cls==='done';
+  const actions=`<button class="inv-x" type="button" data-decline="${v.id}" aria-label="Decline invite from ${esc(v.brand)}"${closed?' disabled':''}>${ICON.x}</button>
+      <button class="inv-cta" type="button" data-chat="${v.id}"${closed?' disabled':''}>Start Chat</button>`;
   return `<article class="inv" style="--i:${i}" data-id="${v.id}" aria-label="Invite from ${esc(v.brand)}">
     <div class="inv-card">
       <div class="inv-head">
@@ -316,7 +288,7 @@ function inviteHTML(v,i){
 /* ---------- Invites page ---------- */
 function viewInvites(){
   return `<div class="home">
-    <h1 class="home-title">${TABS[state.tab]}</h1>
+    <h1 class="home-title">Invites</h1>
     <div class="home-search${state.searchOpen?' open':''}" id="home-search"><div>
       <label class="search">${MICON.search}<input id="q" type="search" placeholder="Search" value="${esc(state.q)}" autocomplete="off" aria-label="Search invites by brand"${state.searchOpen?'':' tabindex="-1"'}><kbd>Esc</kbd></label>
     </div></div>
@@ -329,41 +301,33 @@ function renderFeed(){
   const feed=document.getElementById('feed'); if(!feed) return;
   if(!state.loaded){feed.innerHTML=SK.repeat(3);return;}
   const q=state.q.trim().toLowerCase();
-  const list=INVITES.filter(v=>v.status===state.tab&&(!q||(v.brand+' '+v.industry+' '+v.desc).toLowerCase().includes(q)))
+  const list=INVITES.filter(v=>v.status==='open'&&(!q||(v.brand+' '+v.industry+' '+v.desc).toLowerCase().includes(q)))
     .sort((a,b)=>a.closes-b.closes);
   feed.innerHTML=list.length?list.map(inviteHTML).join('')
     :q?`<div class="ph"><div class="tag2">No invites</div><h2>Nothing matches “${esc(state.q)}”</h2><p>Try another brand name or clear the search.</p><div class="tag" data-act="clear">Clear search</div></div>`
-    :state.tab==='open'?`<div class="ph"><div class="tag2">All caught up</div><h2>No open invites</h2><p>When a brand invites you to collaborate on a campaign, it shows up here.</p></div>`
-    :state.tab==='chatting'?`<div class="ph"><div class="tag2">No chats yet</div><h2>Start a chat from an invite</h2><p>Invites you start a chat on move here.</p></div>`
-    :`<div class="ph"><div class="tag2">Nothing declined</div><h2>No declined invites</h2><p>Invites you pass on move here.</p></div>`;
+    :`<div class="ph"><div class="tag2">All caught up</div><h2>No open invites</h2><p>When a brand invites you to collaborate on a campaign, it shows up here.</p></div>`;
   bindAssets(feed);
-}
-function renderCounts(){
-  document.querySelectorAll('[data-count]').forEach(n=>{
-    const c=INVITES.filter(v=>v.status===n.dataset.count).length;
-    n.textContent=c; n.hidden=!c;
-  });
 }
 
 /* Keep each "Closes in" footer live */
 function tick(){
   document.querySelectorAll('.inv').forEach(el=>{
     const v=INVITES.find(x=>x.id===el.dataset.id); if(!v) return;
-    const f=footHTML(v),foot=el.querySelector('[data-foot]');
+    const f=closesIn(v),foot=el.querySelector('[data-foot]');
     if(foot.textContent!==f.text){foot.textContent=f.text;foot.className='inv-foot '+f.cls;}
-    if(f.cls==='done'&&v.status!=='chatting') el.querySelectorAll('.inv-actions button').forEach(b=>b.disabled=true);
+    if(f.cls==='done') el.querySelectorAll('.inv-actions button').forEach(b=>b.disabled=true);
   });
 }
 setInterval(tick,15e3);
 
-/* Move an invite to another tab, with a short exit animation */
+/* Take an invite off the list, with a short exit animation */
 function move(id,to,msg){
   const v=INVITES.find(x=>x.id===id); if(!v) return;
   const from=v.status;
   const el=document.querySelector(`.inv[data-id="${id}"]`);
-  const done=()=>{v.status=to;renderCounts();renderFeed();};
+  const done=()=>{v.status=to;renderFeed();};
   if(el&&!matchMedia('(prefers-reduced-motion:reduce)').matches){el.classList.add('leaving');setTimeout(done,220);} else done();
-  toast(msg,()=>{v.status=from;renderCounts();renderFeed();});
+  toast(msg,()=>{v.status=from;renderFeed();});
 }
 
 /* ================= Top menu ================= */
@@ -390,15 +354,12 @@ function setSearch(open){
 /* ================= Router ================= */
 const view=document.getElementById('view');
 function route(){
-  const root=location.hash.replace(/^#\/?/,'').split('/')[0];
-  state.tab=TABS[root]?root:'open';
   view.innerHTML=viewInvites();
   view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');window.scrollTo({top:0,behavior:'instant'});
   renderFeed();
   if(state.searchOpen) setSearch(true);
-  document.title=TABS[state.tab]+' — UGC Platform for Collaborators';
+  document.title='Invites — UGC Platform for Collaborators';
   document.querySelectorAll('#tnav a').forEach(n=>n.classList.toggle('active',n.dataset.root==='invites'));
-  document.querySelectorAll('#subnav a').forEach(n=>{const on=n.dataset.tab===state.tab;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
   closePop();
 }
 window.addEventListener('hashchange',route);
@@ -430,8 +391,6 @@ document.addEventListener('click',e=>{
   if(dec) return move(dec.dataset.decline,'declined','Invite declined');
   const chat=t.closest('[data-chat]');
   if(chat){const v=INVITES.find(x=>x.id===chat.dataset.chat);return move(v.id,'chatting',`Chat started with ${v.brand}`);}
-  const res=t.closest('[data-restore]');
-  if(res) return move(res.dataset.restore,'open','Invite restored');
   const act=t.closest('[data-act]');
   if(act){e.preventDefault();return doAct(act.dataset.act);}
 });
@@ -451,7 +410,7 @@ document.addEventListener('keydown',e=>{
 renderTopNav();
 bindAssets(document.body);
 renderNotifs();
-renderCounts();
+
 route();
 setTimeout(()=>{state.loaded=true;renderFeed();},500);
 </script>

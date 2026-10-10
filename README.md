@@ -5,12 +5,11 @@ It uses the same top menu, design tokens and components as the brand web app.
 
 ## Pages
 
-- **Invites** — brands inviting you to collaborate on their campaigns. A dark bar under the top menu switches
-  between Open, Chatting and Declined invites (`#/open`, `#/chatting`, `#/declined`). Each invite card shows the
-  brand, industry, when it was posted, the start date, project tags and a short brief, with a live
-  "Closes in …" countdown underneath. **Start Chat** moves an invite to Chatting, **✕** declines it
-  (both can be undone from the toast), and declined invites can be restored while still open.
-  Header search (`/` to open, `Esc` to close) filters by brand; the bell opens the notifications popover.
+- **Invites** — brands inviting you to collaborate on their campaigns. Each invite card shows the brand,
+  industry, when it was posted, the start date, project tags and a short brief, with a live "Closes in …"
+  countdown underneath. Invites closing soonest come first. **Start Chat** and **✕** take an invite off the
+  list (both can be undone from the toast). Header search (`/` to open, `Esc` to close) filters by brand;
+  the bell opens the notifications popover.
 
 ## Assets
 
