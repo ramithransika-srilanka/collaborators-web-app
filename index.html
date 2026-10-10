@@ -46,9 +46,26 @@
   .brand svg{height:18px;width:auto;aspect-ratio:269/184;}
   .brand:hover{opacity:.8;}
   .brand:active{transform:scale(.96);}
+  /* Hamburger + its menu are phone-only (same pattern as the creator web app); desktop keeps the logo and icon nav */
+  .menu-btn{display:none;grid-column:1;justify-self:start;width:40px;height:40px;margin-left:-8px;border-radius:100px;align-items:center;justify-content:center;color:var(--grey-800);transition:background .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .menu-btn svg{width:24px;height:24px;}
+  .menu-btn:hover{background:var(--grey-100);}
+  .menu-btn:active{transform:scale(.94);}
+  .menu-btn.on{background:var(--grey-800);color:var(--grey-50);}
+  .drawer,.drawer-scrim{display:none;}
+  .menu-list{display:flex;flex-direction:column;gap:4px;}
+  .set-row{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:12px;cursor:pointer;}
+  .set-row:hover{background:var(--grey-100);}
+  .menu-list .set-row.active{background:var(--grey-100);}
+  .set-ic{position:relative;width:22px;height:22px;color:var(--grey-700);flex-shrink:0;display:flex;}
+  .set-ic svg{width:22px;height:22px;}
+  .set-lbl{flex:1;font-size:14px;font-weight:500;line-height:18px;color:var(--grey-800);}
+  .set-chev{width:20px;height:20px;color:var(--grey-500);flex-shrink:0;display:flex;}
+  .set-chev svg{width:20px;height:20px;}
+  .set-ic .ndot{position:absolute;top:-1px;right:-2px;width:8px;height:8px;border-radius:100px;background:var(--pink-500);border:1.5px solid #fff;}
   .tnav{grid-column:2;display:flex;align-items:center;gap:4px;}
   .tnav a{width:52px;height:32px;border-radius:100px;display:flex;align-items:center;justify-content:center;color:var(--grey-500);transition:background .25s ease,color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
-  .tnav a svg{height:17px;width:auto;max-width:20px;}
+  .tnav a svg{width:20px;height:20px;}
   .tnav a:hover{background:var(--grey-100);color:var(--grey-700);}
   .tnav a.active{color:var(--grey-800);}
   .tnav a:active{transform:scale(.94);}
@@ -144,11 +161,12 @@
   /* ================= Chats =================
      Conversation list on the left, the open chat on the right; one pane at a time on phones. */
   body.chat-page .content{padding-bottom:18px;}
-  .chats{display:grid;grid-template-columns:320px minmax(0,1fr);height:calc(100dvh - var(--header) - 36px);min-height:440px;border:1px solid var(--grey-200);border-radius:24px;overflow:hidden;background:#fff;}
+  /* Heading and search sit above the bordered box, like the Invites heading */
+  .chat-page-wrap{display:flex;flex-direction:column;height:calc(100dvh - var(--header) - 36px);min-height:520px;padding-top:6px;}
+  .chats{flex:1;min-height:0;margin-top:24px;display:grid;grid-template-columns:320px minmax(0,1fr);border:1px solid var(--grey-200);border-radius:24px;overflow:hidden;background:#fff;}
   .cl{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--grey-200);}
-  .cl-head{padding:18px 15px 12px;display:flex;flex-direction:column;gap:12px;}
-  .cl-title{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.02em;color:#000;padding:0 3px;}
-  .cl-list{flex:1;min-height:0;overflow-y:auto;padding:0 9px 9px;display:flex;flex-direction:column;gap:2px;}
+  .cl-head{padding:15px 15px 6px;}
+  .cl-list{flex:1;min-height:0;overflow-y:auto;padding:6px 9px 9px;display:flex;flex-direction:column;gap:2px;}
   .cl-item{display:flex;align-items:center;gap:10px;padding:9px;border-radius:15px;transition:background .2s ease;}
   .cl-item:hover{background:var(--grey-100);}
   .cl-item.active{background:var(--blue-100);}
@@ -245,16 +263,28 @@
   }
   @media (max-width:767px){
     :root{--gutter:12px;}
-    .topbar{grid-template-columns:auto auto minmax(0,1fr);gap:6px;}
-    .brand svg{height:16px;}
-    .tnav{gap:0;}
-    .tnav a{width:30px;}
+    .topbar{gap:6px;}
+    /* Phone top bar: hamburger replaces the logo and the icon nav */
+    .brand,.tnav{display:none;}
+    .menu-btn{display:flex;}
+    .drawer-scrim{display:block;position:fixed;top:var(--header);left:0;right:0;bottom:0;z-index:19;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .35s ease;}
+    body.drawer-open .drawer-scrim{opacity:1;pointer-events:auto;}
+    .drawer{display:block;position:fixed;top:var(--header);left:0;bottom:0;width:min(80%,320px);z-index:19;background:var(--grey-50);padding:24px 8px;border-right:1px solid var(--grey-200);
+      transform:translateX(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.16,1,.3,1),visibility 0s linear .45s;}
+    .drawer.open{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.16,1,.3,1),visibility 0s;}
+    body.drawer-open{overflow:hidden;}
+    @media(prefers-reduced-motion:reduce){.drawer,.drawer.open,.drawer-scrim{transition:none;}}
     .top-right{gap:6px;}
     .top-av{display:none;}
     .invgrid{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:18px;}
     .pop{left:var(--gutter);width:auto;}
-    .chats{grid-template-columns:minmax(0,1fr);border-radius:18px;margin:0 calc(var(--gutter) * -1 + 1px);}
+    .chats{grid-template-columns:minmax(0,1fr);border-radius:18px;}
     .chats.has-open .cl,.chats:not(.has-open) .cv{display:none;}
+    .chats{margin-top:18px;}
+    /* An open chat takes the whole screen on phones */
+    .chat-page-wrap.has-open{padding-top:0;}
+    .chat-page-wrap.has-open .chat-top{display:none;}
+    .chat-page-wrap.has-open .chats{margin-top:0;}
     .cl{border-right:0;}
     .cv-back{display:flex;}
     .cv-msgs{padding:15px 12px;}
@@ -265,6 +295,7 @@
 </head>
 <body>
 <header class="topbar" id="topbar">
+  <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="drawer"></button>
   <a class="brand" href="#/" aria-label="UGC Platform home"><svg viewBox="0 0 269 184" fill="none" aria-hidden="true"><path d="M121.556 4.06404C141.556 -7.48297 166.556 6.9505 166.556 30.0445C166.556 31.0921 165.899 32.0212 164.936 32.4319C152.062 37.9179 143.037 50.6867 143.037 65.564V116.564C143.037 131.086 151.636 143.598 164.02 149.29C165.519 149.979 166.556 151.435 166.556 153.085C166.555 176.178 141.556 190.612 121.556 179.065L15 117.545C-5 105.998 -5 77.1306 15 65.5836L121.556 4.06404Z" fill="currentColor"/><path d="M227.969 0.278931C250.418 0.27893 268.617 18.478 268.617 40.9274V140.409C268.617 162.858 250.418 181.056 227.969 181.056C210.666 181.056 195.891 170.245 190.025 155.01C189.233 152.955 190.505 150.769 192.546 149.942C205.734 144.6 215.037 131.669 215.037 116.564V65.5641C215.037 50.3684 205.621 37.3734 192.306 32.0911C190.279 31.2867 188.994 29.1414 189.737 27.0903C195.397 11.453 210.378 0.278951 227.969 0.278931Z" fill="currentColor"/></svg></a>
   <nav class="tnav" id="tnav" aria-label="Main"></nav>
   <div class="top-right">
@@ -274,6 +305,8 @@
   </div>
 </header>
 <main class="content" id="view"></main>
+<div class="drawer-scrim" id="drawer-scrim"></div>
+<nav class="drawer" id="drawer" aria-label="Main" aria-hidden="true"><div class="menu-list" id="drawer-list"></div></nav>
 
 <div class="pop" id="pop-notifs"><div class="nt-title">Notifications</div><div class="nt-list" id="nt-list"></div></div>
 <div class="toast" id="toast" role="status"><span id="toast-msg"></span><button type="button" id="toast-undo" hidden>Undo</button></div>
@@ -296,9 +329,12 @@ function bindAssets(root){
 }
 
 const ICON={
-  invites:`<svg viewBox="0 0 24 24" fill="none"><path d="M3 7.5C3 6.1 4.1 5 5.5 5h13C19.9 5 21 6.1 21 7.5v9c0 1.4-1.1 2.5-2.5 2.5h-13A2.5 2.5 0 013 16.5v-9z" stroke="currentColor" stroke-width="2"/><path d="M4 7l7.1 5.3c.5.4 1.3.4 1.8 0L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  /* Top-menu icons: coolicons "Communication / Mail" and "Communication / Chat_Circle_Dots" (Figma: Purchase trigger pitch, Frame 8) */
+  invites:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 6L10.1076 10.6123L10.1097 10.614C10.7878 11.1113 11.1271 11.3601 11.4988 11.4562C11.8272 11.5412 12.1725 11.5412 12.501 11.4562C12.8729 11.36 13.2132 11.1105 13.8926 10.6123C13.8926 10.6123 17.8101 7.60594 20 6M3 15.8002V8.2002C3 7.08009 3 6.51962 3.21799 6.0918C3.40973 5.71547 3.71547 5.40973 4.0918 5.21799C4.51962 5 5.08009 5 6.2002 5H17.8002C18.9203 5 19.4796 5 19.9074 5.21799C20.2837 5.40973 20.5905 5.71547 20.7822 6.0918C21 6.5192 21 7.07899 21 8.19691V15.8036C21 16.9215 21 17.4805 20.7822 17.9079C20.5905 18.2842 20.2837 18.5905 19.9074 18.7822C19.48 19 18.921 19 17.8031 19H6.19691C5.07899 19 4.5192 19 4.0918 18.7822C3.71547 18.5905 3.40973 18.2842 3.21799 17.9079C3 17.4801 3 16.9203 3 15.8002Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   x:`<svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
-  chats:`<svg viewBox="0 0 24 24" fill="none"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.1 0-2.2-.2-3.1-.6L4 20l1.4-3.7C4.5 15 4 13.3 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  chats:`<svg viewBox="0 0 24 24" fill="none"><path d="M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 12H8.01M12 12H12.01M16 12H16.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  menu:`<svg viewBox="0 0 24 24" fill="none"><path d="M3 17H21M3 12H21M3 7H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  rowChev:`<svg viewBox="0 0 24 24" fill="none"><path d="M10 8L14 12L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   send:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   download:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   back:`<svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -505,14 +541,16 @@ function bodyHTML(m){
 const chatIds=()=>Object.keys(CHATS).sort((a,b)=>lastMsg(b).ts-lastMsg(a).ts);
 
 function viewChats(){
-  return `<div class="chats${state.chat?' has-open':''}" id="chats">
+  return `<div class="chat-page-wrap${state.chat?' has-open':''}">
+  <div class="chat-top"><h1 class="home-title">Chats</h1></div>
+  <div class="chats${state.chat?' has-open':''}" id="chats">
     <aside class="cl" aria-label="Chats">
-      <div class="cl-head"><h1 class="cl-title">Chats</h1>
-        <label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats"></label></div>
+      <div class="cl-head"><label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats by brand"></label></div>
       <div class="cl-list" id="cl-list"></div>
     </aside>
     <section class="cv" id="cv" aria-label="Conversation">${state.chat?threadShell(state.chat)
       :`<div class="cv-empty"><div class="ph"><div class="tag2">Chats</div><h2>${chatIds().length?'Pick a chat':'No chats yet'}</h2><p>${chatIds().length?'Choose a brand on the left to continue the conversation.':'Start a chat from an invite and it shows up here.'}</p>${chatIds().length?'':'<a class="tag" href="#/">Go to invites</a>'}</div></div>`}</section>
+  </div>
   </div>`;
 }
 function threadShell(id){
@@ -567,12 +605,14 @@ function renderThread(){
   meta.classList.toggle('typing',!!typing[id]);
 }
 function renderChatsBadge(){
-  const a=document.querySelector('#tnav [data-root="chats"]'); if(!a) return;
   const unread=Object.values(CHATS).some(c=>c.unread);
-  let dot=a.querySelector('.ndot');
-  if(unread&&!dot){dot=document.createElement('i');dot.className='ndot';a.appendChild(dot);}
-  if(!unread&&dot) dot.remove();
-  a.setAttribute('aria-label',unread?'Chats, unread messages':'Chats');
+  document.querySelectorAll('#tnav [data-root="chats"], #drawer-list [data-root="chats"] .set-ic').forEach(a=>{
+    let dot=a.querySelector('.ndot');
+    if(unread&&!dot){dot=document.createElement('i');dot.className='ndot';a.appendChild(dot);}
+    if(!unread&&dot) dot.remove();
+  });
+  const a=document.querySelector('#tnav [data-root="chats"]');
+  if(a) a.setAttribute('aria-label',unread?'Chats, unread messages':'Chats');
 }
 function refreshChats(){renderChatList();renderThread();renderChatsBadge();}
 
@@ -635,22 +675,34 @@ function autosize(ta){
 function renderTopNav(){
   const items=[['invites','#/',ICON.invites,'Invites'],['chats','#/chats',ICON.chats,'Chats']];
   document.getElementById('tnav').innerHTML=items.map(i=>`<a href="${i[1]}" data-root="${i[0]}" aria-label="${i[3]}" title="${i[3]}">${i[2]}</a>`).join('');
+  document.getElementById('menu-btn').innerHTML=ICON.menu;
+  document.getElementById('drawer-list').innerHTML=items.map(i=>`<a class="set-row" href="${i[1]}" data-root="${i[0]}" tabindex="-1"><span class="set-ic">${i[2]}</span><span class="set-lbl">${i[3]}</span><span class="set-chev">${ICON.rowChev}</span></a>`).join('');
   document.getElementById('search-btn').innerHTML=MICON.search;
   document.getElementById('bell-ic').innerHTML=MICON.bell;
   renderChatsBadge();
 }
 
 /* Search lives under the page heading; the header icon opens and closes it */
-function setSearch(open){
+function setSearch(open,focus=true){
+  if(state.page==='chats') return;
   state.searchOpen=open;
   const btn=document.getElementById('search-btn');
   btn.classList.toggle('on',open);btn.setAttribute('aria-expanded',open);
   const wrap=document.getElementById('home-search'); if(!wrap) return;
   wrap.classList.toggle('open',open);
-  const input=document.getElementById('q');
+  const input=wrap.querySelector('input');
   input.tabIndex=open?0:-1;
-  if(open) input.focus({preventScroll:true});
-  else if(state.q){state.q='';input.value='';renderFeed();}
+  if(open){if(focus) input.focus({preventScroll:true});return;}
+  if(state.q){state.q='';input.value='';renderFeed();}
+}
+/* On Chats the search lives in the chat box; on a phone with a chat open, go back to the list first */
+function toggleSearch(){
+  if(state.page==='chats'){
+    if(state.chat&&matchMedia('(max-width:767px)').matches){location.hash='#/chats';setTimeout(()=>document.getElementById('cq').focus());}
+    else document.getElementById('cq').focus();
+    return;
+  }
+  setSearch(!state.searchOpen);
 }
 
 /* ================= Router ================= */
@@ -675,10 +727,11 @@ function route(){
     document.title=(state.chat?byId(state.chat).brand+' — ':'')+'Chats — UGC Platform for Collaborators';
   }else{
     renderFeed();
-    if(state.searchOpen) setSearch(true);
+    setSearch(state.searchOpen,!!document.getElementById('q'));
     document.title='Invites — UGC Platform for Collaborators';
   }
-  document.querySelectorAll('#tnav a').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  setDrawer(false);
+  document.querySelectorAll('#tnav a, #drawer-list a').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
   closePop();
 }
 window.addEventListener('hashchange',route);
@@ -690,6 +743,14 @@ function toast(m,undo){
   toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>{toastEl.classList.remove('show');undoFn=null;},undo?4000:2200);
 }
 toastUndo.addEventListener('click',()=>{if(undoFn){undoFn();undoFn=null;}toastEl.classList.remove('show');});
+/* Menu: a panel that slides in from the left under the top bar */
+const drawer=document.getElementById('drawer');
+function setDrawer(open){
+  drawer.classList.toggle('open',open);drawer.setAttribute('aria-hidden',!open);
+  drawer.querySelectorAll('a').forEach(a=>a.tabIndex=open?0:-1);
+  const b=document.getElementById('menu-btn');b.classList.toggle('on',open);b.setAttribute('aria-expanded',open);
+  document.body.classList.toggle('drawer-open',open);
+}
 const pop=document.getElementById('pop-notifs');
 function closePop(){pop.classList.remove('open');}
 function renderNotifs(){
@@ -703,8 +764,10 @@ function renderNotifs(){
 
 document.addEventListener('click',e=>{
   const t=e.target;
-  if(t.closest('[data-search]')){e.preventDefault();if(state.page==='chats'){if(state.chat&&matchMedia('(max-width:767px)').matches){location.hash='#/chats';setTimeout(()=>document.getElementById('cq').focus());}else document.getElementById('cq').focus();}else setSearch(!state.searchOpen);return;}
-  if(t.closest('[data-pop]')){e.preventDefault();pop.classList.toggle('open');return;}
+  if(t.closest('[data-search]')){e.preventDefault();toggleSearch();return;}
+  if(t.closest('#menu-btn')){e.preventDefault();closePop();setDrawer(!drawer.classList.contains('open'));return;}
+  if(t.closest('#drawer a')||t.id==='drawer-scrim') setDrawer(false);
+  if(t.closest('[data-pop]')){e.preventDefault();setDrawer(false);pop.classList.toggle('open');return;}
   if(pop.classList.contains('open')&&!t.closest('#pop-notifs')) closePop();
   const go=t.closest('[data-go]');
   if(go){closePop();location.hash=go.dataset.go;return;}
@@ -732,8 +795,8 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('keydown',e=>{
   if(e.target.id==='cv-text'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendMsg();return;}
-  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='chats')document.getElementById('cq').focus();else if(state.searchOpen)document.getElementById('q').focus();else setSearch(true);}
-  if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();}
+  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='invites'&&state.searchOpen)document.getElementById('q').focus();else toggleSearch();}
+  if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();if(drawer.classList.contains('open')){setDrawer(false);document.getElementById('menu-btn').focus();}}
 });
 
 /* ===== Init ===== */
