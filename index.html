@@ -294,7 +294,8 @@
     body.chat-open .chat-page-wrap{height:100dvh;min-height:0;}
     body.chat-open .cv{border:0;border-radius:0;}
     body.chat-open .cv-head{border-bottom:0;padding:calc(10px + env(safe-area-inset-top)) 12px 6px;}
-    body.chat-open .cv-compose{border-top:0;align-items:center;gap:6px;margin:6px 12px calc(12px + env(safe-area-inset-bottom));padding:5px 5px 5px 16px;border-radius:100px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+    body.chat-open .cv-compose{border-top:0;align-items:center;gap:6px;margin:6px 12px calc(12px + env(safe-area-inset-bottom));padding:5px 5px 5px 16px;border-radius:100px;background:#fff;border:1px solid var(--grey-400);}
+    body.chat-open .cv-compose:focus-within{border-color:var(--blue-300);}
     body.chat-open .cv-input{border:0;padding:6px 0;border-radius:0;}
     body.chat-open .cv-send{width:40px;height:40px;}
     body.chat-open .toast{bottom:calc(88px + env(safe-area-inset-bottom));}
