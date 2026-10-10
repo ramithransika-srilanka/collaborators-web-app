@@ -5,7 +5,9 @@ It uses the same top menu, design tokens and components as the brand web app.
 
 ## Pages
 
-The top menu has two sections: **Invites** and **Chats**.
+The top menu has two sections, **Invites** (mail icon) and **Chats** (chat icon), using the coolicons
+"Communication / Mail" and "Communication / Chat_Circle_Dots" icons from the Figma file. The hamburger on the
+left opens the same sections in a panel that slides in from the left, like the creator web app's menu.
 
 - **Invites** (`#/`) — brands inviting you to collaborate on their campaigns. Each invite card shows the brand,
   industry, when it was posted, the start date, project tags and a short brief, with a live "Closes in …"
