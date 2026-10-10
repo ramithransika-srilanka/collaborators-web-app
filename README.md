@@ -15,7 +15,10 @@ The top menu has two sections: **Invites** and **Chats**.
 - **Chats** (`#/chats`, `#/chats/<invite>`) — conversations started from invites. The chat list on the left
   shows the latest message, time and an unread dot (also shown on the Chats icon in the top menu); the open
   chat on the right pins the invite it came from, then the messages. `Enter` sends, `Shift+Enter` adds a line.
-  The brand side is simulated: it greets you when a chat starts and replies after a short "typing…" indicator.
+  The brand side is simulated. When a chat starts from an invite card, the brand sends its opening messages
+  one after another: a greeting, the campaign summary, attachments (when the campaign has any), the total
+  budget, the timeline, and finally asks what commission you expect — answer with a quick-reply chip
+  (10% / 15% / 20%) or type your own. After that it replies after a short "typing…" indicator.
   On phones the list and the open chat show one at a time.
 
 ## Assets
