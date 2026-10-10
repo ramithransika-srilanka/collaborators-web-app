@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Invites — UGC Platform for Collaborators</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -288,6 +288,16 @@
     .chats.has-open .cl,.chats:not(.has-open) .cv{display:none;}
     /* An open chat takes the whole screen on phones */
     .chat-page-wrap.has-open{padding-top:0;}
+    /* An open chat on a phone uses the whole viewport: no top bar, no borders, floating message box */
+    body.chat-open .topbar{display:none;}
+    body.chat-open .content{padding:0;max-width:none;}
+    body.chat-open .chat-page-wrap{height:100dvh;min-height:0;}
+    body.chat-open .cv{border:0;border-radius:0;}
+    body.chat-open .cv-head{border-bottom:0;padding:calc(10px + env(safe-area-inset-top)) 12px 6px;}
+    body.chat-open .cv-compose{border-top:0;align-items:center;gap:6px;margin:6px 12px calc(12px + env(safe-area-inset-bottom));padding:5px 5px 5px 16px;border-radius:100px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+    body.chat-open .cv-input{border:0;padding:6px 0;border-radius:0;}
+    body.chat-open .cv-send{width:40px;height:40px;}
+    body.chat-open .toast{bottom:calc(88px + env(safe-area-inset-bottom));}
     .cv-back{display:flex;}
     .cv-msgs{padding:15px 12px;}
     .cv-compose{padding:10px 12px 12px;}
@@ -716,6 +726,7 @@ function route(){
   state.chat=page==='chats'&&CHATS[id]?id:null;
   if(state.chat){CHATS[state.chat].unread=false;}
   document.body.classList.toggle('chat-page',page==='chats');
+  document.body.classList.toggle('chat-open',page==='chats'&&!!state.chat);
   view.innerHTML=page==='chats'?viewChats():viewInvites();
   if(changed){view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');}
   window.scrollTo({top:0,behavior:'instant'});
