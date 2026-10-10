@@ -195,35 +195,17 @@
   .msg.typing i:nth-child(3){animation-delay:.3s;}
   @keyframes blink{0%,60%,100%{opacity:.3;transform:none;}30%{opacity:1;transform:translateY(-2px);}}
   @media(prefers-reduced-motion:reduce){.msg,.msg.typing i{animation:none;}}
-  /* Structured brand messages: summary, files, budget, timeline, commission ask */
-  .msg .lbl{display:block;margin-bottom:4px;font-size:12px;font-weight:500;line-height:16px;color:var(--grey-600);}
-  .msg.rich{width:min(72%,400px);}
-  .msg-files{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
-  .file{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 8px;border-radius:12px;background:#fff;transition:background .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
-  .file:hover{background:var(--grey-50-90);box-shadow:0 0 0 1px var(--grey-200);}
-  .file:active{transform:scale(.98);}
-  .file-ic{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--blue-100);color:var(--blue-700);font-size:10px;font-weight:600;letter-spacing:.02em;}
-  .file-ic.zip{background:var(--grey-100);color:var(--grey-700);}
-  .file-ic.xlsx{background:#d9f2e3;color:#1c6b3c;}
+  /* A file sent in the chat */
+  .msg.file{display:flex;align-items:center;gap:10px;width:min(72%,300px);padding:8px 12px 8px 8px;cursor:pointer;transition:background .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .msg.file.them:hover{background:var(--grey-200);}
+  .msg.file:active{transform:scale(.98);}
+  .file-ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;color:var(--blue-700);font-size:10px;font-weight:600;letter-spacing:.02em;}
+  .file-ic.zip{color:var(--grey-700);}
+  .file-ic.xlsx{color:#1c6b3c;}
   .file-name{flex:1;min-width:0;display:flex;flex-direction:column;}
-  .file-name b{font-size:13px;font-weight:500;line-height:18px;color:var(--grey-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-name b{font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .file-name span{font-size:12px;line-height:16px;color:var(--grey-600);}
   .file-dl{width:18px;height:18px;color:var(--grey-600);flex-shrink:0;}
-  .msg-budget{font-size:22px;font-weight:600;line-height:28px;letter-spacing:-.01em;color:var(--grey-800);}
-  .msg-note{display:block;margin-top:2px;font-size:12px;line-height:16px;color:var(--grey-600);}
-  .tl{list-style:none;display:flex;flex-direction:column;margin-top:4px;}
-  .tl li{position:relative;display:flex;justify-content:space-between;gap:12px;padding:0 0 10px 18px;font-size:13px;line-height:18px;}
-  .tl li:last-child{padding-bottom:0;}
-  .tl li::before{content:"";position:absolute;left:2px;top:5px;width:8px;height:8px;border-radius:100px;background:var(--blue-500);}
-  .tl li:not(:last-child)::after{content:"";position:absolute;left:5.5px;top:15px;bottom:-1px;width:1px;background:var(--blue-200);}
-  .tl .k{color:var(--grey-700);}
-  .tl .v{font-weight:600;color:var(--grey-800);text-align:right;}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px;}
-  .chip{height:32px;padding:0 13px;border-radius:75px;border:1px solid var(--blue-300);background:#fff;font-size:13px;font-weight:500;color:var(--blue-500);transition:background .2s ease,color .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
-  .chip:hover{background:var(--blue-500);border-color:var(--blue-500);color:#fff;}
-  .chip:active{transform:scale(.96);}
-  .chip.other{border-color:var(--grey-200);color:var(--grey-700);}
-  .chip.other:hover{background:var(--grey-100);color:var(--grey-800);}
   .cv-compose{display:flex;align-items:flex-end;gap:9px;padding:12px 18px 15px;border-top:1px solid var(--grey-200);}
   .cv-input{flex:1;min-width:0;display:flex;padding:7px 15px;border:1px solid var(--grey-400);border-radius:20px;background:#fff;transition:border-color .2s ease;}
   .cv-input:focus-within{border-color:var(--blue-300);}
@@ -278,7 +260,6 @@
     .cv-msgs{padding:15px 12px;}
     .cv-compose{padding:10px 12px 12px;}
     .msg{max-width:85%;}
-    .msg.rich{width:85%;}
   }
 </style>
 </head>
@@ -379,17 +360,17 @@ const BRIEF={
   hiru:{summary:'Live concert coverage at Port City Colombo. Manage 10 creators on the night for reels and stories.',
     files:[],budget:'Rs. 500,000',timeline:[['Campaign starts','Nov 15'],['Event night','Nov 15'],['Campaign ends','Nov 22']]},
 };
-const COMMISSION=['10%','15%','20%'];
 /* The brand's opening messages, in order */
 function openingMsgs(v){
   const b=BRIEF[v.id];
   return [
     {from:'them',text:`Hi! Thanks for your interest in working with ${v.brand}. Here’s a quick summary of the campaign.`},
-    {from:'them',kind:'summary',text:b.summary},
-    ...(b.files.length?[{from:'them',kind:'files',files:b.files}]:[]),
-    {from:'them',kind:'budget',value:b.budget,note:v.tags.join(' · ')},
-    {from:'them',kind:'timeline',items:b.timeline},
-    {from:'them',kind:'ask',text:'What commission would you expect for managing this campaign?',chips:COMMISSION},
+    {from:'them',text:b.summary},
+    ...(b.files.length?[{from:'them',text:`I’ve attached the ${b.files.length>1?'files':'file'} you’ll need.`},
+      ...b.files.map(([name,size])=>({from:'them',kind:'file',name,size}))]:[]),
+    {from:'them',text:`The total budget for this campaign is ${b.budget}.`},
+    {from:'them',text:'Here’s the timeline:\n'+b.timeline.map(([k,d])=>`${k} – ${d}`).join('\n')},
+    {from:'them',text:'What commission would you expect for managing this campaign?'},
   ];
 }
 const byId=id=>INVITES.find(v=>v.id===id);
@@ -515,22 +496,11 @@ function listTime(ts){
   return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
 }
 const lastMsg=id=>CHATS[id].msgs[CHATS[id].msgs.length-1];
-function preview(m){
-  if(m.kind==='files') return `Shared ${m.files.length} attachment${m.files.length>1?'s':''}`;
-  if(m.kind==='budget') return `Total budget: ${m.value}`;
-  if(m.kind==='timeline') return 'Shared the campaign timeline';
-  return m.text;
-}
+const preview=m=>m.kind==='file'?m.name:m.text.replace(/\n/g,' ');
 const ext=n=>n.split('.').pop().toLowerCase();
 function bodyHTML(m){
-  switch(m.kind){
-    case 'summary': return `<span class="lbl">Campaign summary</span>${esc(m.text)}`;
-    case 'files': return `<span class="lbl">Attachments</span><div class="msg-files">${m.files.map(([n,size])=>
-      `<a class="file" data-file="${esc(n)}" href="#" aria-label="Download ${esc(n)}"><span class="file-ic ${ext(n)}">${ext(n).toUpperCase()}</span><span class="file-name"><b>${esc(n)}</b><span>${size}</span></span><span class="file-dl">${ICON.download}</span></a>`).join('')}</div>`;
-    case 'budget': return `<span class="lbl">Total budget</span><span class="msg-budget">${esc(m.value)}</span><span class="msg-note">${esc(m.note)}</span>`;
-    case 'timeline': return `<span class="lbl">Timeline</span><ul class="tl">${m.items.map(([k,v])=>`<li><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></li>`).join('')}</ul>`;
-    default: return esc(m.text);
-  }
+  if(m.kind==='file') return `<span class="file-ic ${ext(m.name)}">${ext(m.name).toUpperCase()}</span><span class="file-name"><b>${esc(m.name)}</b><span>${m.size} · ${ext(m.name).toUpperCase()}</span></span><span class="file-dl">${ICON.download}</span>`;
+  return esc(m.text);
 }
 const chatIds=()=>Object.keys(CHATS).sort((a,b)=>lastMsg(b).ts-lastMsg(a).ts);
 
@@ -583,9 +553,9 @@ function renderThread(){
     if(m.from==='sys'){html+=`<div class="cv-sys">${esc(m.text)}</div>`;return;}
     const cont=p&&p.from===m.from&&m.ts-p.ts<5*M;
     const end=!n||n.from!==m.from||n.ts-m.ts>=5*M;
-    const rich=m.kind&&m.kind!=='ask';
-    html+=`<div class="msg ${m.from}${cont?' cont':''}${rich?' rich':''}"${m.fresh?'':' style="animation:none"'}>${bodyHTML(m)}</div>`;
-    if(m.kind==='ask'&&!c.answered&&!n) html+=`<div class="chips" role="group" aria-label="Suggested commission">${m.chips.map(x=>`<button class="chip" type="button" data-commission="${x}">${x}</button>`).join('')}<button class="chip other" type="button" data-commission="">Other amount</button></div>`;
+    const file=m.kind==='file';
+    const tag=file?`a href="#" data-file="${esc(m.name)}" aria-label="Download ${esc(m.name)}"`:'div';
+    html+=`<${tag} class="msg ${m.from}${cont?' cont':''}${file?' file':''}"${m.fresh?'':' style="animation:none"'}>${bodyHTML(m)}</${file?'a':'div'}>`;
     if(end) html+=`<div class="msg-time ${m.from}">${clock(m.ts)}</div>`;
     delete m.fresh;
   });
@@ -621,7 +591,7 @@ function brandSequence(id,msgs){
   CHATS[id].busy=true;
   msgs.forEach((m,i)=>{
     setTimeout(()=>{typing[id]=true;refreshChats();},t);
-    t+=Math.min(1700,700+(m.text||'').length*6+(m.kind&&m.kind!=='ask'?400:0));
+    t+=Math.min(1700,700+(m.text||'').length*6);
     setTimeout(()=>{
       typing[id]=i<msgs.length-1;
       CHATS[id].msgs.push({...m,ts:Date.now(),fresh:true});
@@ -648,11 +618,11 @@ function brandReply(id,text,delay){
     refreshChats();
   },delay);
 }
-function sendMsg(preset){
+function sendMsg(){
   const ta=document.getElementById('cv-text'),id=state.chat; if(!ta||!id) return;
-  const text=(preset||ta.value).trim(); if(!text) return;
+  const text=ta.value.trim(); if(!text) return;
   CHATS[id].msgs.push({from:'me',text,ts:Date.now(),fresh:true});
-  if(!preset){ta.value='';autosize(ta);}
+  ta.value='';autosize(ta);
   refreshChats();
   autoReply(id);
 }
@@ -742,11 +712,6 @@ document.addEventListener('click',e=>{
   if(dec) return move(dec.dataset.decline,'declined','Invite declined');
   const chat=t.closest('[data-chat]');
   if(chat) return startChat(chat.dataset.chat);
-  const chip=t.closest('[data-commission]');
-  if(chip){
-    if(chip.dataset.commission) return sendMsg(`We’d expect a ${chip.dataset.commission} commission on this campaign.`);
-    const ta=document.getElementById('cv-text');ta.value='We’d expect a commission of ';autosize(ta);ta.focus();return;
-  }
   const file=t.closest('[data-file]');
   if(file){e.preventDefault();return toast(`Downloading ${file.dataset.file}`);}
   const send=t.closest('#cv-send');
