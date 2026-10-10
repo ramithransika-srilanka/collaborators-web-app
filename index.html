@@ -100,7 +100,6 @@
   /* ================= Page heading ================= */
   .home{padding-top:6px;}
   .home-title{font-size:24px;font-weight:600;line-height:30px;letter-spacing:-.02em;color:#000;}
-  .home-sub{margin-top:3px;font-size:14px;line-height:20px;color:var(--grey-600);}
   .home-search{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1),margin-top .45s cubic-bezier(.16,1,.3,1);}
   .home-search>div{overflow:hidden;min-height:0;}
   .home-search .search{opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .45s cubic-bezier(.16,1,.3,1);}
@@ -262,8 +261,6 @@ const INVITES=[
 ];
 INVITES.forEach(v=>{v.status=v.status||'open';});
 const TABS={open:'Invites',chatting:'Chatting',declined:'Declined invites'};
-const SUB={open:'Brands inviting you to collaborate on their campaigns. Start a chat before the invite closes.',
-  chatting:'Invites you have started a chat on.',declined:'Invites you passed on. Restore one while it is still open.'};
 
 const notifications=[
   {logo:'uberLogo',type:'invite',brand:'Uber Sri Lanka',time:'5 min ago'},
@@ -320,7 +317,6 @@ function inviteHTML(v,i){
 function viewInvites(){
   return `<div class="home">
     <h1 class="home-title">${TABS[state.tab]}</h1>
-    <p class="home-sub">${SUB[state.tab]}</p>
     <div class="home-search${state.searchOpen?' open':''}" id="home-search"><div>
       <label class="search">${MICON.search}<input id="q" type="search" placeholder="Search" value="${esc(state.q)}" autocomplete="off" aria-label="Search invites by brand"${state.searchOpen?'':' tabindex="-1"'}><kbd>Esc</kbd></label>
     </div></div>
