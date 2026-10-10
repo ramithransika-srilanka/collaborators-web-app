@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invites — UGC Platform for Collaborators</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     Design tokens and scale — identical to the brand web app (main branch).
+     ===================================================================== */
+  :root{
+    --grey-50:#fff; --grey-50-90:rgba(255,255,255,.9);
+    --grey-100:#ececec; --grey-100-20:rgba(236,236,236,.2);
+    --grey-200:#d9d9d9; --grey-400:#b3b3b3; --grey-500:#a0a0a0;
+    --grey-600:#717171; --grey-700:#414141; --grey-800:#121212;
+    --blue-100:#d0dafb; --blue-200:#a1b6f7; --blue-300:#7391f3; --blue-500:#1548eb; --blue-600:#123bbd; --blue-700:#0f2d8f;
+    --pink-500:#f433ab;
+    --font:'Inter',-apple-system,system-ui,sans-serif;
+
+    /* desktop layout */
+    --gutter:24px; --page:1128px; --header:52px; --shell:1128px;
+    /* bar under the top menu (invite status tabs) */
+    --subbar:36px;
+    /* invite card surfaces */
+    --inv-tag:#e1e7fb; --inv-desc:#f5f5f5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  /* Reserve the scrollbar space on every page so short and long pages line up */
+  html{scrollbar-gutter:stable;}
+  body{background:var(--grey-50);color:var(--grey-800);font-family:var(--font);font-size:14px;line-height:20px;min-height:100dvh;}
+  a{color:inherit;text-decoration:none;cursor:pointer;}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+  img{display:block;}
+  svg{display:block;}
+
+  /* Screen navigation transition — same signature as the brand and creator apps */
+  @keyframes screenIn{from{opacity:0;transform:translateY(17px) scale(.988);filter:blur(5px);}to{opacity:1;transform:none;filter:blur(0);}}
+  .nav-in{animation:screenIn .46s cubic-bezier(.16,1,.3,1) both;}
+  @media(prefers-reduced-motion:reduce){.nav-in{animation:none;}}
+
+  /* ================= App shell: top menu ================= */
+  .topbar{position:sticky;top:0;z-index:20;height:var(--header);display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;padding:0 max(var(--gutter),calc((100% - var(--shell)) / 2));
+    background:var(--grey-50-90);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--grey-200);}
+  .brand{grid-column:1;justify-self:start;display:flex;align-items:center;height:32px;color:var(--grey-800);border-radius:8px;transition:opacity .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .brand svg{height:18px;width:auto;aspect-ratio:269/184;}
+  .brand:hover{opacity:.8;}
+  .brand:active{transform:scale(.96);}
+  .tnav{grid-column:2;display:flex;align-items:center;gap:4px;}
+  .tnav a{width:52px;height:32px;border-radius:100px;display:flex;align-items:center;justify-content:center;color:var(--grey-500);transition:background .25s ease,color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .tnav a svg{height:17px;width:auto;max-width:20px;}
+  .tnav a:hover{background:var(--grey-100);color:var(--grey-700);}
+  .tnav a.active{color:var(--grey-800);}
+  .tnav a:active{transform:scale(.94);}
+  .top-right{grid-column:3;justify-self:end;display:flex;align-items:center;gap:8px;}
+  .hicon{width:32px;height:32px;border-radius:100px;display:flex;align-items:center;justify-content:center;color:var(--grey-800);position:relative;background:#fff;border:1px solid var(--grey-200);transition:background .25s ease,border-color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .hicon:hover{background:var(--grey-100);}
+  .hicon:active{transform:scale(.94);}
+  .hicon.on{background:var(--grey-800);border-color:var(--grey-800);color:var(--grey-50);}
+  .hicon svg{width:17px;height:17px;}
+  .hicon .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:100px;background:var(--pink-500);border:1.5px solid #fff;}
+  .top-av{display:block;width:32px;height:32px;border-radius:100px;object-fit:cover;border:1px solid var(--grey-200);transition:transform .2s cubic-bezier(.16,1,.3,1);}
+  .top-av:active{transform:scale(.94);}
+
+  /* ================= Secondary bar: invite status (same height rhythm as the top menu) ================= */
+  .subnav{position:sticky;top:var(--header);z-index:19;height:var(--subbar);display:flex;align-items:center;justify-content:center;gap:4px;padding:0 var(--gutter);background:var(--grey-800);}
+  .subnav a{height:26px;padding:0 11px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;line-height:20px;color:var(--grey-500);transition:color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .subnav a:hover{color:var(--grey-200);}
+  .subnav a.active{color:#fff;}
+  .subnav a:active{transform:scale(.96);}
+  .subnav .n{min-width:18px;height:18px;padding:0 5px;border-radius:75px;background:var(--grey-700);font-size:12px;font-weight:600;line-height:18px;text-align:center;color:var(--grey-200);transition:background .25s ease,color .25s ease;}
+  .subnav a.active .n{background:var(--blue-500);color:#fff;}
+
+  .content{width:100%;max-width:calc(var(--page) + var(--gutter) * 2);margin:0 auto;padding:18px var(--gutter) 60px;}
+
+  /* ================= Shared components ================= */
+  .tag{flex-shrink:0;padding:6px 9px;border-radius:75px;background:var(--grey-100);font-size:12px;font-weight:500;line-height:12px;color:var(--grey-800);white-space:nowrap;cursor:pointer;transition:background .25s ease,color .25s ease;}
+
+  /* Placeholder / empty state */
+  .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;gap:9px;grid-column:1/-1;}
+  .ph .tag2{background:var(--blue-100);color:var(--blue-700);font-size:12px;font-weight:600;padding:5px 9px;border-radius:75px;}
+  .ph h2{font-size:20px;font-weight:600;color:var(--grey-800);line-height:27px;}
+  .ph p{font-size:14px;line-height:20px;color:var(--grey-600);max-width:260px;}
+
+  /* Skeleton while the invites load */
+  .sk{background:var(--grey-100);border-radius:9px;position:relative;overflow:hidden;}
+  .sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:shimmer 1.3s infinite;}
+  @keyframes shimmer{to{transform:translateX(100%);}}
+  .sk-inv{display:flex;flex-direction:column;gap:12px;padding:21px;border:1px solid var(--grey-200);border-radius:24px;}
+  .sk-inv .row{display:flex;gap:12px;align-items:center;}
+  .sk-inv .logo{width:48px;height:48px;border-radius:100px;flex-shrink:0;}
+  .sk-inv .l1{height:16px;width:60%;}
+  .sk-inv .l2{height:12px;width:40%;margin-top:6px;}
+  .sk-inv .tags{height:22px;width:55%;border-radius:75px;}
+  .sk-inv .desc{height:96px;border-radius:12px;}
+  .sk-inv .cta{height:48px;border-radius:100px;}
+
+  /* ================= Page heading ================= */
+  .home{padding-top:6px;}
+  .home-title{font-size:24px;font-weight:600;line-height:30px;letter-spacing:-.02em;color:#000;}
+  .home-sub{margin-top:3px;font-size:14px;line-height:20px;color:var(--grey-600);}
+  .home-search{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1),margin-top .45s cubic-bezier(.16,1,.3,1);}
+  .home-search>div{overflow:hidden;min-height:0;}
+  .home-search .search{opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .45s cubic-bezier(.16,1,.3,1);}
+  .home-search.open{grid-template-rows:1fr;margin-top:12px;}
+  .home-search.open .search{opacity:1;transform:none;}
+  .search{display:flex;align-items:center;gap:9px;height:36px;margin:1px;padding:0 15px;border:1px solid var(--grey-400);border-radius:75px;background:#fff;transition:border-color .2s ease;}
+  .search:focus-within{border-color:var(--blue-300);}
+  .search svg{width:22px;height:22px;color:var(--grey-800);flex-shrink:0;}
+  .search input{flex:1;min-width:0;width:100%;border:0;outline:0;background:none;font:500 14px var(--font);color:var(--grey-800);}
+  .search input::placeholder{color:var(--grey-600);}
+  .search input::-webkit-search-cancel-button{display:none;}
+  .search kbd{font:500 12px/12px var(--font);color:var(--grey-500);padding:3px 6px;border-radius:6px;background:var(--grey-100);}
+
+  /* ================= Invite card =================
+     A white card resting on a dark base; the base peeks out below with the closing time. */
+  .invgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px;align-items:start;}
+  .inv{background:var(--grey-800);border-radius:27px;display:flex;flex-direction:column;
+    transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1),opacity .3s ease;animation:cardIn .6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 60ms);}
+  .inv:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.08);}
+  .inv.leaving{opacity:0;transform:scale(.96);}
+  @keyframes cardIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  @media(prefers-reduced-motion:reduce){.inv{animation:none;}}
+  .inv-card{background:#fff;border:1px solid var(--grey-200);border-radius:27px;padding:21px 18px 18px;display:flex;flex-direction:column;gap:15px;}
+  .inv-head{display:flex;align-items:center;gap:12px;}
+  .inv-logo{width:48px;height:48px;border-radius:100px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
+  .inv-who{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .inv-name{font-size:16px;font-weight:600;line-height:20px;color:var(--grey-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .inv-meta{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;line-height:16px;color:var(--grey-600);white-space:nowrap;}
+  .inv-meta{overflow:hidden;}
+  .inv-meta span:last-child{overflow:hidden;text-overflow:ellipsis;}
+  .inv-meta .dot{width:3px;height:3px;border-radius:9px;background:var(--grey-600);flex-shrink:0;}
+  .inv-start{flex-shrink:0;text-align:right;display:flex;flex-direction:column;gap:3px;}
+  .inv-start .k{font-size:12px;font-weight:400;line-height:16px;color:var(--grey-600);}
+  .inv-start .v{font-size:16px;font-weight:600;line-height:20px;color:var(--grey-800);white-space:nowrap;}
+  .inv-tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .inv-tag{padding:6px 10px;border-radius:75px;background:var(--inv-tag);font-size:12px;font-weight:400;line-height:12px;color:var(--grey-800);white-space:nowrap;}
+  .inv-desc{background:var(--inv-desc);border-radius:12px;padding:15px;font-size:14px;line-height:20px;color:var(--grey-800);min-height:110px;}
+  .inv-actions{display:flex;align-items:center;gap:12px;}
+  .inv-x{width:48px;height:48px;border-radius:100px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--grey-200);color:var(--grey-800);transition:background .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .inv-x svg{width:18px;height:18px;}
+  .inv-x:hover{background:var(--grey-400);}
+  .inv-x:active{transform:scale(.94);}
+  .inv-cta{flex:1;height:48px;border-radius:100px;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--blue-500);font-size:15px;font-weight:500;line-height:20px;color:#fff;box-shadow:2px 4px 9px rgba(21,72,235,.2);transition:background .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .inv-cta:hover{background:var(--blue-600);}
+  .inv-cta:active{transform:scale(.98);}
+  .inv-cta.ghost{background:#fff;color:var(--grey-800);border:1px solid var(--grey-200);box-shadow:none;}
+  .inv-cta.ghost:hover{background:var(--grey-100);}
+  .inv-x:disabled,.inv-cta:disabled{opacity:.4;cursor:default;transform:none;}
+  .inv-foot{padding:9px 18px 11px;text-align:center;font-size:13px;font-weight:400;line-height:18px;color:#fff;}
+  .inv-foot.soon{color:#ff8fd2;}
+  .inv-foot.done{color:var(--grey-500);}
+
+  /* ================= Notifications popover ================= */
+  .pop{position:fixed;top:calc(var(--header) + 8px);right:var(--gutter);width:300px;max-height:min(420px,calc(100dvh - var(--header) - 16px));z-index:40;display:flex;flex-direction:column;
+    background:var(--grey-50);border-radius:21px;box-shadow:0 12px 30px rgba(0,0,0,.18);border:1px solid var(--grey-200);
+    opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);}
+  .pop.open{opacity:1;transform:none;pointer-events:auto;}
+  .nt-title{padding:18px 18px 0;font-size:18px;font-weight:600;line-height:22px;color:var(--grey-800);}
+  .nt-list{display:flex;flex-direction:column;gap:12px;padding:15px 12px 18px;overflow-y:auto;}
+  .nt-item{display:flex;gap:9px;align-items:flex-start;}
+  .nt-logo{width:24px;height:24px;border-radius:15px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
+  .nt-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding-bottom:12px;border-bottom:1px solid var(--grey-200);}
+  .nt-item:last-child .nt-body{border-bottom:none;padding-bottom:0;}
+  .nt-text{font-size:14px;line-height:20px;color:var(--grey-800);font-weight:600;}
+  .nt-text .med{font-weight:500;}
+  .nt-time{font-size:12px;font-weight:500;line-height:12px;color:var(--grey-600);}
+
+  .toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:var(--grey-800);color:var(--grey-50);display:flex;align-items:center;gap:12px;
+    padding:9px 15px;border-radius:75px;font-size:14px;font-weight:500;box-shadow:2px 2px 9px rgba(0,0,0,.16);transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);white-space:nowrap;}
+  .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto;}
+  .toast button{font-weight:600;color:var(--blue-200);}
+
+  @media (max-width:1023px){
+    :root{--gutter:18px;}
+    .invgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (max-width:767px){
+    :root{--gutter:12px;}
+    .topbar{grid-template-columns:auto auto minmax(0,1fr);gap:6px;}
+    .brand svg{height:16px;}
+    .tnav{gap:0;}
+    .tnav a{width:30px;}
+    .top-right{gap:6px;}
+    .top-av{display:none;}
+    .invgrid{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:18px;}
+    .pop{left:var(--gutter);width:auto;}
+  }
+</style>
+</head>
+<body>
+<header class="topbar" id="topbar">
+  <a class="brand" href="#/open" aria-label="UGC Platform home"><svg viewBox="0 0 269 184" fill="none" aria-hidden="true"><path d="M121.556 4.06404C141.556 -7.48297 166.556 6.9505 166.556 30.0445C166.556 31.0921 165.899 32.0212 164.936 32.4319C152.062 37.9179 143.037 50.6867 143.037 65.564V116.564C143.037 131.086 151.636 143.598 164.02 149.29C165.519 149.979 166.556 151.435 166.556 153.085C166.555 176.178 141.556 190.612 121.556 179.065L15 117.545C-5 105.998 -5 77.1306 15 65.5836L121.556 4.06404Z" fill="currentColor"/><path d="M227.969 0.278931C250.418 0.27893 268.617 18.478 268.617 40.9274V140.409C268.617 162.858 250.418 181.056 227.969 181.056C210.666 181.056 195.891 170.245 190.025 155.01C189.233 152.955 190.505 150.769 192.546 149.942C205.734 144.6 215.037 131.669 215.037 116.564V65.5641C215.037 50.3684 205.621 37.3734 192.306 32.0911C190.279 31.2867 188.994 29.1414 189.737 27.0903C195.397 11.453 210.378 0.278951 227.969 0.278931Z" fill="currentColor"/></svg></a>
+  <nav class="tnav" id="tnav" aria-label="Main"></nav>
+  <div class="top-right">
+    <button class="hicon" id="search-btn" data-search aria-label="Search" aria-expanded="false"></button>
+    <button class="hicon" data-pop="notifs" aria-label="Notifications"><span id="bell-ic"></span><i class="dot"></i></button>
+    <a data-act="soon" aria-label="Profile"><img class="top-av" data-a="pfAvatar" data-label="C" alt=""></a>
+  </div>
+</header>
+<nav class="subnav" id="subnav" aria-label="Invite status">
+  <a href="#/open" data-tab="open">Open <span class="n" data-count="open"></span></a>
+  <a href="#/chatting" data-tab="chatting">Chatting <span class="n" data-count="chatting"></span></a>
+  <a href="#/declined" data-tab="declined">Declined <span class="n" data-count="declined"></span></a>
+</nav>
+<main class="content" id="view"></main>
+
+<div class="pop" id="pop-notifs"><div class="nt-title">Notifications</div><div class="nt-list" id="nt-list"></div></div>
+<div class="toast" id="toast" role="status"><span id="toast-msg"></span><button type="button" id="toast-undo" hidden>Undo</button></div>
+
+<!-- Design assets shared with the brand web app (generated by scripts/sync-assets.js) -->
+<script src="assets.js"></script>
+<script>
+function fallback(img){
+  const label=(img.dataset.label||"?").slice(0,2).toUpperCase();
+  const c=['#1548eb','#f433ab','#717171','#121212'][label.charCodeAt(0)%4];
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='${c}'/><text x='50%' y='54%' font-family='Inter,sans-serif' font-size='26' font-weight='600' fill='white' text-anchor='middle' dominant-baseline='middle'>${label}</text></svg>`;
+  img.src='data:image/svg+xml;base64,'+btoa(svg);
+}
+function bindAssets(root){
+  root.querySelectorAll('img[data-a]').forEach(img=>{
+    if(img.dataset.bound) return; img.dataset.bound=1;
+    img.onerror=()=>{img.onerror=null;fallback(img);};
+    if(A[img.dataset.a]) img.src=A[img.dataset.a]; else fallback(img);
+  });
+}
+
+const ICON={
+  invites:`<svg viewBox="0 0 24 24" fill="none"><path d="M3 7.5C3 6.1 4.1 5 5.5 5h13C19.9 5 21 6.1 21 7.5v9c0 1.4-1.1 2.5-2.5 2.5h-13A2.5 2.5 0 013 16.5v-9z" stroke="currentColor" stroke-width="2"/><path d="M4 7l7.1 5.3c.5.4 1.3.4 1.8 0L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  x:`<svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+};
+
+/* ================= Data: brands inviting this collaborator to their campaigns ================= */
+const H=3600e3, M=60e3, now=Date.now();
+const INVITES=[
+  {id:'uber',logo:'uberLogo',abbr:'Ub',brand:'Uber Sri Lanka',industry:'Retail',posted:'5 min ago',start:'Nov 6',
+    tags:['One time project','Commision based'],closes:now+15*H+15*M,
+    desc:'A product launch campaign using content creators for a FMCG product in Sri Lanka. This is a one time project with a total budget of Rs. 1,000,000.'},
+  {id:'pickme',logo:'pickmeLogo',abbr:'Pi',brand:'PickMe',industry:'Mobility',posted:'32 min ago',start:'Nov 2',
+    tags:['Monthly retainer','Fixed fee'],closes:now+42*M,
+    desc:'Monthly creator-led content for PickMe Flash deliveries across Colombo. Four short videos a month, briefed every Monday.'},
+  {id:'pepsi',logo:'pepsi',abbr:'Pe',brand:'Pepsi Lanka',industry:'FMCG',posted:'1 hr ago',start:'Nov 12',
+    tags:['One time project','Fixed fee'],closes:now+23*H+5*M,
+    desc:'Summer refresh campaign for the new Pepsi Lime can. Shortlist and manage 20 lifestyle creators with a total budget of Rs. 2,500,000.'},
+  {id:'starbucks',logo:'starbucks',abbr:'St',brand:'Starbucks Sri Lanka',industry:'Food',posted:'3 hrs ago',start:'Dec 1',
+    tags:['Seasonal','Commision based'],closes:now+2*24*H+4*H,
+    desc:'Christmas Mocha holiday campaign across Colombo stores. Coordinate in-store shoots with 12 creators over three weekends.'},
+  {id:'lego',logo:'legoLogo',abbr:'Le',brand:'LEGO Certified Store',industry:'Retail',posted:'5 hrs ago',start:'Nov 20',
+    tags:['One time project','Commision based'],closes:now+9*H+30*M,
+    desc:'Build-along videos for the new LEGO City sets ahead of the holiday season. Family and parenting creators preferred.'},
+  {id:'dominos',logo:'dominos',abbr:'Do',brand:'Domino’s Pizza LK',industry:'Food',posted:'1 d ago',start:'Nov 8',
+    tags:['Product launch','Fixed fee'],closes:now+5*H+50*M,
+    desc:'Launch of the Polos Pizza range. Unboxing and first-slice reaction content from 30 food creators with a total budget of Rs. 1,500,000.'},
+  {id:'burgerking',logo:'burgerking',abbr:'BK',brand:'Burger King LK',industry:'Food',posted:'2 d ago',start:'Oct 29',
+    tags:['Weekly drops','Commision based'],status:'chatting',closes:now+3*24*H,
+    desc:'Whopper Wednesday creator drops every week through November. Each drop needs five creators posting within the same hour.'},
+  {id:'hiru',logo:'logo3',abbr:'Hi',brand:'Hiru TV',industry:'Entertainment',posted:'3 d ago',start:'Nov 15',
+    tags:['Event','Fixed fee'],status:'declined',closes:now+30*H,
+    desc:'On-ground coverage for a live concert at Port City Colombo. Manage 10 creators on the night for reels and stories.'},
+];
+INVITES.forEach(v=>{v.status=v.status||'open';});
+const TABS={open:'Invites',chatting:'Chatting',declined:'Declined invites'};
+const SUB={open:'Brands inviting you to collaborate on their campaigns. Start a chat before the invite closes.',
+  chatting:'Invites you have started a chat on.',declined:'Invites you passed on. Restore one while it is still open.'};
+
+const notifications=[
+  {logo:'uberLogo',type:'invite',brand:'Uber Sri Lanka',time:'5 min ago'},
+  {logo:'pickmeLogo',type:'invite',brand:'PickMe',time:'32 min ago'},
+  {logo:'burgerking',type:'reply',brand:'Burger King LK',time:'2 hrs ago'},
+  {logo:'pepsi',type:'invite',brand:'Pepsi Lanka',time:'1 hr ago'},
+  {logo:'dominos',type:'closing',brand:'Domino’s Pizza LK',time:'3 hrs ago'},
+];
+
+const state={tab:'open',q:'',searchOpen:false,loaded:false};
+
+/* ================= Templates ================= */
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+function closesIn(v){
+  const left=v.closes-Date.now();
+  if(left<=0) return {text:'Closed',cls:'done'};
+  const d=Math.floor(left/(24*H)),h=Math.floor(left%(24*H)/H),m=Math.floor(left%H/M);
+  const text=d?`Closes in ${d} d ${h} h`:h?`Closes in ${h} h ${m} min`:`Closes in ${Math.max(m,1)} min`;
+  return {text,cls:left<H?'soon':''};
+}
+function footHTML(v){
+  if(v.status==='chatting') return {text:'Chat started',cls:'done'};
+  if(v.status==='declined') return {text:closesIn(v).cls==='done'?'Declined':'Declined · '+closesIn(v).text.toLowerCase(),cls:'done'};
+  return closesIn(v);
+}
+
+function inviteHTML(v,i){
+  const f=footHTML(v);
+  const closed=closesIn(v).cls==='done';
+  const actions=v.status==='open'
+    ?`<button class="inv-x" type="button" data-decline="${v.id}" aria-label="Decline invite from ${esc(v.brand)}"${closed?' disabled':''}>${ICON.x}</button>
+      <button class="inv-cta" type="button" data-chat="${v.id}"${closed?' disabled':''}>Start Chat</button>`
+    :v.status==='chatting'
+    ?`<button class="inv-cta" type="button" data-act="soon">Open Chat</button>`
+    :`<button class="inv-cta ghost" type="button" data-restore="${v.id}"${closed?' disabled':''}>Restore invite</button>`;
+  return `<article class="inv" style="--i:${i}" data-id="${v.id}" aria-label="Invite from ${esc(v.brand)}">
+    <div class="inv-card">
+      <div class="inv-head">
+        <img class="inv-logo" data-a="${v.logo}" data-label="${v.abbr}" alt="">
+        <div class="inv-who"><div class="inv-name">${esc(v.brand)}</div>
+          <div class="inv-meta"><span>${esc(v.industry)}</span><span class="dot"></span><span>Posted ${v.posted}</span></div></div>
+        <div class="inv-start"><span class="k">Start date</span><span class="v">${v.start}</span></div>
+      </div>
+      <div class="inv-tags">${v.tags.map(t=>`<span class="inv-tag">${esc(t)}</span>`).join('')}</div>
+      <p class="inv-desc">${esc(v.desc)}</p>
+      <div class="inv-actions">${actions}</div>
+    </div>
+    <div class="inv-foot ${f.cls}" data-foot>${f.text}</div>
+  </article>`;
+}
+
+/* ---------- Invites page ---------- */
+function viewInvites(){
+  return `<div class="home">
+    <h1 class="home-title">${TABS[state.tab]}</h1>
+    <p class="home-sub">${SUB[state.tab]}</p>
+    <div class="home-search${state.searchOpen?' open':''}" id="home-search"><div>
+      <label class="search">${MICON.search}<input id="q" type="search" placeholder="Search" value="${esc(state.q)}" autocomplete="off" aria-label="Search invites by brand"${state.searchOpen?'':' tabindex="-1"'}><kbd>Esc</kbd></label>
+    </div></div>
+    <div class="invgrid" id="feed"></div>
+  </div>`;
+}
+const SK=`<div class="sk-inv"><div class="row"><div class="sk logo"></div><div style="flex:1"><div class="sk l1"></div><div class="sk l2"></div></div></div><div class="sk tags"></div><div class="sk desc"></div><div class="sk cta"></div></div>`;
+
+function renderFeed(){
+  const feed=document.getElementById('feed'); if(!feed) return;
+  if(!state.loaded){feed.innerHTML=SK.repeat(3);return;}
+  const q=state.q.trim().toLowerCase();
+  const list=INVITES.filter(v=>v.status===state.tab&&(!q||(v.brand+' '+v.industry+' '+v.desc).toLowerCase().includes(q)))
+    .sort((a,b)=>a.closes-b.closes);
+  feed.innerHTML=list.length?list.map(inviteHTML).join('')
+    :q?`<div class="ph"><div class="tag2">No invites</div><h2>Nothing matches “${esc(state.q)}”</h2><p>Try another brand name or clear the search.</p><div class="tag" data-act="clear">Clear search</div></div>`
+    :state.tab==='open'?`<div class="ph"><div class="tag2">All caught up</div><h2>No open invites</h2><p>When a brand invites you to collaborate on a campaign, it shows up here.</p></div>`
+    :state.tab==='chatting'?`<div class="ph"><div class="tag2">No chats yet</div><h2>Start a chat from an invite</h2><p>Invites you start a chat on move here.</p></div>`
+    :`<div class="ph"><div class="tag2">Nothing declined</div><h2>No declined invites</h2><p>Invites you pass on move here.</p></div>`;
+  bindAssets(feed);
+}
+function renderCounts(){
+  document.querySelectorAll('[data-count]').forEach(n=>{
+    const c=INVITES.filter(v=>v.status===n.dataset.count).length;
+    n.textContent=c; n.hidden=!c;
+  });
+}
+
+/* Keep each "Closes in" footer live */
+function tick(){
+  document.querySelectorAll('.inv').forEach(el=>{
+    const v=INVITES.find(x=>x.id===el.dataset.id); if(!v) return;
+    const f=footHTML(v),foot=el.querySelector('[data-foot]');
+    if(foot.textContent!==f.text){foot.textContent=f.text;foot.className='inv-foot '+f.cls;}
+    if(f.cls==='done'&&v.status!=='chatting') el.querySelectorAll('.inv-actions button').forEach(b=>b.disabled=true);
+  });
+}
+setInterval(tick,15e3);
+
+/* Move an invite to another tab, with a short exit animation */
+function move(id,to,msg){
+  const v=INVITES.find(x=>x.id===id); if(!v) return;
+  const from=v.status;
+  const el=document.querySelector(`.inv[data-id="${id}"]`);
+  const done=()=>{v.status=to;renderCounts();renderFeed();};
+  if(el&&!matchMedia('(prefers-reduced-motion:reduce)').matches){el.classList.add('leaving');setTimeout(done,220);} else done();
+  toast(msg,()=>{v.status=from;renderCounts();renderFeed();});
+}
+
+/* ================= Top menu ================= */
+function renderTopNav(){
+  const items=[['invites','#/open',ICON.invites,'Invites']];
+  document.getElementById('tnav').innerHTML=items.map(i=>`<a href="${i[1]}" data-root="${i[0]}" aria-label="${i[3]}" title="${i[3]}">${i[2]}</a>`).join('');
+  document.getElementById('search-btn').innerHTML=MICON.search;
+  document.getElementById('bell-ic').innerHTML=MICON.bell;
+}
+
+/* Search lives under the page heading; the header icon opens and closes it */
+function setSearch(open){
+  state.searchOpen=open;
+  const btn=document.getElementById('search-btn');
+  btn.classList.toggle('on',open);btn.setAttribute('aria-expanded',open);
+  const wrap=document.getElementById('home-search'); if(!wrap) return;
+  wrap.classList.toggle('open',open);
+  const input=document.getElementById('q');
+  input.tabIndex=open?0:-1;
+  if(open) input.focus({preventScroll:true});
+  else if(state.q){state.q='';input.value='';renderFeed();}
+}
+
+/* ================= Router ================= */
+const view=document.getElementById('view');
+function route(){
+  const root=location.hash.replace(/^#\/?/,'').split('/')[0];
+  state.tab=TABS[root]?root:'open';
+  view.innerHTML=viewInvites();
+  view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');window.scrollTo({top:0,behavior:'instant'});
+  renderFeed();
+  if(state.searchOpen) setSearch(true);
+  document.title=TABS[state.tab]+' — UGC Platform for Collaborators';
+  document.querySelectorAll('#tnav a').forEach(n=>n.classList.toggle('active',n.dataset.root==='invites'));
+  document.querySelectorAll('#subnav a').forEach(n=>{const on=n.dataset.tab===state.tab;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  closePop();
+}
+window.addEventListener('hashchange',route);
+
+/* ================= Interactions ================= */
+const toastEl=document.getElementById('toast'),toastMsg=document.getElementById('toast-msg'),toastUndo=document.getElementById('toast-undo');let toastT,undoFn=null;
+function toast(m,undo){
+  toastMsg.textContent=m;undoFn=undo||null;toastUndo.hidden=!undo;
+  toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>{toastEl.classList.remove('show');undoFn=null;},undo?4000:2200);
+}
+toastUndo.addEventListener('click',()=>{if(undoFn){undoFn();undoFn=null;}toastEl.classList.remove('show');});
+const pop=document.getElementById('pop-notifs');
+function closePop(){pop.classList.remove('open');}
+function renderNotifs(){
+  const text=n=>n.type==='invite'?`<b>${n.brand}</b><span class="med"> invited you to collaborate</span>`
+    :n.type==='reply'?`<span class="med">Check out the </span><b>reply from ${n.brand}</b>`
+    :`<span class="med">Invite from </span><b>${n.brand}</b><span class="med"> closes soon</span>`;
+  const l=document.getElementById('nt-list');
+  l.innerHTML=notifications.map(n=>`<div class="nt-item"><img class="nt-logo" data-a="${n.logo}" alt=""><div class="nt-body"><p class="nt-text">${text(n)}</p><span class="nt-time">${n.time}</span></div></div>`).join('');
+  bindAssets(l);
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.closest('[data-search]')){e.preventDefault();setSearch(!state.searchOpen);return;}
+  if(t.closest('[data-pop]')){e.preventDefault();pop.classList.toggle('open');return;}
+  if(pop.classList.contains('open')&&!t.closest('#pop-notifs')) closePop();
+  const dec=t.closest('[data-decline]');
+  if(dec) return move(dec.dataset.decline,'declined','Invite declined');
+  const chat=t.closest('[data-chat]');
+  if(chat){const v=INVITES.find(x=>x.id===chat.dataset.chat);return move(v.id,'chatting',`Chat started with ${v.brand}`);}
+  const res=t.closest('[data-restore]');
+  if(res) return move(res.dataset.restore,'open','Invite restored');
+  const act=t.closest('[data-act]');
+  if(act){e.preventDefault();return doAct(act.dataset.act);}
+});
+function doAct(a){
+  if(a==='soon') return toast('This screen is next to build');
+  if(a==='clear'){state.q='';const qi=document.getElementById('q');if(qi)qi.value='';return renderFeed();}
+}
+
+/* Search filters the invites */
+document.addEventListener('input',e=>{if(e.target.id==='q'){state.q=e.target.value;renderFeed();}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.searchOpen)document.getElementById('q').focus();else setSearch(true);}
+  if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();}
+});
+
+/* ===== Init ===== */
+renderTopNav();
+bindAssets(document.body);
+renderNotifs();
+renderCounts();
+route();
+setTimeout(()=>{state.loaded=true;renderFeed();},500);
+</script>
+</body>
+</html>
