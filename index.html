@@ -164,9 +164,10 @@
   /* Heading and search sit above the bordered box, like the Invites heading */
   .chat-page-wrap{display:flex;flex-direction:column;height:calc(100dvh - var(--header) - 36px);min-height:520px;padding-top:6px;}
   /* Two separate columns: the chat list, and the open chat in its own bordered box filling the height */
-  .chats{flex:1;min-height:0;margin-top:18px;display:grid;grid-template-columns:320px minmax(0,1fr);gap:24px;}
+  .chats{flex:1;min-height:0;display:grid;grid-template-columns:320px minmax(0,1fr);gap:24px;}
   .cl{display:flex;flex-direction:column;min-height:0;}
-  .cl-head{padding:0 0 6px;}
+  /* The heading sits in the list column, so the open chat can use the full height */
+  .cl-head{display:flex;flex-direction:column;gap:18px;padding:0 0 6px;}
   .cl-list{flex:1;min-height:0;overflow-y:auto;padding:0;display:flex;flex-direction:column;}
   /* Chats separated by lines */
   .cl-item{position:relative;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;transition:background .2s ease;}
@@ -285,11 +286,8 @@
     .chats{grid-template-columns:minmax(0,1fr);gap:0;}
     .cv{border-radius:18px;}
     .chats.has-open .cl,.chats:not(.has-open) .cv{display:none;}
-    .chats{margin-top:18px;}
     /* An open chat takes the whole screen on phones */
     .chat-page-wrap.has-open{padding-top:0;}
-    .chat-page-wrap.has-open .chat-top{display:none;}
-    .chat-page-wrap.has-open .chats{margin-top:0;}
     .cv-back{display:flex;}
     .cv-msgs{padding:15px 12px;}
     .cv-compose{padding:10px 12px 12px;}
@@ -546,10 +544,9 @@ const chatIds=()=>Object.keys(CHATS).sort((a,b)=>lastMsg(b).ts-lastMsg(a).ts);
 
 function viewChats(){
   return `<div class="chat-page-wrap${state.chat?' has-open':''}">
-  <div class="chat-top"><h1 class="home-title">Chats</h1></div>
   <div class="chats${state.chat?' has-open':''}" id="chats">
     <aside class="cl" aria-label="Chats">
-      <div class="cl-head"><label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats by brand"></label></div>
+      <div class="cl-head"><h1 class="home-title">Chats</h1><label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats by brand"></label></div>
       <div class="cl-list" id="cl-list"></div>
     </aside>
     <section class="cv" id="cv" aria-label="Conversation">${state.chat?threadShell(state.chat)
