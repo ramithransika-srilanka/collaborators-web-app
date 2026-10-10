@@ -52,6 +52,8 @@
   .tnav a:hover{background:var(--grey-100);color:var(--grey-700);}
   .tnav a.active{color:var(--grey-800);}
   .tnav a:active{transform:scale(.94);}
+  .tnav a{position:relative;}
+  .tnav .ndot{position:absolute;top:5px;right:13px;width:7px;height:7px;border-radius:100px;background:var(--pink-500);border:1.5px solid #fff;}
   .top-right{grid-column:3;justify-self:end;display:flex;align-items:center;gap:8px;}
   .hicon{width:32px;height:32px;border-radius:100px;display:flex;align-items:center;justify-content:center;color:var(--grey-800);position:relative;background:#fff;border:1px solid var(--grey-200);transition:background .25s ease,border-color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
   .hicon:hover{background:var(--grey-100);}
@@ -139,6 +141,72 @@
   .inv-foot.soon{color:#ff8fd2;}
   .inv-foot.done{color:var(--grey-500);}
 
+  /* ================= Chats =================
+     Conversation list on the left, the open chat on the right; one pane at a time on phones. */
+  body.chat-page .content{padding-bottom:18px;}
+  .chats{display:grid;grid-template-columns:320px minmax(0,1fr);height:calc(100dvh - var(--header) - 36px);min-height:440px;border:1px solid var(--grey-200);border-radius:24px;overflow:hidden;background:#fff;}
+  .cl{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--grey-200);}
+  .cl-head{padding:18px 15px 12px;display:flex;flex-direction:column;gap:12px;}
+  .cl-title{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.02em;color:#000;padding:0 3px;}
+  .cl-list{flex:1;min-height:0;overflow-y:auto;padding:0 9px 9px;display:flex;flex-direction:column;gap:2px;}
+  .cl-item{display:flex;align-items:center;gap:10px;padding:9px;border-radius:15px;transition:background .2s ease;}
+  .cl-item:hover{background:var(--grey-100);}
+  .cl-item.active{background:var(--blue-100);}
+  .cl-logo{width:40px;height:40px;border-radius:100px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
+  .cl-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .cl-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+  .cl-name{font-size:14px;font-weight:600;line-height:20px;color:var(--grey-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cl-time{font-size:12px;line-height:16px;color:var(--grey-600);white-space:nowrap;flex-shrink:0;}
+  .cl-bottom{display:flex;align-items:center;gap:8px;}
+  .cl-last{flex:1;min-width:0;font-size:13px;line-height:18px;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cl-item.unread .cl-last{color:var(--grey-800);font-weight:500;}
+  .cl-item.unread .cl-time{color:var(--blue-500);font-weight:500;}
+  .cl-unread{width:8px;height:8px;border-radius:100px;background:var(--blue-500);flex-shrink:0;}
+
+  .cv{display:flex;flex-direction:column;min-height:0;min-width:0;}
+  .cv-head{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--grey-200);}
+  .cv-back{display:none;width:32px;height:32px;border-radius:100px;align-items:center;justify-content:center;margin-left:-6px;color:var(--grey-800);flex-shrink:0;transition:background .2s ease;}
+  .cv-back:hover{background:var(--grey-100);}
+  .cv-back svg{width:20px;height:20px;}
+  .cv-logo{width:36px;height:36px;border-radius:100px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
+  .cv-who{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .cv-name{font-size:15px;font-weight:600;line-height:20px;color:var(--grey-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cv-meta{font-size:12px;line-height:16px;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cv-meta.typing{color:var(--blue-500);}
+  .cv-msgs{flex:1;min-height:0;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:4px;}
+  /* The invite the chat came from, pinned at the top of the conversation */
+  .cv-invite{align-self:center;width:100%;max-width:420px;margin-bottom:12px;padding:15px;border:1px solid var(--grey-200);border-radius:18px;display:flex;flex-direction:column;gap:10px;}
+  .cv-invite .k{font-size:12px;font-weight:500;line-height:12px;color:var(--grey-600);display:flex;justify-content:space-between;gap:8px;}
+  .cv-invite .k b{font-weight:600;color:var(--grey-800);}
+  .cv-invite .inv-desc{min-height:0;padding:12px;font-size:13px;line-height:18px;}
+  .cv-day{align-self:center;margin:12px 0 6px;font-size:12px;font-weight:500;line-height:12px;color:var(--grey-600);}
+  .cv-sys{align-self:center;margin:2px 0 8px;padding:6px 10px;border-radius:75px;background:var(--grey-100);font-size:12px;font-weight:500;line-height:12px;color:var(--grey-600);text-align:center;}
+  .msg{max-width:min(72%,460px);padding:9px 13px;border-radius:18px;font-size:14px;line-height:20px;white-space:pre-wrap;overflow-wrap:anywhere;animation:msgIn .3s cubic-bezier(.16,1,.3,1) both;}
+  .msg.them{align-self:flex-start;background:var(--grey-100);color:var(--grey-800);border-bottom-left-radius:6px;}
+  .msg.me{align-self:flex-end;background:var(--blue-500);color:#fff;border-bottom-right-radius:6px;}
+  .msg.cont.them{border-top-left-radius:6px;}
+  .msg.cont.me{border-top-right-radius:6px;}
+  .msg-time{font-size:11px;line-height:14px;color:var(--grey-500);margin:2px 4px 8px;}
+  .msg-time.me{align-self:flex-end;}
+  @keyframes msgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .msg.typing{display:flex;gap:4px;align-items:center;padding:13px 14px;}
+  .msg.typing i{width:6px;height:6px;border-radius:100px;background:var(--grey-500);animation:blink 1.2s infinite both;}
+  .msg.typing i:nth-child(2){animation-delay:.15s;}
+  .msg.typing i:nth-child(3){animation-delay:.3s;}
+  @keyframes blink{0%,60%,100%{opacity:.3;transform:none;}30%{opacity:1;transform:translateY(-2px);}}
+  @media(prefers-reduced-motion:reduce){.msg,.msg.typing i{animation:none;}}
+  .cv-compose{display:flex;align-items:flex-end;gap:9px;padding:12px 18px 15px;border-top:1px solid var(--grey-200);}
+  .cv-input{flex:1;min-width:0;display:flex;padding:7px 15px;border:1px solid var(--grey-400);border-radius:20px;background:#fff;transition:border-color .2s ease;}
+  .cv-input:focus-within{border-color:var(--blue-300);}
+  .cv-input textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:none;font:400 14px/20px var(--font);color:var(--grey-800);max-height:120px;}
+  .cv-input textarea::placeholder{color:var(--grey-600);}
+  .cv-send{width:36px;height:36px;border-radius:100px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--blue-500);color:#fff;transition:background .25s ease,opacity .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .cv-send svg{width:18px;height:18px;}
+  .cv-send:hover{background:var(--blue-600);}
+  .cv-send:active{transform:scale(.94);}
+  .cv-send:disabled{opacity:.35;cursor:default;transform:none;background:var(--blue-500);}
+  .cv-empty{flex:1;display:flex;align-items:center;justify-content:center;}
+
   /* ================= Notifications popover ================= */
   .pop{position:fixed;top:calc(var(--header) + 8px);right:var(--gutter);width:300px;max-height:min(420px,calc(100dvh - var(--header) - 16px));z-index:40;display:flex;flex-direction:column;
     background:var(--grey-50);border-radius:21px;box-shadow:0 12px 30px rgba(0,0,0,.18);border:1px solid var(--grey-200);
@@ -147,6 +215,7 @@
   .nt-title{padding:18px 18px 0;font-size:18px;font-weight:600;line-height:22px;color:var(--grey-800);}
   .nt-list{display:flex;flex-direction:column;gap:12px;padding:15px 12px 18px;overflow-y:auto;}
   .nt-item{display:flex;gap:9px;align-items:flex-start;}
+  .nt-item[data-go]{cursor:pointer;}
   .nt-logo{width:24px;height:24px;border-radius:15px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
   .nt-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding-bottom:12px;border-bottom:1px solid var(--grey-200);}
   .nt-item:last-child .nt-body{border-bottom:none;padding-bottom:0;}
@@ -173,6 +242,13 @@
     .top-av{display:none;}
     .invgrid{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:18px;}
     .pop{left:var(--gutter);width:auto;}
+    .chats{grid-template-columns:minmax(0,1fr);border-radius:18px;margin:0 calc(var(--gutter) * -1 + 1px);}
+    .chats.has-open .cl,.chats:not(.has-open) .cv{display:none;}
+    .cl{border-right:0;}
+    .cv-back{display:flex;}
+    .cv-msgs{padding:15px 12px;}
+    .cv-compose{padding:10px 12px 12px;}
+    .msg{max-width:85%;}
   }
 </style>
 </head>
@@ -211,6 +287,9 @@ function bindAssets(root){
 const ICON={
   invites:`<svg viewBox="0 0 24 24" fill="none"><path d="M3 7.5C3 6.1 4.1 5 5.5 5h13C19.9 5 21 6.1 21 7.5v9c0 1.4-1.1 2.5-2.5 2.5h-13A2.5 2.5 0 013 16.5v-9z" stroke="currentColor" stroke-width="2"/><path d="M4 7l7.1 5.3c.5.4 1.3.4 1.8 0L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   x:`<svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  chats:`<svg viewBox="0 0 24 24" fill="none"><path d="M20 11.5c0 4.1-3.6 7.5-8 7.5-1.1 0-2.2-.2-3.1-.6L4 20l1.4-3.7C4.5 15 4 13.3 4 11.5 4 7.4 7.6 4 12 4s8 3.4 8 7.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  send:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  back:`<svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
 
 /* ================= Data: brands inviting this collaborator to their campaigns ================= */
@@ -242,16 +321,34 @@ const INVITES=[
     desc:'On-ground coverage for a live concert at Port City Colombo. Manage 10 creators on the night for reels and stories.'},
 ];
 INVITES.forEach(v=>{v.status=v.status||'open';});
+const byId=id=>INVITES.find(v=>v.id===id);
+
+/* Chats, keyed by the invite they were started from */
+const CHATS={
+  burgerking:{unread:true,msgs:[
+    {from:'sys',text:'You started a chat about this invite',ts:now-2*24*H},
+    {from:'me',text:'Hi! We’re interested in the Whopper Wednesday drops. We manage around 40 food creators in Colombo.',ts:now-2*24*H+2*M},
+    {from:'them',text:'Great to hear! Could you share five creators who can post within the same hour every Wednesday?',ts:now-2*H},
+    {from:'them',text:'Also, what commission do you take on each drop?',ts:now-2*H+M},
+  ]},
+};
+const GREETING=v=>`Hi! Thanks for your interest in our campaign. Happy to answer any questions about the brief before ${v.start}.`;
+const REPLIES=['Thanks, that’s helpful. Let me check with the team and get back to you today.',
+  'Sounds good. Could you send over a few sample posts from your creators?',
+  'Great. We’d like the first round of content a week before the start date.',
+  'Perfect — we’ll share the full brief and brand guidelines here shortly.'];
+let replyN=0;
+const typing={};
 
 const notifications=[
   {logo:'uberLogo',type:'invite',brand:'Uber Sri Lanka',time:'5 min ago'},
   {logo:'pickmeLogo',type:'invite',brand:'PickMe',time:'32 min ago'},
-  {logo:'burgerking',type:'reply',brand:'Burger King LK',time:'2 hrs ago'},
+  {logo:'burgerking',type:'reply',brand:'Burger King LK',time:'2 hrs ago',chat:'burgerking'},
   {logo:'pepsi',type:'invite',brand:'Pepsi Lanka',time:'1 hr ago'},
   {logo:'dominos',type:'closing',brand:'Domino’s Pizza LK',time:'3 hrs ago'},
 ];
 
-const state={q:'',searchOpen:false,loaded:false};
+const state={q:'',cq:'',searchOpen:false,loaded:false,page:'',chat:null};
 
 /* ================= Templates ================= */
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -318,7 +415,7 @@ function tick(){
     if(f.cls==='done') el.querySelectorAll('.inv-actions button').forEach(b=>b.disabled=true);
   });
 }
-setInterval(tick,15e3);
+setInterval(()=>{tick();if(state.page==='chats')renderChatList();},15e3);
 
 /* Take an invite off the list, with a short exit animation */
 function move(id,to,msg){
@@ -330,12 +427,132 @@ function move(id,to,msg){
   toast(msg,()=>{v.status=from;renderFeed();});
 }
 
+/* ================= Chats ================= */
+const pad=n=>String(n).padStart(2,'0');
+const sameDay=(a,b)=>new Date(a).toDateString()===new Date(b).toDateString();
+function clock(ts){const d=new Date(ts),h=d.getHours();return `${h%12||12}:${pad(d.getMinutes())} ${h<12?'am':'pm'}`;}
+function dayLabel(ts){
+  if(sameDay(ts,Date.now())) return 'Today';
+  if(sameDay(ts,Date.now()-24*H)) return 'Yesterday';
+  return new Date(ts).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+function listTime(ts){
+  if(Date.now()-ts<M) return 'now';
+  if(sameDay(ts,Date.now())) return clock(ts);
+  if(sameDay(ts,Date.now()-24*H)) return 'Yesterday';
+  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+const lastMsg=id=>CHATS[id].msgs[CHATS[id].msgs.length-1];
+const chatIds=()=>Object.keys(CHATS).sort((a,b)=>lastMsg(b).ts-lastMsg(a).ts);
+
+function viewChats(){
+  return `<div class="chats${state.chat?' has-open':''}" id="chats">
+    <aside class="cl" aria-label="Chats">
+      <div class="cl-head"><h1 class="cl-title">Chats</h1>
+        <label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats"></label></div>
+      <div class="cl-list" id="cl-list"></div>
+    </aside>
+    <section class="cv" id="cv" aria-label="Conversation">${state.chat?threadShell(state.chat)
+      :`<div class="cv-empty"><div class="ph"><div class="tag2">Chats</div><h2>${chatIds().length?'Pick a chat':'No chats yet'}</h2><p>${chatIds().length?'Choose a brand on the left to continue the conversation.':'Start a chat from an invite and it shows up here.'}</p>${chatIds().length?'':'<a class="tag" href="#/">Go to invites</a>'}</div></div>`}</section>
+  </div>`;
+}
+function threadShell(id){
+  const v=byId(id);
+  return `<header class="cv-head">
+      <a class="cv-back" href="#/chats" aria-label="Back to chats">${ICON.back}</a>
+      <img class="cv-logo" data-a="${v.logo}" data-label="${v.abbr}" alt="">
+      <div class="cv-who"><div class="cv-name">${esc(v.brand)}</div><div class="cv-meta" id="cv-meta"></div></div>
+    </header>
+    <div class="cv-msgs" id="cv-msgs" aria-live="polite"></div>
+    <div class="cv-compose">
+      <label class="cv-input"><textarea id="cv-text" rows="1" placeholder="Message ${esc(v.brand)}" aria-label="Message ${esc(v.brand)}"></textarea></label>
+      <button class="cv-send" id="cv-send" type="button" aria-label="Send" disabled>${ICON.send}</button>
+    </div>`;
+}
+function renderChatList(){
+  const l=document.getElementById('cl-list'); if(!l) return;
+  const q=state.cq.trim().toLowerCase();
+  const ids=chatIds().filter(id=>!q||byId(id).brand.toLowerCase().includes(q));
+  l.innerHTML=ids.length?ids.map(id=>{
+    const v=byId(id),c=CHATS[id],m=lastMsg(id);
+    const last=typing[id]?'Typing…':(m.from==='me'?'You: ':'')+m.text;
+    return `<a class="cl-item${id===state.chat?' active':''}${c.unread?' unread':''}" href="#/chats/${id}"${id===state.chat?' aria-current="true"':''}>
+      <img class="cl-logo" data-a="${v.logo}" data-label="${v.abbr}" alt="">
+      <div class="cl-body"><div class="cl-top"><span class="cl-name">${esc(v.brand)}</span><span class="cl-time">${listTime(m.ts)}</span></div>
+        <div class="cl-bottom"><span class="cl-last">${esc(last)}</span>${c.unread?'<i class="cl-unread" aria-label="Unread"></i>':''}</div></div></a>`;
+  }).join(''):`<div class="ph"><p>${q?`No chats match “${esc(state.cq)}”`:'No chats yet'}</p></div>`;
+  bindAssets(l);
+}
+function renderThread(){
+  const box=document.getElementById('cv-msgs'),id=state.chat; if(!box||!id) return;
+  const v=byId(id),c=CHATS[id];
+  let html=`<div class="cv-invite"><div class="k"><span>Invite · ${esc(v.industry)}</span><span>Start date <b>${v.start}</b></span></div>
+    <div class="inv-tags">${v.tags.map(t=>`<span class="inv-tag">${esc(t)}</span>`).join('')}</div><p class="inv-desc">${esc(v.desc)}</p></div>`;
+  c.msgs.forEach((m,i)=>{
+    const p=c.msgs[i-1],n=c.msgs[i+1];
+    if(!p||!sameDay(p.ts,m.ts)) html+=`<div class="cv-day">${dayLabel(m.ts)}</div>`;
+    if(m.from==='sys'){html+=`<div class="cv-sys">${esc(m.text)}</div>`;return;}
+    const cont=p&&p.from===m.from&&m.ts-p.ts<5*M;
+    const end=!n||n.from!==m.from||n.ts-m.ts>=5*M;
+    html+=`<div class="msg ${m.from}${cont?' cont':''}"${m.fresh?'':' style="animation:none"'}>${esc(m.text)}</div>`;
+    if(end) html+=`<div class="msg-time ${m.from}">${clock(m.ts)}</div>`;
+    delete m.fresh;
+  });
+  if(typing[id]) html+=`<div class="msg them typing" aria-label="${esc(v.brand)} is typing"><i></i><i></i><i></i></div>`;
+  box.innerHTML=html;
+  box.scrollTop=box.scrollHeight;
+  const meta=document.getElementById('cv-meta');
+  meta.textContent=typing[id]?'Typing…':`${v.industry} · Starts ${v.start}`;
+  meta.classList.toggle('typing',!!typing[id]);
+}
+function renderChatsBadge(){
+  const a=document.querySelector('#tnav [data-root="chats"]'); if(!a) return;
+  const unread=Object.values(CHATS).some(c=>c.unread);
+  let dot=a.querySelector('.ndot');
+  if(unread&&!dot){dot=document.createElement('i');dot.className='ndot';a.appendChild(dot);}
+  if(!unread&&dot) dot.remove();
+  a.setAttribute('aria-label',unread?'Chats, unread messages':'Chats');
+}
+function refreshChats(){renderChatList();renderThread();renderChatsBadge();}
+
+function startChat(id){
+  const v=byId(id); if(!v) return;
+  v.status='chatting';
+  if(!CHATS[id]){
+    CHATS[id]={unread:false,msgs:[{from:'sys',text:'You started a chat about this invite',ts:Date.now()}]};
+    brandReply(id,GREETING(v),1600);
+  }
+  location.hash='#/chats/'+id;
+}
+function brandReply(id,text,delay){
+  setTimeout(()=>{typing[id]=true;refreshChats();},Math.min(700,delay/2));
+  setTimeout(()=>{
+    typing[id]=false;
+    CHATS[id].msgs.push({from:'them',text,ts:Date.now(),fresh:true});
+    if(!(state.page==='chats'&&state.chat===id&&!document.hidden)) CHATS[id].unread=true;
+    refreshChats();
+  },delay);
+}
+function sendMsg(){
+  const ta=document.getElementById('cv-text'),id=state.chat; if(!ta||!id) return;
+  const text=ta.value.trim(); if(!text) return;
+  CHATS[id].msgs.push({from:'me',text,ts:Date.now(),fresh:true});
+  ta.value='';autosize(ta);
+  refreshChats();
+  if(!typing[id]) brandReply(id,REPLIES[replyN++%REPLIES.length],2600);
+}
+function autosize(ta){
+  ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px';
+  document.getElementById('cv-send').disabled=!ta.value.trim();
+}
+
 /* ================= Top menu ================= */
 function renderTopNav(){
-  const items=[['invites','#/open',ICON.invites,'Invites']];
+  const items=[['invites','#/',ICON.invites,'Invites'],['chats','#/chats',ICON.chats,'Chats']];
   document.getElementById('tnav').innerHTML=items.map(i=>`<a href="${i[1]}" data-root="${i[0]}" aria-label="${i[3]}" title="${i[3]}">${i[2]}</a>`).join('');
   document.getElementById('search-btn').innerHTML=MICON.search;
   document.getElementById('bell-ic').innerHTML=MICON.bell;
+  renderChatsBadge();
 }
 
 /* Search lives under the page heading; the header icon opens and closes it */
@@ -354,12 +571,29 @@ function setSearch(open){
 /* ================= Router ================= */
 const view=document.getElementById('view');
 function route(){
-  view.innerHTML=viewInvites();
-  view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');window.scrollTo({top:0,behavior:'instant'});
-  renderFeed();
-  if(state.searchOpen) setSearch(true);
-  document.title='Invites — UGC Platform for Collaborators';
-  document.querySelectorAll('#tnav a').forEach(n=>n.classList.toggle('active',n.dataset.root==='invites'));
+  const [root,id]=location.hash.replace(/^#\/?/,'').split('/');
+  const page=root==='chats'?'chats':'invites';
+  const changed=page!==state.page;
+  state.page=page;
+  state.chat=page==='chats'&&CHATS[id]?id:null;
+  if(state.chat){CHATS[state.chat].unread=false;}
+  document.body.classList.toggle('chat-page',page==='chats');
+  view.innerHTML=page==='chats'?viewChats():viewInvites();
+  if(changed){view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');}
+  window.scrollTo({top:0,behavior:'instant'});
+  bindAssets(view);
+  if(page==='chats'){
+    refreshChats();
+    document.getElementById('search-btn').classList.remove('on');
+    const ta=document.getElementById('cv-text');
+    if(ta&&matchMedia('(min-width:768px)').matches) ta.focus({preventScroll:true});
+    document.title=(state.chat?byId(state.chat).brand+' — ':'')+'Chats — UGC Platform for Collaborators';
+  }else{
+    renderFeed();
+    if(state.searchOpen) setSearch(true);
+    document.title='Invites — UGC Platform for Collaborators';
+  }
+  document.querySelectorAll('#tnav a').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
   closePop();
 }
 window.addEventListener('hashchange',route);
@@ -378,19 +612,23 @@ function renderNotifs(){
     :n.type==='reply'?`<span class="med">Check out the </span><b>reply from ${n.brand}</b>`
     :`<span class="med">Invite from </span><b>${n.brand}</b><span class="med"> closes soon</span>`;
   const l=document.getElementById('nt-list');
-  l.innerHTML=notifications.map(n=>`<div class="nt-item"><img class="nt-logo" data-a="${n.logo}" alt=""><div class="nt-body"><p class="nt-text">${text(n)}</p><span class="nt-time">${n.time}</span></div></div>`).join('');
+  l.innerHTML=notifications.map(n=>`<div class="nt-item"${n.chat?` data-go="#/chats/${n.chat}"`:''}><img class="nt-logo" data-a="${n.logo}" alt=""><div class="nt-body"><p class="nt-text">${text(n)}</p><span class="nt-time">${n.time}</span></div></div>`).join('');
   bindAssets(l);
 }
 
 document.addEventListener('click',e=>{
   const t=e.target;
-  if(t.closest('[data-search]')){e.preventDefault();setSearch(!state.searchOpen);return;}
+  if(t.closest('[data-search]')){e.preventDefault();if(state.page==='chats'){if(state.chat&&matchMedia('(max-width:767px)').matches){location.hash='#/chats';setTimeout(()=>document.getElementById('cq').focus());}else document.getElementById('cq').focus();}else setSearch(!state.searchOpen);return;}
   if(t.closest('[data-pop]')){e.preventDefault();pop.classList.toggle('open');return;}
   if(pop.classList.contains('open')&&!t.closest('#pop-notifs')) closePop();
+  const go=t.closest('[data-go]');
+  if(go){closePop();location.hash=go.dataset.go;return;}
   const dec=t.closest('[data-decline]');
   if(dec) return move(dec.dataset.decline,'declined','Invite declined');
   const chat=t.closest('[data-chat]');
-  if(chat){const v=INVITES.find(x=>x.id===chat.dataset.chat);return move(v.id,'chatting',`Chat started with ${v.brand}`);}
+  if(chat) return startChat(chat.dataset.chat);
+  const send=t.closest('#cv-send');
+  if(send) return sendMsg();
   const act=t.closest('[data-act]');
   if(act){e.preventDefault();return doAct(act.dataset.act);}
 });
@@ -400,9 +638,14 @@ function doAct(a){
 }
 
 /* Search filters the invites */
-document.addEventListener('input',e=>{if(e.target.id==='q'){state.q=e.target.value;renderFeed();}});
+document.addEventListener('input',e=>{
+  if(e.target.id==='q'){state.q=e.target.value;renderFeed();}
+  if(e.target.id==='cq'){state.cq=e.target.value;renderChatList();}
+  if(e.target.id==='cv-text') autosize(e.target);
+});
 document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.searchOpen)document.getElementById('q').focus();else setSearch(true);}
+  if(e.target.id==='cv-text'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendMsg();return;}
+  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='chats')document.getElementById('cq').focus();else if(state.searchOpen)document.getElementById('q').focus();else setSearch(true);}
   if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();}
 });
 
