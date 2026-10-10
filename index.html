@@ -161,11 +161,11 @@
   /* ================= Chats =================
      Conversation list on the left, the open chat on the right; one pane at a time on phones. */
   body.chat-page .content{padding-bottom:18px;}
-  .chats{display:grid;grid-template-columns:320px minmax(0,1fr);height:calc(100dvh - var(--header) - 36px);min-height:440px;border:1px solid var(--grey-200);border-radius:24px;overflow:hidden;background:#fff;}
+  /* Heading and search sit above the bordered box, like the Invites heading */
+  .chat-page-wrap{display:flex;flex-direction:column;height:calc(100dvh - var(--header) - 36px);min-height:520px;padding-top:6px;}
+  .chats{flex:1;min-height:0;margin-top:24px;display:grid;grid-template-columns:320px minmax(0,1fr);border:1px solid var(--grey-200);border-radius:24px;overflow:hidden;background:#fff;}
   .cl{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--grey-200);}
-  .cl-head{padding:18px 15px 12px;display:flex;flex-direction:column;gap:12px;}
-  .cl-title{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.02em;color:#000;padding:0 3px;}
-  .cl-list{flex:1;min-height:0;overflow-y:auto;padding:0 9px 9px;display:flex;flex-direction:column;gap:2px;}
+  .cl-list{flex:1;min-height:0;overflow-y:auto;padding:9px;display:flex;flex-direction:column;gap:2px;}
   .cl-item{display:flex;align-items:center;gap:10px;padding:9px;border-radius:15px;transition:background .2s ease;}
   .cl-item:hover{background:var(--grey-100);}
   .cl-item.active{background:var(--blue-100);}
@@ -277,8 +277,13 @@
     .top-av{display:none;}
     .invgrid{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:18px;}
     .pop{left:var(--gutter);width:auto;}
-    .chats{grid-template-columns:minmax(0,1fr);border-radius:18px;margin:0 calc(var(--gutter) * -1 + 1px);}
+    .chats{grid-template-columns:minmax(0,1fr);border-radius:18px;}
     .chats.has-open .cl,.chats:not(.has-open) .cv{display:none;}
+    .chats{margin-top:18px;}
+    /* An open chat takes the whole screen on phones */
+    .chat-page-wrap.has-open{padding-top:0;}
+    .chat-page-wrap.has-open .chat-top{display:none;}
+    .chat-page-wrap.has-open .chats{margin-top:0;}
     .cl{border-right:0;}
     .cv-back{display:flex;}
     .cv-msgs{padding:15px 12px;}
@@ -535,14 +540,18 @@ function bodyHTML(m){
 const chatIds=()=>Object.keys(CHATS).sort((a,b)=>lastMsg(b).ts-lastMsg(a).ts);
 
 function viewChats(){
-  return `<div class="chats${state.chat?' has-open':''}" id="chats">
+  return `<div class="chat-page-wrap${state.chat?' has-open':''}">
+  <div class="chat-top"><h1 class="home-title">Chats</h1>
+    <div class="home-search${state.searchOpen?' open':''}" id="home-search"><div>
+      <label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats by brand"${state.searchOpen?'':' tabindex="-1"'}><kbd>Esc</kbd></label>
+    </div></div></div>
+  <div class="chats${state.chat?' has-open':''}" id="chats">
     <aside class="cl" aria-label="Chats">
-      <div class="cl-head"><h1 class="cl-title">Chats</h1>
-        <label class="search">${MICON.search}<input id="cq" type="search" placeholder="Search chats" value="${esc(state.cq)}" autocomplete="off" aria-label="Search chats"></label></div>
       <div class="cl-list" id="cl-list"></div>
     </aside>
     <section class="cv" id="cv" aria-label="Conversation">${state.chat?threadShell(state.chat)
       :`<div class="cv-empty"><div class="ph"><div class="tag2">Chats</div><h2>${chatIds().length?'Pick a chat':'No chats yet'}</h2><p>${chatIds().length?'Choose a brand on the left to continue the conversation.':'Start a chat from an invite and it shows up here.'}</p>${chatIds().length?'':'<a class="tag" href="#/">Go to invites</a>'}</div></div>`}</section>
+  </div>
   </div>`;
 }
 function threadShell(id){
@@ -675,16 +684,22 @@ function renderTopNav(){
 }
 
 /* Search lives under the page heading; the header icon opens and closes it */
-function setSearch(open){
+function setSearch(open,focus=true){
   state.searchOpen=open;
   const btn=document.getElementById('search-btn');
   btn.classList.toggle('on',open);btn.setAttribute('aria-expanded',open);
   const wrap=document.getElementById('home-search'); if(!wrap) return;
   wrap.classList.toggle('open',open);
-  const input=document.getElementById('q');
+  const input=wrap.querySelector('input');
   input.tabIndex=open?0:-1;
-  if(open) input.focus({preventScroll:true});
-  else if(state.q){state.q='';input.value='';renderFeed();}
+  if(open){if(focus) input.focus({preventScroll:true});return;}
+  const chats=state.page==='chats',key=chats?'cq':'q';
+  if(state[key]){state[key]='';input.value='';chats?renderChatList():renderFeed();}
+}
+/* On a phone with a chat open the heading is hidden, so go back to the list first */
+function toggleSearch(){
+  if(state.page==='chats'&&state.chat&&matchMedia('(max-width:767px)').matches){state.searchOpen=true;location.hash='#/chats';return;}
+  setSearch(!state.searchOpen);
 }
 
 /* ================= Router ================= */
@@ -703,13 +718,13 @@ function route(){
   bindAssets(view);
   if(page==='chats'){
     refreshChats();
-    document.getElementById('search-btn').classList.remove('on');
+    setSearch(state.searchOpen,!state.chat);
     const ta=document.getElementById('cv-text');
     if(ta&&matchMedia('(min-width:768px)').matches) ta.focus({preventScroll:true});
     document.title=(state.chat?byId(state.chat).brand+' — ':'')+'Chats — UGC Platform for Collaborators';
   }else{
     renderFeed();
-    if(state.searchOpen) setSearch(true);
+    setSearch(state.searchOpen,!!document.getElementById('q'));
     document.title='Invites — UGC Platform for Collaborators';
   }
   setDrawer(false);
@@ -746,7 +761,7 @@ function renderNotifs(){
 
 document.addEventListener('click',e=>{
   const t=e.target;
-  if(t.closest('[data-search]')){e.preventDefault();if(state.page==='chats'){if(state.chat&&matchMedia('(max-width:767px)').matches){location.hash='#/chats';setTimeout(()=>document.getElementById('cq').focus());}else document.getElementById('cq').focus();}else setSearch(!state.searchOpen);return;}
+  if(t.closest('[data-search]')){e.preventDefault();toggleSearch();return;}
   if(t.closest('#menu-btn')){e.preventDefault();closePop();setDrawer(!drawer.classList.contains('open'));return;}
   if(t.closest('#drawer a')||t.id==='drawer-scrim') setDrawer(false);
   if(t.closest('[data-pop]')){e.preventDefault();setDrawer(false);pop.classList.toggle('open');return;}
@@ -777,8 +792,8 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('keydown',e=>{
   if(e.target.id==='cv-text'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendMsg();return;}
-  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='chats')document.getElementById('cq').focus();else if(state.searchOpen)document.getElementById('q').focus();else setSearch(true);}
-  if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();if(drawer.classList.contains('open')){setDrawer(false);document.getElementById('menu-btn').focus();}}
+  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.searchOpen&&document.querySelector('#home-search input'))document.querySelector('#home-search input').focus();else toggleSearch();}
+  if(e.key==='Escape'){if(state.searchOpen&&['q','cq'].includes(document.activeElement.id)){setSearch(false);document.getElementById('search-btn').focus();}closePop();if(drawer.classList.contains('open')){setDrawer(false);document.getElementById('menu-btn').focus();}}
 });
 
 /* ===== Init ===== */
