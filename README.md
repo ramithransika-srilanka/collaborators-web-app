@@ -24,6 +24,11 @@ same sections in a panel sliding in from the left, like the creator web app's ph
   its own message), the total budget, the timeline, and finally asks what commission you expect. After you
   reply it answers after a short "typing…" indicator.
   On phones the list and the open chat show one at a time.
+- **Profile** (`#/profile`) — opened from the avatar in the top menu (on phones, the **Profile** row in the menu).
+  Shows your name, agency and location, your numbers (creators managed, campaigns completed, active chats and
+  open invites — the last two are live), an About card with industries and platforms, your contact details and
+  typical commission, and a sample of the creators you manage. **Edit profile** turns it into a form; **Save changes**
+  checks the required fields (name, agency, commission, a valid email), `Esc` or **Cancel** drops the edits.
 
 ## Assets
 

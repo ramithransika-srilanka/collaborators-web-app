@@ -241,6 +241,60 @@
   .cv-send:disabled{opacity:.35;cursor:default;transform:none;background:var(--blue-500);}
   .cv-empty{flex:1;display:flex;align-items:center;justify-content:center;}
 
+  /* ================= Profile =================
+     Who you are as a collaborator: the header card, numbers, about, contact details and the creators you manage. */
+  .top-pf{display:block;border-radius:100px;}
+  .top-pf.active .top-av{box-shadow:0 0 0 2px var(--grey-50),0 0 0 3.5px var(--grey-800);}
+  .pf{padding-top:6px;display:flex;flex-direction:column;gap:18px;}
+  .pf-hero{display:flex;align-items:center;gap:18px;padding:24px;border:1px solid var(--grey-200);border-radius:24px;}
+  .pf-av{width:88px;height:88px;border-radius:100px;object-fit:cover;flex-shrink:0;border:1px solid var(--grey-200);background:var(--grey-100);}
+  .pf-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+  .pf-name{font-size:24px;font-weight:600;line-height:30px;letter-spacing:-.02em;color:#000;overflow-wrap:anywhere;}
+  .pf-role{font-size:14px;line-height:20px;color:var(--grey-600);}
+  .pf-id .inv-tags{margin-top:6px;}
+  .btn{height:40px;padding:0 18px;border-radius:100px;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;font-size:14px;font-weight:500;line-height:20px;border:1px solid var(--grey-400);background:#fff;color:var(--grey-800);transition:background .25s ease,border-color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .btn svg{width:16px;height:16px;}
+  .btn:hover{background:var(--grey-100);}
+  .btn:active{transform:scale(.97);}
+  .btn.primary{background:var(--blue-500);border-color:var(--blue-500);color:#fff;box-shadow:2px 4px 9px rgba(21,72,235,.2);}
+  .btn.primary:hover{background:var(--blue-600);border-color:var(--blue-600);}
+  .pf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+  .pf-stat{display:flex;flex-direction:column;gap:4px;padding:15px 18px;border-radius:18px;background:var(--inv-desc);}
+  .pf-stat .v{font-size:24px;font-weight:600;line-height:30px;letter-spacing:-.02em;color:var(--grey-800);}
+  .pf-stat .k{font-size:13px;line-height:18px;color:var(--grey-600);}
+  .pf-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start;}
+  .pf-col{display:flex;flex-direction:column;gap:18px;min-width:0;}
+  .pf-card{padding:21px;border:1px solid var(--grey-200);border-radius:24px;display:flex;flex-direction:column;gap:12px;min-width:0;}
+  .pf-card h2{font-size:16px;font-weight:600;line-height:20px;color:var(--grey-800);display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+  .pf-card h2 span{font-size:13px;font-weight:400;color:var(--grey-600);}
+  .pf-bio{font-size:14px;line-height:21px;color:var(--grey-800);white-space:pre-wrap;overflow-wrap:anywhere;}
+  .pf-sub{font-size:12px;font-weight:500;line-height:12px;color:var(--grey-600);margin-top:6px;}
+  .pf-dl{display:flex;flex-direction:column;}
+  .pf-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--grey-200);font-size:14px;line-height:20px;}
+  .pf-row:first-child{padding-top:0;}
+  .pf-row:last-child{border-bottom:0;padding-bottom:0;}
+  .pf-row dt{color:var(--grey-600);flex-shrink:0;}
+  .pf-row dd{color:var(--grey-800);font-weight:500;text-align:right;min-width:0;overflow-wrap:anywhere;}
+  .pf-row dd a{color:var(--blue-500);}
+  .pf-row dd a:hover{text-decoration:underline;}
+  .pf-cr{display:flex;align-items:center;gap:10px;padding:8px 0;}
+  .pf-cr img{width:36px;height:36px;border-radius:100px;flex-shrink:0;}
+  .pf-cr-who{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .pf-cr-who b{font-size:14px;font-weight:600;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pf-cr-who span{font-size:12px;line-height:16px;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pf-cr-n{font-size:13px;font-weight:500;color:var(--grey-800);flex-shrink:0;}
+  /* Edit form */
+  .pf-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 18px;}
+  .pf-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .pf-field.wide{grid-column:1/-1;}
+  .pf-field>span{font-size:13px;font-weight:500;line-height:16px;color:var(--grey-700);}
+  .pf-field small{font-size:12px;line-height:16px;color:var(--grey-600);}
+  .pf-field input,.pf-field textarea{width:100%;padding:9px 15px;border:1px solid var(--grey-400);border-radius:18px;background:#fff;outline:0;font:400 14px/20px var(--font);color:var(--grey-800);transition:border-color .2s ease;}
+  .pf-field textarea{resize:vertical;min-height:110px;}
+  .pf-field input:focus,.pf-field textarea:focus{border-color:var(--blue-300);}
+  .pf-field input:user-invalid{border-color:var(--pink-500);}
+  .pf-form-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:9px;margin-top:3px;}
+
   /* ================= Notifications popover ================= */
   .pop{position:fixed;top:calc(var(--header) + 8px);right:var(--gutter);width:300px;max-height:min(420px,calc(100dvh - var(--header) - 16px));z-index:40;display:flex;flex-direction:column;
     background:var(--grey-50);border-radius:21px;box-shadow:0 12px 30px rgba(0,0,0,.18);border:1px solid var(--grey-200);
@@ -265,6 +319,7 @@
   @media (max-width:1023px){
     :root{--gutter:18px;}
     .invgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .pf-grid{grid-template-columns:minmax(0,1fr);}
   }
   @media (max-width:767px){
     :root{--gutter:12px;}
@@ -303,6 +358,16 @@
     .cv-msgs{padding:15px 12px;}
     .cv-compose{padding:10px 12px 12px;}
     .msg{max-width:85%;}
+    .pf{gap:12px;}
+    .pf-hero{flex-wrap:wrap;gap:15px;padding:18px;border-radius:18px;}
+    .pf-av{width:64px;height:64px;}
+    .pf-name{font-size:20px;line-height:26px;}
+    .pf-hero .btn{width:100%;}
+    .pf-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+    .pf-grid,.pf-col{gap:12px;}
+    .pf-card{padding:18px;border-radius:18px;}
+    .pf-form{grid-template-columns:minmax(0,1fr);}
+    .pf-form-actions .btn{flex:1;}
   }
 </style>
 </head>
@@ -314,7 +379,7 @@
   <div class="top-right">
     <button class="hicon" id="search-btn" data-search aria-label="Search" aria-expanded="false"></button>
     <button class="hicon" data-pop="notifs" aria-label="Notifications"><span id="bell-ic"></span><i class="dot"></i></button>
-    <a data-act="soon" aria-label="Profile"><img class="top-av" data-a="pfAvatar" data-label="C" alt=""></a>
+    <a class="top-pf" id="top-pf" href="#/profile" aria-label="Profile" title="Profile"><img class="top-av" data-a="pfAvatar" data-label="C" alt=""></a>
   </div>
 </header>
 <main class="content" id="view"></main>
@@ -350,6 +415,9 @@ const ICON={
   rowChev:`<svg viewBox="0 0 24 24" fill="none"><path d="M10 8L14 12L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   send:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   download:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  /* coolicons "User / User_01" */
+  profile:`<svg viewBox="0 0 24 24" fill="none"><path d="M19 21C19 17.134 15.866 14 12 14C8.13401 14 5 17.134 5 21M12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7C16 9.20914 14.2091 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  edit:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4L18.5 9.5a2.83 2.83 0 0 0-4-4L4 16v4zM13.5 6.5l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   back:`<svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 };
 
@@ -450,7 +518,22 @@ const notifications=[
   {logo:'dominos',type:'closing',brand:'Domino’s Pizza LK',time:'3 hrs ago'},
 ];
 
-const state={q:'',cq:'',searchOpen:false,loaded:false,page:'',chat:null};
+/* The signed-in collaborator: a talent manager who runs campaigns with their own roster of creators */
+const PROFILE={
+  name:'Kavindi Fernando',agency:'Lumen Creator Collective',location:'Colombo, Sri Lanka',since:'Mar 2024',
+  bio:'We manage a roster of food, lifestyle and family creators across Colombo and the South Coast. We take campaigns from shortlist to final report: briefing creators, keeping posting schedules on time and sharing results every week.',
+  industries:['Food','FMCG','Retail','Mobility','Lifestyle'],platforms:['TikTok','Instagram','YouTube Shorts'],
+  commission:'15',email:'kavindi@lumencreators.lk',phone:'+94 77 123 4567',website:'lumencreators.lk',
+  creatorsManaged:40,campaignsDone:28,
+};
+const CREATORS=[
+  {name:'Sanduni Perera',abbr:'SP',niche:'Food · Colombo',followers:'182K'},
+  {name:'Ravindu Silva',abbr:'RS',niche:'Street food · Galle',followers:'96K'},
+  {name:'Amaya Jayasinghe',abbr:'AJ',niche:'Family & parenting',followers:'74K'},
+  {name:'Dilan Wickramasinghe',abbr:'DW',niche:'Lifestyle · Colombo',followers:'61K'},
+];
+
+const state={q:'',cq:'',searchOpen:false,loaded:false,page:'',chat:null,editing:false};
 
 /* ================= Templates ================= */
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -683,12 +766,86 @@ function autosize(ta){
   document.getElementById('cv-send').disabled=!ta.value.trim();
 }
 
+/* ================= Profile ================= */
+const list=s=>s.split(',').map(x=>x.trim()).filter(Boolean);
+function viewProfile(){
+  const p=PROFILE;
+  const stats=[[p.creatorsManaged,'Creators managed'],[p.campaignsDone,'Campaigns completed'],
+    [Object.keys(CHATS).length,'Active chats'],[INVITES.filter(v=>v.status==='open').length,'Open invites']];
+  const tags=a=>`<div class="inv-tags">${a.map(t=>`<span class="inv-tag">${esc(t)}</span>`).join('')}</div>`;
+  const site=p.website.replace(/^https?:\/\//,'');
+  return `<div class="pf">
+    <h1 class="home-title">Profile</h1>
+    <section class="pf-hero" aria-label="Your profile">
+      <img class="pf-av" data-a="pfAvatar" data-label="${esc(p.name)}" alt="">
+      <div class="pf-id">
+        <div class="pf-name">${esc(p.name)}</div>
+        <div class="pf-role">${esc(p.agency)} · ${esc(p.location)}</div>
+        <div class="pf-role">Collaborator since ${p.since}</div>
+      </div>
+      ${state.editing?'':`<button class="btn" type="button" data-act="edit">${ICON.edit}Edit profile</button>`}
+    </section>
+    <div class="pf-stats">${stats.map(([v,k])=>`<div class="pf-stat"><span class="v">${v}</span><span class="k">${k}</span></div>`).join('')}</div>
+    ${state.editing?`<form class="pf-card" id="pf-form" novalidate>
+      <h2>Edit profile</h2>
+      <div class="pf-form">
+        <label class="pf-field"><span>Name</span><input name="name" value="${esc(p.name)}" required maxlength="60" autocomplete="name"></label>
+        <label class="pf-field"><span>Agency</span><input name="agency" value="${esc(p.agency)}" required maxlength="80" autocomplete="organization"></label>
+        <label class="pf-field"><span>Location</span><input name="location" value="${esc(p.location)}" maxlength="80"></label>
+        <label class="pf-field"><span>Typical commission (%)</span><input name="commission" type="number" min="0" max="100" step="0.5" value="${esc(p.commission)}" required></label>
+        <label class="pf-field wide"><span>About</span><textarea name="bio" maxlength="600">${esc(p.bio)}</textarea></label>
+        <label class="pf-field"><span>Industries</span><input name="industries" value="${esc(p.industries.join(', '))}"><small>Separate with commas</small></label>
+        <label class="pf-field"><span>Platforms</span><input name="platforms" value="${esc(p.platforms.join(', '))}"><small>Separate with commas</small></label>
+        <label class="pf-field"><span>Email</span><input name="email" type="email" value="${esc(p.email)}" required autocomplete="email"></label>
+        <label class="pf-field"><span>Phone</span><input name="phone" type="tel" value="${esc(p.phone)}" autocomplete="tel"></label>
+        <label class="pf-field wide"><span>Website</span><input name="website" value="${esc(p.website)}" autocomplete="url"></label>
+        <div class="pf-form-actions"><button class="btn" type="button" data-act="cancel-edit">Cancel</button><button class="btn primary" type="submit">Save changes</button></div>
+      </div>
+    </form>`:`<div class="pf-grid">
+      <div class="pf-col">
+        <section class="pf-card"><h2>About</h2><p class="pf-bio">${esc(p.bio)||'<span style="color:var(--grey-600)">Tell brands what you do.</span>'}</p>
+          ${p.industries.length?`<div class="pf-sub">Industries</div>${tags(p.industries)}`:''}
+          ${p.platforms.length?`<div class="pf-sub">Platforms</div>${tags(p.platforms)}`:''}
+        </section>
+        <section class="pf-card"><h2>Creators <span>${CREATORS.length} of ${p.creatorsManaged}</span></h2>
+          <div>${CREATORS.map(c=>`<div class="pf-cr"><img data-a="" data-label="${c.abbr}" alt=""><div class="pf-cr-who"><b>${esc(c.name)}</b><span>${esc(c.niche)}</span></div><span class="pf-cr-n">${c.followers}</span></div>`).join('')}</div>
+        </section>
+      </div>
+      <div class="pf-col">
+        <section class="pf-card"><h2>Details</h2>
+          <dl class="pf-dl">
+            <div class="pf-row"><dt>Commission</dt><dd>${esc(p.commission)}%</dd></div>
+            <div class="pf-row"><dt>Email</dt><dd><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></dd></div>
+            ${p.phone?`<div class="pf-row"><dt>Phone</dt><dd>${esc(p.phone)}</dd></div>`:''}
+            ${site?`<div class="pf-row"><dt>Website</dt><dd><a href="https://${esc(site)}" target="_blank" rel="noopener">${esc(site)}</a></dd></div>`:''}
+            ${p.location?`<div class="pf-row"><dt>Location</dt><dd>${esc(p.location)}</dd></div>`:''}
+          </dl>
+        </section>
+      </div>
+    </div>`}
+  </div>`;
+}
+function setEditing(on){
+  state.editing=on;
+  view.innerHTML=viewProfile();bindAssets(view);
+  if(on) document.querySelector('#pf-form input').focus({preventScroll:true});
+  else document.querySelector('[data-act="edit"]').focus({preventScroll:true});
+}
+function saveProfile(form){
+  if(!form.checkValidity()){form.reportValidity();return;}
+  const f=Object.fromEntries(new FormData(form));
+  Object.assign(PROFILE,{name:f.name.trim(),agency:f.agency.trim(),location:f.location.trim(),commission:f.commission,
+    bio:f.bio.trim(),industries:list(f.industries),platforms:list(f.platforms),email:f.email.trim(),phone:f.phone.trim(),website:f.website.trim()});
+  setEditing(false);
+  toast('Profile saved');
+}
+
 /* ================= Top menu ================= */
 function renderTopNav(){
   const items=[['invites','#/',ICON.invites,'Invites'],['chats','#/chats',ICON.chats,'Chats']];
   document.getElementById('tnav').innerHTML=items.map(i=>`<a href="${i[1]}" data-root="${i[0]}" aria-label="${i[3]}" title="${i[3]}">${i[2]}</a>`).join('');
   document.getElementById('menu-btn').innerHTML=ICON.menu;
-  document.getElementById('drawer-list').innerHTML=items.map(i=>`<a class="set-row" href="${i[1]}" data-root="${i[0]}" tabindex="-1"><span class="set-ic">${i[2]}</span><span class="set-lbl">${i[3]}</span><span class="set-chev">${ICON.rowChev}</span></a>`).join('');
+  document.getElementById('drawer-list').innerHTML=[...items,['profile','#/profile',ICON.profile,'Profile']].map(i=>`<a class="set-row" href="${i[1]}" data-root="${i[0]}" tabindex="-1"><span class="set-ic">${i[2]}</span><span class="set-lbl">${i[3]}</span><span class="set-chev">${ICON.rowChev}</span></a>`).join('');
   document.getElementById('search-btn').innerHTML=MICON.search;
   document.getElementById('bell-ic').innerHTML=MICON.bell;
   renderChatsBadge();
@@ -696,7 +853,7 @@ function renderTopNav(){
 
 /* Search lives under the page heading; the header icon opens and closes it */
 function setSearch(open,focus=true){
-  if(state.page==='chats') return;
+  if(state.page!=='invites') return;
   state.searchOpen=open;
   const btn=document.getElementById('search-btn');
   btn.classList.toggle('on',open);btn.setAttribute('aria-expanded',open);
@@ -714,6 +871,7 @@ function toggleSearch(){
     else document.getElementById('cq').focus();
     return;
   }
+  if(state.page==='profile'){state.searchOpen=true;location.hash='#/';return;}
   setSearch(!state.searchOpen);
 }
 
@@ -721,14 +879,15 @@ function toggleSearch(){
 const view=document.getElementById('view');
 function route(){
   const [root,id]=location.hash.replace(/^#\/?/,'').split('/');
-  const page=root==='chats'?'chats':'invites';
+  const page=root==='chats'?'chats':root==='profile'?'profile':'invites';
   const changed=page!==state.page;
   state.page=page;
   state.chat=page==='chats'&&CHATS[id]?id:null;
+  state.editing=false;
   if(state.chat){CHATS[state.chat].unread=false;}
   document.body.classList.toggle('chat-page',page==='chats');
   document.body.classList.toggle('chat-open',page==='chats'&&!!state.chat);
-  view.innerHTML=page==='chats'?viewChats():viewInvites();
+  view.innerHTML=page==='chats'?viewChats():page==='profile'?viewProfile():viewInvites();
   if(changed){view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');}
   window.scrollTo({top:0,behavior:'instant'});
   bindAssets(view);
@@ -738,6 +897,9 @@ function route(){
     const ta=document.getElementById('cv-text');
     if(ta&&matchMedia('(min-width:768px)').matches) ta.focus({preventScroll:true});
     document.title=(state.chat?byId(state.chat).brand+' — ':'')+'Chats — UGC Platform for Collaborators';
+  }else if(page==='profile'){
+    document.getElementById('search-btn').classList.remove('on');
+    document.title='Profile — UGC Platform for Collaborators';
   }else{
     renderFeed();
     setSearch(state.searchOpen,!!document.getElementById('q'));
@@ -745,6 +907,9 @@ function route(){
   }
   setDrawer(false);
   document.querySelectorAll('#tnav a, #drawer-list a').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  const pf=document.getElementById('top-pf');
+  pf.classList.toggle('active',page==='profile');
+  if(page==='profile') pf.setAttribute('aria-current','page'); else pf.removeAttribute('aria-current');
   closePop();
 }
 window.addEventListener('hashchange',route);
@@ -796,9 +961,14 @@ document.addEventListener('click',e=>{
   if(act){e.preventDefault();return doAct(act.dataset.act);}
 });
 function doAct(a){
-  if(a==='soon') return toast('This screen is next to build');
+  if(a==='edit') return setEditing(true);
+  if(a==='cancel-edit') return setEditing(false);
   if(a==='clear'){state.q='';const qi=document.getElementById('q');if(qi)qi.value='';return renderFeed();}
 }
+
+document.addEventListener('submit',e=>{
+  if(e.target.id==='pf-form'){e.preventDefault();saveProfile(e.target);}
+});
 
 /* Search filters the invites */
 document.addEventListener('input',e=>{
@@ -809,6 +979,7 @@ document.addEventListener('input',e=>{
 document.addEventListener('keydown',e=>{
   if(e.target.id==='cv-text'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendMsg();return;}
   if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='invites'&&state.searchOpen)document.getElementById('q').focus();else toggleSearch();}
+  if(e.key==='Escape'&&state.editing&&e.target.closest&&e.target.closest('#pf-form')){setEditing(false);return;}
   if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();if(drawer.classList.contains('open')){setDrawer(false);document.getElementById('menu-btn').focus();}}
 });
 
