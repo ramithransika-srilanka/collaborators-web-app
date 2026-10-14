@@ -26,7 +26,7 @@ same sections in a panel sliding in from the left, like the creator web app's ph
   On phones the list and the open chat show one at a time.
 - **Profile** (`#/profile`, `#/profile/portfolio`, `#/profile/experience`, `#/profile/reviews`) — the collaborator's
   public page that brands see, opened from the avatar in the top menu (or **Profile** in the phone menu). The hero shows
-  the cover, photo, name, headline, location, languages and reply time, with **Share** (copies the link) and
+  the photo, name, headline, location, languages and reply time, with **Share** (copies the link) and
   **Edit profile**, and a row of stats (rating, campaigns, creators managed, engagement, views). Sticky tabs below:
   - **Overview** — about and expertise, featured work, services and starting rates, a brand review; on the side an
     availability switch (open to new campaigns, next available, capacity), profile strength with what's missing,
