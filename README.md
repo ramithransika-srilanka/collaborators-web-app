@@ -29,7 +29,7 @@ same sections in a panel sliding in from the left, like the creator web app's ph
   the photo, name, headline, location, languages and reply time, with **Share** (copies the link) and
   **Edit profile**, and a row of stats (campaigns, creators managed, engagement, views). Sticky tabs below:
   - **Overview** — about and expertise, featured work; on the side profile
-    strength with what's missing, platform mix, brands worked with, industries, tools and links.
+    strength with what's missing, platform mix, brands worked with, industries and links.
   - **Portfolio** — past work as social-post-style cards (hook, platform, headline numbers), filterable by platform.
     A card opens the case study: challenge, idea, what was done, results and deliverables. **Add work** adds a piece.
   - **Experience** — a timeline of past roles with highlights, plus certifications and education.

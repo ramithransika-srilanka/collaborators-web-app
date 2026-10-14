@@ -922,7 +922,6 @@ const PROFILE={
   expertise:['Campaign strategy','Creative concepts','Creator sourcing','Creator management','Short-form video','Content calendars','Trend & social listening','Community management','Paid social amplification','Performance reporting'],
   platforms:[['tiktok','TikTok',46],['instagram','Instagram',34],['youtube','YouTube',12],['facebook','Facebook',8]],
   industries:['FMCG','Food & beverage','Telco','Retail','Mobility','Fashion'],
-  tools:['Meta Business Suite','TikTok Ads Manager','CapCut','Canva','Sprout Social','Notion'],
   clients:[['dominos','Domino’s'],['pepsi','Pepsi Lanka'],['pickmeLogo','PickMe'],['','Dialog','Di'],['','Keells','Ke'],['','Elephant House','EH']],
 };
 const PLAT={tiktok:'TikTok',instagram:'Instagram',youtube:'YouTube',facebook:'Facebook'};
@@ -1077,7 +1076,6 @@ function pfOverview(){
       </section>
       <section class="pf-card">
         <div class="kv"><span class="kv-k">Industries</span><div class="chips">${p.industries.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div></div>
-        <div class="kv"><span class="kv-k">Tools</span><div class="chips">${p.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div></div>
       </section>
       ${links.length?`<section class="pf-card"><h2 class="pf-h">Links</h2><div class="links">${links.map(([ic,k,label])=>`<a class="lnk" href="https://${esc(p[k].replace(/^https?:\/\//,''))}" target="_blank" rel="noopener">${ICON[ic]}<span>${esc(p[k].replace(/^https?:\/\//,''))}</span><span class="ext">${ICON.ext}</span></a>`).join('')}</div></section>`:''}
     </aside>
