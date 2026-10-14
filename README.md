@@ -24,6 +24,18 @@ same sections in a panel sliding in from the left, like the creator web app's ph
   its own message), the total budget, the timeline, and finally asks what commission you expect. After you
   reply it answers after a short "typing…" indicator.
   On phones the list and the open chat show one at a time.
+- **Profile** (`#/profile`, `#/profile/portfolio`, `#/profile/experience`, `#/profile/reviews`) — the collaborator's
+  public page that brands see, opened from the avatar in the top menu (or **Profile** in the phone menu). The hero shows
+  the photo, name, headline, location, languages and reply time, with **Share** (copies the link) and
+  **Edit profile**, and a row of stats (rating, campaigns, creators managed, engagement, views). Sticky tabs below:
+  - **Overview** — about and expertise, featured work, services and starting rates, a brand review; on the side an
+    availability switch (open to new campaigns, next available, capacity), profile strength with what's missing,
+    platform mix, brands worked with, industries, tools and links.
+  - **Portfolio** — past work as social-post-style cards (hook, platform, headline numbers), filterable by platform.
+    A card opens the case study: challenge, idea, what was done, results and deliverables. **Add work** adds a piece.
+  - **Experience** — a timeline of past roles with highlights, plus certifications and education.
+  - **Reviews** — the overall rating with a breakdown, and reviews from brands.
+  Profile data is sample content kept in `PROFILE`, `PORTFOLIO`, `EXPERIENCE` and `REVIEWS` in `index.html`.
 
 ## Assets
 

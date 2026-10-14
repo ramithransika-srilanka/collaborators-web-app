@@ -24,6 +24,9 @@
     --gutter:24px; --page:1128px; --header:52px; --shell:1128px;
     /* invite card surfaces */
     --inv-tag:#e1e7fb; --inv-desc:#f5f5f5;
+    /* availability */
+    --green-100:#dcf5e6; --green-500:#12a150; --green-700:#0b6b35;
+    --star:#f5a524;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
   /* Reserve the scrollbar space on every page so short and long pages line up */
@@ -262,9 +265,245 @@
   .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto;}
   .toast button{font-weight:600;color:var(--blue-200);}
 
+  /* ================= Profile =================
+     Hero card (cover, avatar, headline, stats), sticky tabs, then Overview / Portfolio / Experience / Reviews. */
+  .top-link.active .top-av{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--grey-800);}
+  .pf{padding-top:6px;}
+  .pf-hero{border:1px solid var(--grey-200);border-radius:27px;overflow:hidden;background:#fff;}
+  .pf-main{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px;padding:24px;}
+  .pf-av{width:104px;height:104px;border-radius:100px;object-fit:cover;border:1px solid var(--grey-200);background:var(--grey-100);}
+  .pf-id{min-width:0;display:flex;flex-direction:column;gap:6px;}
+  .pf-name{display:flex;align-items:center;gap:6px;font-size:24px;font-weight:600;line-height:30px;letter-spacing:-.02em;color:#000;}
+  .pf-name svg{width:20px;height:20px;color:var(--blue-500);flex-shrink:0;}
+  .pf-headline{font-size:15px;font-weight:500;line-height:20px;color:var(--grey-700);}
+  .pf-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 15px;font-size:13px;line-height:18px;color:var(--grey-600);}
+  .pf-meta span{display:flex;align-items:center;gap:5px;}
+  .pf-meta svg{width:15px;height:15px;flex-shrink:0;}
+  .pf-actions{display:flex;gap:9px;}
+  .btn{height:40px;padding:0 16px;border-radius:100px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;border:1px solid var(--grey-200);background:#fff;color:var(--grey-800);transition:background .25s ease,border-color .25s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .btn svg{width:17px;height:17px;flex-shrink:0;}
+  .btn:hover{background:var(--grey-100);}
+  .btn:active{transform:scale(.97);}
+  .btn.dark{background:var(--grey-800);border-color:var(--grey-800);color:#fff;}
+  .btn.dark:hover{background:var(--grey-700);}
+  .btn.blue{background:var(--blue-500);border-color:var(--blue-500);color:#fff;box-shadow:2px 4px 9px rgba(21,72,235,.2);}
+  .btn.blue:hover{background:var(--blue-600);}
+  .btn.sm{height:32px;padding:0 12px;font-size:13px;}
+  .avail{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:75px;background:var(--green-100);color:var(--green-700);font-size:12px;font-weight:600;line-height:14px;align-self:flex-start;}
+  .avail i{width:7px;height:7px;border-radius:100px;background:var(--green-500);box-shadow:0 0 0 3px rgba(18,161,80,.18);}
+  .avail.off{background:var(--grey-100);color:var(--grey-600);}
+  .avail.off i{background:var(--grey-500);box-shadow:none;}
+  .pf-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--grey-200);}
+  .pf-stat{padding:15px 24px;display:flex;flex-direction:column;gap:2px;}
+  .pf-stat+.pf-stat{border-left:1px solid var(--grey-200);}
+  .pf-stat b{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;color:var(--grey-800);display:flex;align-items:center;gap:4px;}
+  .pf-stat b svg{width:16px;height:16px;color:var(--star);}
+  .pf-stat span{font-size:12px;line-height:16px;color:var(--grey-600);}
+
+  .pf-tabs{position:sticky;top:var(--header);z-index:10;display:flex;gap:4px;margin-top:12px;padding-top:6px;background:var(--grey-50);border-bottom:1px solid var(--grey-200);overflow-x:auto;scrollbar-width:none;}
+  .pf-tabs::-webkit-scrollbar{display:none;}
+  .pf-tab{position:relative;display:flex;align-items:center;gap:6px;padding:12px 14px;font-size:14px;font-weight:500;line-height:20px;color:var(--grey-600);white-space:nowrap;transition:color .2s ease;}
+  .pf-tab:hover{color:var(--grey-800);}
+  .pf-tab .n{padding:2px 6px;border-radius:75px;background:var(--grey-100);font-size:11px;font-weight:600;line-height:12px;color:var(--grey-600);}
+  .pf-tab.active{color:var(--grey-800);}
+  .pf-tab.active::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:2px;border-radius:2px;background:var(--grey-800);}
+  .pf-panel{padding-top:24px;animation:cardIn .45s cubic-bezier(.16,1,.3,1) both;}
+  @media(prefers-reduced-motion:reduce){.pf-panel{animation:none;}}
+
+  .pf-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start;}
+  .pf-col{display:flex;flex-direction:column;gap:18px;min-width:0;}
+  .pf-card{border:1px solid var(--grey-200);border-radius:24px;padding:21px;display:flex;flex-direction:column;gap:15px;background:#fff;}
+  .pf-h{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;font-weight:600;line-height:22px;color:var(--grey-800);}
+  .pf-h .more{font-size:13px;font-weight:500;color:var(--blue-500);}
+  .pf-h .more:hover{color:var(--blue-700);}
+  .pf-sub{font-size:13px;line-height:18px;color:var(--grey-600);margin-top:-9px;}
+  .pf-about{font-size:14px;line-height:22px;color:var(--grey-700);white-space:pre-line;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{padding:7px 11px;border-radius:75px;background:var(--grey-100);font-size:13px;font-weight:500;line-height:14px;color:var(--grey-800);white-space:nowrap;}
+  .chip.blue{background:var(--inv-tag);}
+  .kv{display:flex;flex-direction:column;gap:6px;}
+  .kv-k{font-size:12px;font-weight:500;line-height:16px;color:var(--grey-600);}
+
+  /* Services and rates */
+  .svc{display:flex;flex-direction:column;}
+  .svc-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--grey-200);}
+  .svc-row:first-child{border-top:0;padding-top:0;}
+  .svc-row:last-child{padding-bottom:0;}
+  .svc-ic{width:40px;height:40px;border-radius:12px;background:var(--blue-100);color:var(--blue-700);display:flex;align-items:center;justify-content:center;}
+  .svc-ic svg{width:20px;height:20px;}
+  .svc-name{font-size:14px;font-weight:600;line-height:20px;}
+  .svc-desc{font-size:13px;line-height:18px;color:var(--grey-600);}
+  .svc-price{text-align:right;font-size:14px;font-weight:600;line-height:20px;white-space:nowrap;}
+  .svc-price span{display:block;font-size:12px;font-weight:400;line-height:16px;color:var(--grey-600);}
+
+  /* Sidebar */
+  .av-card{background:var(--grey-800);color:#fff;border-color:var(--grey-800);}
+  .av-card .pf-h{color:#fff;}
+  .av-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .av-row p{font-size:13px;line-height:18px;color:var(--grey-400);}
+  .av-facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:15px;border-top:1px solid rgba(255,255,255,.14);}
+  .av-facts span{display:block;font-size:12px;line-height:16px;color:var(--grey-500);}
+  .av-facts b{font-size:14px;font-weight:600;line-height:20px;}
+  .switch{position:relative;width:44px;height:26px;flex-shrink:0;}
+  .switch input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0;z-index:1;}
+  .switch i{position:absolute;inset:0;border-radius:100px;background:var(--grey-600);transition:background .25s ease;}
+  .switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:100px;background:#fff;transition:transform .3s cubic-bezier(.16,1,.3,1);}
+  .switch input:checked+i{background:var(--green-500);}
+  .switch input:checked+i::after{transform:translateX(18px);}
+  .switch input:focus-visible+i{outline:2px solid var(--blue-300);outline-offset:2px;}
+  .meter{height:8px;border-radius:100px;background:var(--grey-100);overflow:hidden;}
+  .meter i{display:block;height:100%;border-radius:100px;background:var(--blue-500);transition:width .6s cubic-bezier(.16,1,.3,1);}
+  .checks{display:flex;flex-direction:column;gap:9px;}
+  .check{display:flex;align-items:center;gap:9px;font-size:13px;line-height:18px;color:var(--grey-700);}
+  .check .ck{width:20px;height:20px;border-radius:100px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--green-100);color:var(--green-700);}
+  .check .ck svg{width:12px;height:12px;}
+  .check.todo .ck{background:var(--grey-100);color:var(--grey-500);}
+  .check.todo{color:var(--grey-800);font-weight:500;}
+  .check.todo a{margin-left:auto;font-size:12px;font-weight:600;color:var(--blue-500);}
+  .plat{display:grid;grid-template-columns:32px minmax(0,1fr) 40px;gap:10px;align-items:center;}
+  .plat-ic{width:32px;height:32px;border-radius:10px;background:var(--grey-800);color:#fff;display:flex;align-items:center;justify-content:center;}
+  .plat-ic svg{width:17px;height:17px;}
+  .plat-name{font-size:14px;font-weight:500;line-height:18px;display:flex;flex-direction:column;gap:5px;}
+  .plat-bar{height:5px;border-radius:100px;background:var(--grey-100);overflow:hidden;}
+  .plat-bar i{display:block;height:100%;background:var(--grey-800);border-radius:100px;}
+  .plat-pct{text-align:right;font-size:13px;font-weight:600;color:var(--grey-700);}
+  .clients{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 8px;}
+  .client{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:15px;color:var(--grey-700);}
+  .client img{width:44px;height:44px;border-radius:100px;object-fit:cover;border:1px solid var(--grey-200);background:var(--grey-100);}
+  .links{display:flex;flex-direction:column;gap:4px;}
+  .lnk{display:flex;align-items:center;gap:9px;padding:8px 10px;margin:0 -10px;border-radius:12px;font-size:14px;font-weight:500;line-height:18px;transition:background .2s ease;}
+  .lnk:hover{background:var(--grey-100);}
+  .lnk svg{width:18px;height:18px;flex-shrink:0;color:var(--grey-700);}
+  .lnk span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lnk .ext{flex:0 0 15px;width:15px;height:15px;color:var(--grey-500);}
+
+  /* Portfolio: work cards styled like the social posts they were */
+  .pw-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;}
+  .fchip{display:flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:75px;border:1px solid var(--grey-200);font-size:13px;font-weight:500;color:var(--grey-700);transition:background .2s ease,color .2s ease,border-color .2s ease;}
+  .fchip svg{width:15px;height:15px;}
+  .fchip:hover{background:var(--grey-100);}
+  .fchip.on{background:var(--grey-800);border-color:var(--grey-800);color:#fff;}
+  .pwgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 18px;margin-top:18px;}
+  .pf-col .pwgrid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0;}
+  .pw{display:flex;flex-direction:column;gap:10px;text-align:left;animation:cardIn .5s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 50ms);}
+  @media(prefers-reduced-motion:reduce){.pw{animation:none;}}
+  .pw-cover{position:relative;aspect-ratio:4/5;border-radius:21px;overflow:hidden;padding:14px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;
+    background:linear-gradient(155deg,var(--c1),var(--c2));transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1);}
+  .pw-cover::before{content:"";position:absolute;width:75%;aspect-ratio:1;right:-25%;bottom:-18%;border-radius:50%;background:rgba(255,255,255,.12);}
+  .pw-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35));}
+  .pw:hover .pw-cover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(0,0,0,.14);}
+  .pw:active .pw-cover{transform:scale(.98);}
+  .pw-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .pw-plat{display:flex;align-items:center;gap:5px;padding:5px 9px 5px 7px;border-radius:75px;background:rgba(0,0,0,.22);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:11px;font-weight:600;line-height:12px;}
+  .pw-plat svg{width:13px;height:13px;}
+  .pw-play{width:30px;height:30px;border-radius:100px;background:rgba(255,255,255,.25);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;}
+  .pw-play svg{width:13px;height:13px;margin-left:2px;}
+  .pw-hook{position:relative;z-index:1;font-size:19px;font-weight:600;line-height:23px;letter-spacing:-.02em;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;text-wrap:balance;}
+  .pw-kpi{position:relative;z-index:1;display:flex;gap:12px;font-size:12px;line-height:14px;}
+  .pw-kpi b{display:block;font-size:15px;font-weight:600;line-height:18px;}
+  .pw-kpi span{opacity:.8;}
+  .pw-title{font-size:14px;font-weight:600;line-height:20px;color:var(--grey-800);padding:0 2px;}
+  .pw-meta{font-size:12px;line-height:16px;color:var(--grey-600);padding:0 2px;margin-top:-8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* Experience timeline */
+  .xp{display:flex;flex-direction:column;}
+  .xp-item{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:15px;padding-bottom:24px;}
+  .xp-item:last-child{padding-bottom:0;}
+  .xp-item:not(:last-child)::before{content:"";position:absolute;left:23.5px;top:54px;bottom:6px;width:1px;background:var(--grey-200);}
+  .xp-logo{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#fff;background:var(--grey-800);}
+  .xp-logo.blue{background:var(--blue-500);}
+  .xp-logo.pink{background:var(--pink-500);}
+  .xp-body{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .xp-role{font-size:16px;font-weight:600;line-height:22px;}
+  .xp-org{font-size:14px;line-height:20px;color:var(--grey-700);}
+  .xp-when{font-size:13px;line-height:18px;color:var(--grey-600);}
+  .xp-desc{font-size:14px;line-height:21px;color:var(--grey-700);margin-top:3px;}
+  .xp-hl{display:flex;flex-direction:column;gap:5px;padding-left:18px;font-size:14px;line-height:20px;color:var(--grey-800);}
+  .xp-hl li::marker{color:var(--blue-500);}
+  .cert{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:center;}
+  .cert+.cert{padding-top:12px;border-top:1px solid var(--grey-200);}
+  .cert-ic{width:40px;height:40px;border-radius:12px;background:var(--inv-tag);color:var(--blue-700);display:flex;align-items:center;justify-content:center;}
+  .cert-ic svg{width:20px;height:20px;}
+  .cert b{display:block;font-size:14px;font-weight:600;line-height:20px;}
+  .cert span{font-size:13px;line-height:18px;color:var(--grey-600);}
+
+  /* Reviews */
+  .stars{display:flex;gap:1px;color:var(--star);}
+  .stars svg{width:15px;height:15px;}
+  .stars .off{color:var(--grey-200);}
+  .rv-sum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;}
+  .rv-big{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-right:24px;border-right:1px solid var(--grey-200);}
+  .rv-big b{font-size:44px;font-weight:600;line-height:46px;letter-spacing:-.03em;}
+  .rv-big>span:last-child{font-size:13px;line-height:18px;color:var(--grey-600);}
+  .rv-bars{display:flex;flex-direction:column;gap:10px;}
+  .rv-bar{display:grid;grid-template-columns:130px minmax(0,1fr) 28px;gap:12px;align-items:center;font-size:13px;line-height:18px;color:var(--grey-700);}
+  .rv-bar .plat-bar{height:6px;}
+  .rv-bar b{text-align:right;font-weight:600;color:var(--grey-800);}
+  .rvgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+  .rv{border:1px solid var(--grey-200);border-radius:24px;padding:21px;display:flex;flex-direction:column;gap:12px;}
+  .rv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .rv-date{font-size:12px;line-height:16px;color:var(--grey-600);}
+  .rv-text{font-size:14px;line-height:22px;color:var(--grey-800);flex:1;}
+  .pf-card>.rv{border:0;padding:0;border-radius:0;}
+  .rv-who{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--grey-200);}
+  .rv-who img{width:36px;height:36px;border-radius:100px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
+  .rv-who div{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .rv-who b{font-size:14px;font-weight:600;line-height:18px;}
+  .rv-who span{font-size:12px;line-height:16px;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* ================= Modal (case study, edit profile, add work) ================= */
+  .modal-wrap{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .modal-wrap[hidden]{display:none;}
+  .modal-scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .25s ease;}
+  .modal{position:relative;width:min(720px,100%);max-height:calc(100dvh - 48px);overflow-y:auto;background:#fff;border-radius:27px;box-shadow:0 24px 60px rgba(0,0,0,.25);
+    opacity:0;transform:translateY(14px) scale(.98);transition:opacity .25s ease,transform .4s cubic-bezier(.16,1,.3,1);}
+  .modal.narrow{width:min(560px,100%);}
+  .modal-wrap.open .modal-scrim{opacity:1;}
+  .modal-wrap.open .modal{opacity:1;transform:none;}
+  body.modal-open{overflow:hidden;}
+  .modal-x{position:absolute;top:14px;right:14px;z-index:2;width:36px;height:36px;border-radius:100px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);color:var(--grey-800);border:1px solid var(--grey-200);transition:background .2s ease,transform .2s cubic-bezier(.16,1,.3,1);}
+  .modal-x:hover{background:var(--grey-100);}
+  .modal-x:active{transform:scale(.94);}
+  .modal-x svg{width:16px;height:16px;}
+  .cs-cover{position:relative;min-height:200px;padding:24px 24px 21px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;color:#fff;background:linear-gradient(140deg,var(--c1),var(--c2));overflow:hidden;}
+  .cs-cover::before{content:"";position:absolute;width:300px;height:300px;right:-80px;top:-120px;border-radius:50%;background:rgba(255,255,255,.12);}
+  .cs-cover .pw-plat{align-self:flex-start;position:relative;}
+  .cs-hook{position:relative;font-size:26px;font-weight:600;line-height:32px;letter-spacing:-.02em;max-width:520px;text-wrap:balance;}
+  .cs-body{padding:21px 24px 24px;display:flex;flex-direction:column;gap:21px;}
+  .cs-title{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;}
+  .cs-meta{font-size:13px;line-height:18px;color:var(--grey-600);margin-top:3px;}
+  .cs-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;}
+  .cs-kpi{padding:13px 15px;border-radius:15px;background:var(--inv-desc);}
+  .cs-kpi b{display:block;font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;}
+  .cs-kpi span{font-size:12px;line-height:16px;color:var(--grey-600);}
+  .cs-sec{display:flex;flex-direction:column;gap:6px;}
+  .cs-sec h3{font-size:12px;font-weight:600;line-height:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--grey-600);}
+  .cs-sec p{font-size:14px;line-height:22px;color:var(--grey-800);}
+  .cs-sec ul{display:flex;flex-direction:column;gap:5px;padding-left:18px;font-size:14px;line-height:21px;}
+  .cs-sec li::marker{color:var(--blue-500);}
+  .cs-foot{display:flex;gap:9px;justify-content:flex-end;padding-top:6px;}
+
+  .form{padding:24px;display:flex;flex-direction:column;gap:15px;}
+  .form h2{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;padding-right:40px;}
+  .form .pf-sub{margin-top:-9px;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .field>span{font-size:12px;font-weight:500;line-height:16px;color:var(--grey-600);}
+  .field input,.field textarea,.field select{width:100%;min-width:0;padding:9px 13px;border:1px solid var(--grey-400);border-radius:12px;background:#fff;font:400 14px/20px var(--font);color:var(--grey-800);outline:0;transition:border-color .2s ease;}
+  .field textarea{resize:vertical;min-height:96px;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue-300);}
+  .field input::placeholder,.field textarea::placeholder{color:var(--grey-500);}
+  .form-foot{display:flex;justify-content:flex-end;gap:9px;padding-top:6px;}
+
   @media (max-width:1023px){
     :root{--gutter:18px;}
     .invgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .pf-grid{grid-template-columns:minmax(0,1fr);}
+    .pwgrid{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .pf-stats{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .pf-stat:nth-child(n+4){border-top:1px solid var(--grey-200);}
+    .pf-stat:nth-child(4){border-left:0;}
   }
   @media (max-width:767px){
     :root{--gutter:12px;}
@@ -303,6 +542,40 @@
     .cv-msgs{padding:15px 12px;}
     .cv-compose{padding:10px 12px 12px;}
     .msg{max-width:85%;}
+    /* Profile on phones: stacked hero, 2-up stats and portfolio, bottom-sheet modals */
+        .pf-main{grid-template-columns:minmax(0,1fr);gap:12px;padding:18px;}
+    .pf-av{width:80px;height:80px;}
+    .pf-name{font-size:22px;line-height:28px;}
+    .pf-actions .btn{flex:1;}
+    .pf-stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .pf-stat{padding:12px 18px;}
+    /* Rating spans the first row, then two rows of two */
+    .pf-stat+.pf-stat{border-left:0;border-top:1px solid var(--grey-200);}
+    .pf-stat:first-child{grid-column:1/-1;}
+    .pf-stat:nth-child(odd):not(:first-child){border-left:1px solid var(--grey-200);}
+    .pf-tabs{margin:12px calc(var(--gutter) * -1) 0;padding:6px var(--gutter) 0;}
+    .pf-panel{padding-top:18px;}
+    .pf-card{padding:18px;border-radius:21px;}
+    .pwgrid,.pf-col .pwgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px;}
+    .pw-cover{border-radius:18px;padding:11px;}
+    .pw-hook{font-size:15px;line-height:19px;}
+    .pw-kpi{gap:9px;}
+    .pw-kpi b{font-size:13px;line-height:16px;}
+    .svc-row{grid-template-columns:40px minmax(0,1fr);}
+    .svc-price{grid-column:2;text-align:left;}
+    .svc-price span{display:inline;margin-left:4px;}
+    .rvgrid{grid-template-columns:minmax(0,1fr);gap:12px;}
+    .rv-sum{grid-template-columns:minmax(0,1fr);gap:18px;}
+    .rv-big{padding:0 0 18px;border-right:0;border-bottom:1px solid var(--grey-200);}
+    .rv-bar{grid-template-columns:110px minmax(0,1fr) 28px;}
+    .modal-wrap{padding:0;align-items:flex-end;}
+    .modal,.modal.narrow{width:100%;max-height:92dvh;border-radius:24px 24px 0 0;transform:translateY(40px);}
+    .cs-cover{min-height:170px;padding:21px 18px 18px;}
+    .cs-hook{font-size:21px;line-height:26px;}
+    .cs-body,.form{padding:18px 18px calc(18px + env(safe-area-inset-bottom));}
+    .cs-kpi{padding:10px 12px;}
+    .cs-kpi b{font-size:16px;line-height:22px;}
+    .frow{grid-template-columns:minmax(0,1fr);}
   }
 </style>
 </head>
@@ -314,7 +587,7 @@
   <div class="top-right">
     <button class="hicon" id="search-btn" data-search aria-label="Search" aria-expanded="false"></button>
     <button class="hicon" data-pop="notifs" aria-label="Notifications"><span id="bell-ic"></span><i class="dot"></i></button>
-    <a data-act="soon" aria-label="Profile"><img class="top-av" data-a="pfAvatar" data-label="C" alt=""></a>
+    <a class="top-link" id="top-av-link" href="#/profile" data-root="profile" aria-label="Profile" title="Profile"><img class="top-av" data-a="pfAvatar" data-label="DJ" alt=""></a>
   </div>
 </header>
 <main class="content" id="view"></main>
@@ -322,6 +595,7 @@
 <nav class="drawer" id="drawer" aria-label="Main" aria-hidden="true"><div class="menu-list" id="drawer-list"></div></nav>
 
 <div class="pop" id="pop-notifs"><div class="nt-title">Notifications</div><div class="nt-list" id="nt-list"></div></div>
+<div class="modal-wrap" id="modal" hidden><div class="modal-scrim" data-act="close-modal"></div><div class="modal" id="modal-box" role="dialog" aria-modal="true"></div></div>
 <div class="toast" id="toast" role="status"><span id="toast-msg"></span><button type="button" id="toast-undo" hidden>Undo</button></div>
 
 <!-- Design assets shared with the brand web app (generated by scripts/sync-assets.js) -->
@@ -351,6 +625,32 @@ const ICON={
   send:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   download:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   back:`<svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  /* Profile */
+  user:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4.5 20c.9-3.4 3.9-5.5 7.5-5.5s6.6 2.1 7.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  verified:`<svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z" fill="currentColor"/><path d="M8.5 12.2l2.3 2.3 4.7-4.8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  pin:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0114 0C19 14.8 12 21 12 21z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5" stroke="currentColor" stroke-width="2"/></svg>`,
+  globe:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  clock:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  edit:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16v4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.5 6.5l4 4" stroke="currentColor" stroke-width="2"/></svg>`,
+  share:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5M5 12v6.5A2.5 2.5 0 007.5 21h9a2.5 2.5 0 002.5-2.5V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  plus:`<svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  play:`<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 001.5.9l12-7.5a1 1 0 000-1.8l-12-7.5A1 1 0 007 4.5z" fill="currentColor"/></svg>`,
+  ext:`<svg viewBox="0 0 24 24" fill="none"><path d="M8 16L17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  link:`<svg viewBox="0 0 24 24" fill="none"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  star:`<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="currentColor"/></svg>`,
+  award:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="6" stroke="currentColor" stroke-width="2"/><path d="M8.5 13.8L7 21l5-2.5 5 2.5-1.5-7.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  cap:`<svg viewBox="0 0 24 24" fill="none"><path d="M2 9l10-5 10 5-10 5L2 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  bulb:`<svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0012 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  people:`<svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c.7-3 3.3-5 6.5-5s5.8 2 6.5 5M16 4.6a3.5 3.5 0 010 6.8M18 15.3c1.8.6 3.1 2.4 3.5 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  calendar:`<svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  chart:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  /* Social platforms */
+  tiktok:`<svg viewBox="0 0 24 24"><path d="M16.6 3c.3 2.1 1.6 3.6 3.9 3.8v3.1c-1.4.1-2.7-.3-3.9-1v5.9c0 3.9-3.2 6.3-6.6 5.5-3.6-.8-5-5.4-2.6-8.1 1.2-1.4 3-2 4.9-1.7v3.2c-.5-.1-1-.2-1.5-.1-1.3.3-2 1.6-1.6 2.8.4 1.3 2 1.9 3.2 1.1.6-.4.9-1.1.9-1.9V3h3.3z" fill="currentColor"/></svg>`,
+  instagram:`<svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg>`,
+  youtube:`<svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5.5" width="19" height="13" rx="4" stroke="currentColor" stroke-width="2"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>`,
+  facebook:`<svg viewBox="0 0 24 24"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z" fill="currentColor"/></svg>`,
+  linkedin:`<svg viewBox="0 0 24 24"><path d="M6.9 8.8H3.6V20h3.3V8.8zM5.2 3.5a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM20.4 13.6c0-3-1.6-5-4.3-5-1.5 0-2.5.8-3 1.6V8.8H9.9V20h3.3v-5.6c0-1.5.3-2.9 2.1-2.9s1.9 1.7 1.9 3V20h3.3l-.1-6.4z" fill="currentColor"/></svg>`,
 };
 
 /* ================= Data: brands inviting this collaborator to their campaigns ================= */
@@ -450,7 +750,7 @@ const notifications=[
   {logo:'dominos',type:'closing',brand:'Domino’s Pizza LK',time:'3 hrs ago'},
 ];
 
-const state={q:'',cq:'',searchOpen:false,loaded:false,page:'',chat:null};
+const state={q:'',cq:'',searchOpen:false,loaded:false,page:'',chat:null,pfTab:'overview',pfFilter:'all'};
 
 /* ================= Templates ================= */
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -683,12 +983,348 @@ function autosize(ta){
   document.getElementById('cv-send').disabled=!ta.value.trim();
 }
 
+/* ================= Profile: the collaborator's public page that brands see ================= */
+const PROFILE={
+  name:'Dilan Jayawardena',handle:'dilan.strategy',
+  headline:'Creative Strategist · Social Media Marketing',
+  location:'Colombo, Sri Lanka',languages:'English, Sinhala, Tamil',replies:'Replies within 2 hrs',
+  about:'I turn brand goals into social-first ideas people actually stop scrolling for.\n\nNine years building campaigns for FMCG, food and telco brands in Sri Lanka — from the first insight and creative platform to briefing creators, running the content calendar and reporting on what worked. I’m happiest owning the whole thing end to end, but I also plug into in-house teams as the strategy lead.',
+  open:true,nextFree:'Nov 3',capacity:'2 campaigns / month',
+  website:'',linkedin:'linkedin.com/in/dilanjay',instagram:'instagram.com/dilan.strategy',tiktok:'tiktok.com/@dilan.strategy',
+  stats:[['64','Campaigns delivered'],['320+','Creators managed'],['6.8%','Avg. engagement'],['48M','Organic views']],
+  expertise:['Campaign strategy','Creative concepts','Creator sourcing','Creator management','Short-form video','Content calendars','Trend & social listening','Community management','Paid social amplification','Performance reporting'],
+  platforms:[['tiktok','TikTok',46],['instagram','Instagram',34],['youtube','YouTube',12],['facebook','Facebook',8]],
+  industries:['FMCG','Food & beverage','Telco','Retail','Mobility','Fashion'],
+  tools:['Meta Business Suite','TikTok Ads Manager','CapCut','Canva','Sprout Social','Notion'],
+  clients:[['dominos','Domino’s'],['pepsi','Pepsi Lanka'],['pickmeLogo','PickMe'],['','Dialog','Di'],['','Keells','Ke'],['','Elephant House','EH']],
+};
+const SERVICES=[
+  {ic:'bulb',name:'Campaign strategy & creative platform',desc:'Insight, big idea, hooks and a channel plan you can brief from.',price:'Rs. 150,000',unit:'per campaign'},
+  {ic:'people',name:'Creator campaign management',desc:'Sourcing, briefing, approvals and posting for the whole roster.',price:'12–18%',unit:'commission'},
+  {ic:'calendar',name:'Monthly content retainer',desc:'Weekly ideas, a content calendar and trend-led quick turns.',price:'Rs. 250,000',unit:'per month'},
+  {ic:'chart',name:'Social audit & reporting',desc:'What’s working, what isn’t, and the next three things to try.',price:'Rs. 75,000',unit:'one-off'},
+];
+const PLAT={tiktok:'TikTok',instagram:'Instagram',youtube:'YouTube',facebook:'Facebook'};
+const PORTFOLIO=[
+  {id:'dialog',title:'Data Bundle Duets',brand:'Dialog Axiata',platform:'tiktok',type:'Duet challenge',year:2025,video:true,c:['#e11d48','#6b1f74'],
+    hook:'“Duet this if your data ran out mid-call.”',kpis:[['5.2M','Views'],['9.4%','Engagement'],['3,100','Fan duets']],role:'Creative lead & creator manager',
+    challenge:'Dialog’s new micro data bundles were invisible to 18–24s, who were tuning out the paid ads entirely.',
+    idea:'Make running out of data the joke. Creators posted the painful moment their call froze, and asked their followers to duet the ending — with a top-up saving the day.',
+    did:['Wrote the creative platform and 12 hook variations','Briefed 15 comedy and lifestyle creators across Colombo and Kandy','Ran a daily duet round-up from the brand account for two weeks'],
+    results:['5.2M organic views and 3,100 fan duets','+27% micro-bundle activations during the campaign','2.1× the brand’s TikTok engagement benchmark'],
+    deliv:['15 creator videos','Daily round-ups','Hook bank','Wrap report']},
+  {id:'elephant',title:'Cream Soda Nostalgia',brand:'Elephant House',platform:'instagram',type:'Reels series',year:2024,video:true,c:['#16a34a','#064e3b'],
+    hook:'Your first Cream Soda — where were you?',kpis:[['3.8M','Reach'],['7.2%','Engagement'],['41K','Saves']],role:'Strategy lead',
+    challenge:'A loved heritage drink with an ageing audience and a feed full of product shots.',
+    idea:'Let people tell the story. Creators recreated their own first-Cream-Soda memory — school canteens, wedding receptions, beach trips — and invited followers to share theirs.',
+    did:['Ran social listening to find the most-shared memories','Cast 8 creators across age groups and regions','Turned the best comments into a follow-up carousel'],
+    results:['3.8M reach and 41K saves','Comments up 4× on the brand page','Picked up by two national TV breakfast shows'],
+    deliv:['8 Reels','Comment-led carousel','Story templates']},
+  {id:'keells',title:'Weekly Basket',brand:'Keells',platform:'instagram',type:'Carousel series',year:2024,video:false,c:['#0ea5e9','#1e3a8a'],
+    hook:'Rs. 5,000. One week. Seven dinners.',kpis:[['2.1M','Reach'],['6.1%','Engagement'],['58K','Saves']],role:'Creative strategist',
+    challenge:'Shoppers saw Keells as the pricier option while food prices were climbing.',
+    idea:'A weekly carousel that plans seven family dinners on a fixed Keells basket, with the receipt as the hero image.',
+    did:['Built the recipe calendar with a home-cook creator','Designed the receipt-first carousel template','Set up a “save for later” prompt that drove saves'],
+    results:['Most-saved content in the brand’s history','58K saves and 2.1M reach over 10 weeks','Featured items saw a 14% sales lift in store'],
+    deliv:['10 carousels','Recipe calendar','In-store shelf tags']},
+  {id:'dominos',title:'Midnight Pizza Club',brand:'Domino’s Pizza LK',platform:'tiktok',type:'Creator campaign',year:2024,video:true,c:['#2563eb','#0f172a'],
+    hook:'Things only night-shift Colombo understands.',kpis:[['4.6M','Views'],['8.1%','Engagement'],['+22%','Late orders']],role:'Creative lead & creator manager',
+    challenge:'Late-night ordering was flat, and the audience — BPO and hospital night shifts — didn’t see themselves in Domino’s content.',
+    idea:'A night-shift “club” told by the people who live it: creators from call centres, hospitals and kitchens sharing their 2 am rituals, with a midnight-only deal.',
+    did:['Sourced 12 creators who actually work nights','Scheduled every post for 11 pm – 1 am','Ran a member-only code for the club'],
+    results:['4.6M views across 36 posts','+22% orders after 10 pm for six weeks','Code redemptions 3× forecast'],
+    deliv:['36 TikToks','Midnight posting plan','Promo code mechanics']},
+  {id:'pepsi',title:'Big Match Bus',brand:'Pepsi Lanka',platform:'youtube',type:'Mini-doc series',year:2023,video:true,c:['#0284c7','#312e81'],
+    hook:'We followed the fans for 48 hours of the Big Match.',kpis:[['1.9M','Views'],['4:12','Avg. watch'],['+12K','Subscribers']],role:'Strategy & series producer',
+    challenge:'Pepsi wanted to own the school Big Match season without another logo-on-a-banner sponsorship.',
+    idea:'A three-part YouTube series riding the fan bus from both schools, cut into Shorts and Reels for the rest of the week.',
+    did:['Wrote the series format and episode beats','Worked with a two-person crew and four student creators','Planned the cut-downs for Shorts, Reels and TikTok'],
+    results:['1.9M views and 4:12 average watch time','+12K channel subscribers','Re-commissioned for the following season'],
+    deliv:['3 episodes','24 short cut-downs','Thumbnail system']},
+  {id:'pickme',title:'Rain Check',brand:'PickMe',platform:'facebook',type:'Real-time content',year:2023,video:false,c:['#f59e0b','#b45309'],
+    hook:'It’s raining. Your ride is 3 minutes away.',kpis:[['3.2M','Reach'],['2.8%','CTR'],['+18%','App installs']],role:'Creative strategist',
+    challenge:'Monsoon season meant high demand — and lots of competing ride-hailing ads.',
+    idea:'Weather-triggered posts that went live within minutes of rain in each city, with local jokes and live ETAs.',
+    did:['Wrote 60 pre-approved rain lines by city','Set up weather-triggered publishing with the media team','Fed the best performers into paid'],
+    results:['3.2M reach across the monsoon','2.8% CTR — 2× the account average','+18% app installs during rain hours'],
+    deliv:['60 real-time posts','Trigger playbook','Paid boosts']},
+  {id:'hela',title:'One Saree, Five Cities',brand:'Hela Clothing',platform:'instagram',type:'Creator campaign',year:2023,video:true,c:['#db2777','#6b21a8'],
+    hook:'Five stylists. One saree. Five cities.',kpis:[['1.4M','Reach'],['6.9%','Engagement'],['5','Creators']],role:'Creative strategist',
+    challenge:'A new handloom saree line needed to feel modern without losing its craft story.',
+    idea:'One saree passed hand to hand between five stylists in five cities, each styling it their own way.',
+    did:['Cast the five stylists and planned the route','Wrote the hand-off moment that linked every Reel','Built a shoppable highlight for the line'],
+    results:['1.4M reach and 6.9% engagement','Line sold out in 11 days','+9K followers on the brand page'],
+    deliv:['5 Reels','Shoppable highlight','Lookbook carousel']},
+  {id:'munchee',title:'Lunchbox Hacks',brand:'Munchee',platform:'tiktok',type:'Creator campaign',year:2022,video:true,c:['#a855f7','#4338ca'],
+    hook:'Lunchbox hacks your amma will approve.',kpis:[['2.7M','Views'],['7.8%','Engagement'],['12','Creators']],role:'Social strategist',
+    challenge:'Back-to-school season, and biscuit packs were just another line on the shopping list.',
+    idea:'Parent creators shared quick, playful lunchbox ideas built around Munchee packs — with kids as the judges.',
+    did:['Briefed 12 parenting creators','Built a hack format that ran under 20 seconds','Ran a “rate my lunchbox” stitch prompt'],
+    results:['2.7M views over three weeks','7.8% engagement','Back-to-school sales up 11% year on year'],
+    deliv:['24 TikToks','Stitch prompt','Wrap report']},
+];
+const EXPERIENCE=[
+  {abbr:'DJ',tone:'blue',role:'Freelance Creative Strategist',org:'Self-employed',type:'Freelance',when:'Jan 2023 – Present',dur:'3 yrs 10 mos',place:'Colombo',
+    desc:'Social-first strategy and creator campaigns for FMCG, food and telco brands. I usually own the idea, the creator roster and the reporting.',
+    hl:['40+ campaigns across TikTok, Instagram and YouTube','Built a roster of 300+ vetted creators in food, lifestyle and family','Repeat work from 7 of my last 10 clients']},
+  {abbr:'LC',tone:'pink',role:'Senior Social Strategist',org:'Loop Creative',type:'Full-time',when:'Mar 2020 – Dec 2022',dur:'2 yrs 10 mos',place:'Colombo',
+    desc:'Led social strategy for six retainer clients and a team of four content creators and designers.',
+    hl:['Grew Elephant House on Instagram from 80K to 310K followers','Started the weekly social listening report now used agency-wide']},
+  {abbr:'BD',tone:'',role:'Social Media Executive',org:'Brightside Digital',type:'Full-time',when:'Jun 2017 – Feb 2020',dur:'2 yrs 9 mos',place:'Colombo',
+    desc:'Community management, content calendars and paid social for retail and telco clients.',hl:[]},
+];
+const CERTS=[
+  ['award','Meta Certified Digital Marketing Associate','Meta · 2024'],
+  ['award','Creative Strategy for TikTok','TikTok Academy · 2024'],
+  ['award','Google Analytics Certification','Google · 2023'],
+  ['cap','BBA (Hons) in Marketing','University of Kelaniya · 2013 – 2017'],
+];
+const REVIEWS=[
+  {logo:'',abbr:'Di',brand:'Dialog Axiata',who:'Brand Manager',rating:5,date:'Aug 2025',work:'Data Bundle Duets',
+    text:'Dilan didn’t just manage creators — he gave us the idea that made the campaign. The duet format was his, and it beat every benchmark we set.'},
+  {logo:'dominos',abbr:'Do',brand:'Domino’s Pizza LK',who:'Marketing Lead',rating:5,date:'Mar 2025',work:'Midnight Pizza Club',
+    text:'Clear briefs, creators who actually followed them, and a wrap report our leadership loved. We’ve already booked him for the next launch.'},
+  {logo:'',abbr:'Ke',brand:'Keells',who:'Digital Marketing Manager',rating:5,date:'Nov 2024',work:'Weekly Basket',
+    text:'The carousel series became our most-saved content ever. Fast, organised and always a step ahead on trends.'},
+  {logo:'',abbr:'EH',brand:'Elephant House',who:'Senior Brand Executive',rating:4,date:'Jun 2024',work:'Cream Soda Nostalgia',
+    text:'Great creative instinct. One shoot week slipped, but he told us early and the results more than made up for it.'},
+];
+const RATING={avg:4.9,count:27,parts:[['Creative quality',5.0],['Communication',4.9],['On-time delivery',4.8],['Value for budget',4.9]]};
+const PF_TABS=[['overview','Overview'],['portfolio','Portfolio'],['experience','Experience'],['reviews','Reviews']];
+const PF_COLORS=[['#e11d48','#6b1f74'],['#0ea5e9','#1e3a8a'],['#16a34a','#064e3b'],['#f59e0b','#b45309'],['#a855f7','#4338ca'],['#db2777','#6b21a8']];
+
+const stars=r=>`<span class="stars" aria-label="${r} out of 5">${[1,2,3,4,5].map(i=>`<span${i>Math.round(r)?' class="off"':''}>${ICON.star}</span>`).join('')}</span>`;
+const platChip=p=>`<span class="pw-plat">${ICON[p]}${PLAT[p]}</span>`;
+function strength(){
+  const items=[
+    ['Profile photo and headline',true],
+    ['About you',!!PROFILE.about.trim()],
+    ['Three or more portfolio pieces',PORTFOLIO.length>=3],
+    ['Services and rates',SERVICES.length>0],
+    ['Website or portfolio link',!!PROFILE.website.trim(),'edit-profile'],
+    ['A review from a brand',REVIEWS.length>0],
+  ];
+  return {items,pct:Math.round(items.filter(i=>i[1]).length/items.length*100)};
+}
+
+function workHTML(w,i){
+  return `<button class="pw" type="button" data-work="${w.id}" style="--i:${i}" aria-label="${esc(w.title)} for ${esc(w.brand)}">
+    <div class="pw-cover" style="--c1:${w.c[0]};--c2:${w.c[1]}">
+      <div class="pw-top">${platChip(w.platform)}${w.video?`<span class="pw-play">${ICON.play}</span>`:''}</div>
+      <div class="pw-hook">${esc(w.hook)}</div>
+      <div class="pw-kpi">${w.kpis.slice(0,2).map(([v,k])=>`<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}</div>
+    </div>
+    <div class="pw-title">${esc(w.title)}</div>
+    <div class="pw-meta">${esc(w.brand)} · ${esc(w.type)} · ${w.year}</div>
+  </button>`;
+}
+
+function viewProfile(){
+  const p=PROFILE,tab=state.pfTab;
+  const count={portfolio:PORTFOLIO.length,reviews:RATING.count};
+  return `<div class="pf">
+    <section class="pf-hero" aria-label="Profile">
+      <div class="pf-main">
+        <img class="pf-av" data-a="pfAvatar" data-label="DJ" alt="${esc(p.name)}">
+        <div class="pf-id">
+          <h1 class="pf-name">${esc(p.name)}<span title="Verified collaborator" aria-label="Verified">${ICON.verified}</span></h1>
+          <div class="pf-headline">${esc(p.headline)}</div>
+          <div class="pf-meta"><span>${ICON.pin}${esc(p.location)}</span><span>${ICON.globe}${esc(p.languages)}</span><span>${ICON.clock}${esc(p.replies)}</span></div>
+        </div>
+        <div class="pf-actions">
+          <button class="btn" type="button" data-act="share">${ICON.share}Share</button>
+          <button class="btn dark" type="button" data-act="edit-profile">${ICON.edit}Edit profile</button>
+        </div>
+      </div>
+      <div class="pf-stats">
+        <div class="pf-stat"><b>${RATING.avg.toFixed(1)}${ICON.star}</b><span>${RATING.count} brand reviews</span></div>
+        ${p.stats.map(([v,k])=>`<div class="pf-stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}
+      </div>
+    </section>
+    <nav class="pf-tabs" id="pf-tabs" aria-label="Profile sections">${PF_TABS.map(([id,label])=>`<a class="pf-tab${id===tab?' active':''}" href="#/profile${id==='overview'?'':'/'+id}"${id===tab?' aria-current="page"':''}>${label}${count[id]?`<span class="n">${count[id]}</span>`:''}</a>`).join('')}</nav>
+    <div class="pf-panel" id="pf-panel">${{overview:pfOverview,portfolio:pfPortfolio,experience:pfExperience,reviews:pfReviews}[tab]()}</div>
+  </div>`;
+}
+
+function pfOverview(){
+  const p=PROFILE,s=strength();
+  const links=[['globe','website','Website'],['linkedin','linkedin','LinkedIn'],['instagram','instagram','Instagram'],['tiktok','tiktok','TikTok']].filter(l=>p[l[1]]);
+  return `<div class="pf-grid">
+    <div class="pf-col">
+      <section class="pf-card"><h2 class="pf-h">About</h2><p class="pf-about">${esc(p.about)}</p>
+        <div class="kv"><span class="kv-k">Expertise</span><div class="chips">${p.expertise.map(t=>`<span class="chip blue">${esc(t)}</span>`).join('')}</div></div>
+      </section>
+      <section class="pf-card"><h2 class="pf-h">Featured work<a class="more" href="#/profile/portfolio">See all ${PORTFOLIO.length}</a></h2>
+        <div class="pwgrid">${PORTFOLIO.slice(0,3).map(workHTML).join('')}</div>
+      </section>
+      <section class="pf-card"><h2 class="pf-h">Services &amp; rates</h2><p class="pf-sub">Starting prices. Every brief is quoted on its scope.</p>
+        <div class="svc">${SERVICES.map(v=>`<div class="svc-row"><span class="svc-ic">${ICON[v.ic]}</span><div><div class="svc-name">${esc(v.name)}</div><div class="svc-desc">${esc(v.desc)}</div></div><div class="svc-price">${esc(v.price)}<span>${esc(v.unit)}</span></div></div>`).join('')}</div>
+      </section>
+      <section class="pf-card"><h2 class="pf-h">What brands say<a class="more" href="#/profile/reviews">All reviews</a></h2>${reviewHTML(REVIEWS[0])}</section>
+    </div>
+    <aside class="pf-col">
+      <section class="pf-card av-card">
+        <div class="av-row"><div><h2 class="pf-h">${p.open?'Open to new campaigns':'Not taking new work'}</h2><p>${p.open?'Brands can send you invites':'Brands can’t send you new invites'}</p></div>
+          <label class="switch" aria-label="Open to new campaigns"><input type="checkbox" id="pf-open"${p.open?' checked':''}><i></i></label></div>
+        <div class="av-facts"><div><span>Next available</span><b>${p.open?esc(p.nextFree):'—'}</b></div><div><span>Capacity</span><b>${esc(p.capacity)}</b></div></div>
+      </section>
+      ${s.pct<100?`<section class="pf-card"><h2 class="pf-h">Profile strength<span style="font-size:14px">${s.pct}%</span></h2>
+        <div class="meter"><i style="width:${s.pct}%"></i></div>
+        <div class="checks">${s.items.map(([t,ok,act])=>`<div class="check${ok?'':' todo'}"><span class="ck">${ok?ICON.check:ICON.plus}</span>${esc(t)}${!ok&&act?`<a href="#" data-act="${act}">Add</a>`:''}</div>`).join('')}</div>
+      </section>`:''}
+      <section class="pf-card"><h2 class="pf-h">Platforms</h2><p class="pf-sub">Share of campaigns in the last 12 months</p>
+        ${p.platforms.map(([k,n,pct])=>`<div class="plat"><span class="plat-ic">${ICON[k]}</span><div class="plat-name">${n}<span class="plat-bar"><i style="width:${pct}%"></i></span></div><span class="plat-pct">${pct}%</span></div>`).join('')}
+      </section>
+      <section class="pf-card"><h2 class="pf-h">Brands I’ve worked with</h2>
+        <div class="clients">${p.clients.map(([logo,n,abbr])=>`<div class="client"><img data-a="${logo||'none'}" data-label="${abbr||n}" alt="">${esc(n)}</div>`).join('')}</div>
+      </section>
+      <section class="pf-card">
+        <div class="kv"><span class="kv-k">Industries</span><div class="chips">${p.industries.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div></div>
+        <div class="kv"><span class="kv-k">Tools</span><div class="chips">${p.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div></div>
+      </section>
+      ${links.length?`<section class="pf-card"><h2 class="pf-h">Links</h2><div class="links">${links.map(([ic,k,label])=>`<a class="lnk" href="https://${esc(p[k].replace(/^https?:\/\//,''))}" target="_blank" rel="noopener">${ICON[ic]}<span>${esc(p[k].replace(/^https?:\/\//,''))}</span><span class="ext">${ICON.ext}</span></a>`).join('')}</div></section>`:''}
+    </aside>
+  </div>`;
+}
+
+function pfPortfolio(){
+  const f=state.pfFilter;
+  const used=[...new Set(PORTFOLIO.map(w=>w.platform))];
+  const list=PORTFOLIO.filter(w=>f==='all'||w.platform===f);
+  return `<div class="pw-bar">
+      <div class="fchips" role="group" aria-label="Filter by platform">
+        <button class="fchip${f==='all'?' on':''}" type="button" data-filter="all" aria-pressed="${f==='all'}">All</button>
+        ${Object.keys(PLAT).filter(k=>used.includes(k)).map(k=>`<button class="fchip${f===k?' on':''}" type="button" data-filter="${k}" aria-pressed="${f===k}">${ICON[k]}${PLAT[k]}</button>`).join('')}
+      </div>
+      <button class="btn blue sm" type="button" data-act="add-work">${ICON.plus}Add work</button>
+    </div>
+    <div class="pwgrid">${list.map(workHTML).join('')}</div>`;
+}
+
+function pfExperience(){
+  return `<div class="pf-grid">
+    <div class="pf-col"><section class="pf-card"><h2 class="pf-h">Experience<span style="font-size:13px;font-weight:500;color:var(--grey-600)">9 years</span></h2>
+      <div class="xp">${EXPERIENCE.map(x=>`<div class="xp-item"><span class="xp-logo ${x.tone}">${x.abbr}</span><div class="xp-body">
+        <div><div class="xp-role">${esc(x.role)}</div><div class="xp-org">${esc(x.org)} · ${esc(x.type)}</div><div class="xp-when">${esc(x.when)} · ${esc(x.dur)} · ${esc(x.place)}</div></div>
+        <p class="xp-desc">${esc(x.desc)}</p>${x.hl.length?`<ul class="xp-hl">${x.hl.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>`:''}</div></div>`).join('')}</div>
+    </section></div>
+    <aside class="pf-col"><section class="pf-card"><h2 class="pf-h">Certifications &amp; education</h2>
+      <div>${CERTS.map(([ic,t,s])=>`<div class="cert"><span class="cert-ic">${ICON[ic]}</span><div><b>${esc(t)}</b><span>${esc(s)}</span></div></div>`).join('')}</div>
+    </section></aside>
+  </div>`;
+}
+
+function reviewHTML(r){
+  return `<article class="rv"><div class="rv-top">${stars(r.rating)}<span class="rv-date">${r.date}</span></div>
+    <p class="rv-text">“${esc(r.text)}”</p>
+    <div class="rv-who"><img data-a="${r.logo||'none'}" data-label="${r.abbr}" alt=""><div><b>${esc(r.brand)}</b><span>${esc(r.who)} · ${esc(r.work)}</span></div></div></article>`;
+}
+function pfReviews(){
+  return `<div class="pf-col">
+    <section class="pf-card"><div class="rv-sum">
+      <div class="rv-big"><b>${RATING.avg.toFixed(1)}</b>${stars(RATING.avg)}<span>${RATING.count} reviews from brands</span></div>
+      <div class="rv-bars">${RATING.parts.map(([k,v])=>`<div class="rv-bar"><span>${k}</span><span class="plat-bar"><i style="width:${v/5*100}%;background:var(--star)"></i></span><b>${v.toFixed(1)}</b></div>`).join('')}</div>
+    </div></section>
+    <div class="rvgrid">${REVIEWS.map(reviewHTML).join('')}</div>
+  </div>`;
+}
+
+/* ---------- Modals ---------- */
+const modal=document.getElementById('modal'),modalBox=document.getElementById('modal-box');
+let modalReturn=null,modalT;
+function openModal(html,label,narrow){
+  clearTimeout(modalT);
+  modalBox.className='modal'+(narrow?' narrow':'');
+  modalBox.setAttribute('aria-label',label);
+  modalBox.innerHTML=`<button class="modal-x" type="button" data-act="close-modal" aria-label="Close">${ICON.x}</button>`+html;
+  modalBox.scrollTop=0;
+  bindAssets(modalBox);
+  modalReturn=document.activeElement;
+  modal.hidden=false;void modal.offsetWidth;modal.classList.add('open');
+  document.body.classList.add('modal-open');
+  (modalBox.querySelector('input,textarea')||modalBox.querySelector('.modal-x')).focus({preventScroll:true});
+}
+function closeModal(){
+  if(!modal.classList.contains('open')) return;
+  modal.classList.remove('open');document.body.classList.remove('modal-open');
+  modalT=setTimeout(()=>{modal.hidden=true;modalBox.innerHTML='';},300);
+  if(modalReturn&&document.contains(modalReturn)) modalReturn.focus({preventScroll:true});
+}
+function openWork(id){
+  const w=PORTFOLIO.find(x=>x.id===id); if(!w) return;
+  const sec=(h,body)=>body?`<div class="cs-sec"><h3>${h}</h3>${body}</div>`:'';
+  const list=a=>a&&a.length?`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'';
+  openModal(`<div class="cs-cover" style="--c1:${w.c[0]};--c2:${w.c[1]}">${platChip(w.platform)}<div class="cs-hook">${esc(w.hook)}</div></div>
+    <div class="cs-body">
+      <div><div class="cs-title">${esc(w.title)}</div><div class="cs-meta">${esc(w.brand)} · ${esc(w.type)} · ${w.year}${w.role?` · ${esc(w.role)}`:''}</div></div>
+      ${w.kpis.length?`<div class="cs-kpis">${w.kpis.map(([v,k])=>`<div class="cs-kpi"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}</div>`:''}
+      ${sec('The challenge',w.challenge&&`<p>${esc(w.challenge)}</p>`)}
+      ${sec('The idea',w.idea&&`<p>${esc(w.idea)}</p>`)}
+      ${sec('What I did',list(w.did))}
+      ${sec('Results',list(w.results))}
+      ${sec('Deliverables',w.deliv&&w.deliv.length&&`<div class="chips">${w.deliv.map(d=>`<span class="chip">${esc(d)}</span>`).join('')}</div>`)}
+      <div class="cs-foot"><button class="btn" type="button" data-act="close-modal">Close</button><a class="btn dark" href="${esc(w.url||'#')}"${w.url?' target="_blank" rel="noopener"':' data-act="live"'}>View live post${ICON.ext}</a></div>
+    </div>`,w.title+' case study');
+}
+function openEditProfile(){
+  const p=PROFILE;
+  openModal(`<form class="form" id="pf-edit-form">
+    <h2>Edit profile</h2><p class="pf-sub">This is what brands see before they invite you.</p>
+    <label class="field"><span>Name</span><input name="name" required maxlength="60" value="${esc(p.name)}"></label>
+    <label class="field"><span>Headline</span><input name="headline" required maxlength="80" value="${esc(p.headline)}"></label>
+    <div class="frow"><label class="field"><span>Location</span><input name="location" maxlength="60" value="${esc(p.location)}"></label>
+      <label class="field"><span>Languages</span><input name="languages" maxlength="60" value="${esc(p.languages)}"></label></div>
+    <label class="field"><span>About</span><textarea name="about" rows="6" maxlength="1200">${esc(p.about)}</textarea></label>
+    <div class="frow"><label class="field"><span>Next available</span><input name="nextFree" maxlength="30" value="${esc(p.nextFree)}"></label>
+      <label class="field"><span>Capacity</span><input name="capacity" maxlength="40" value="${esc(p.capacity)}"></label></div>
+    <div class="frow"><label class="field"><span>Website or portfolio</span><input name="website" placeholder="behance.net/you" value="${esc(p.website)}"></label>
+      <label class="field"><span>LinkedIn</span><input name="linkedin" value="${esc(p.linkedin)}"></label></div>
+    <div class="form-foot"><button class="btn" type="button" data-act="close-modal">Cancel</button><button class="btn blue" type="submit">Save changes</button></div>
+  </form>`,'Edit profile',true);
+}
+function openAddWork(){
+  openModal(`<form class="form" id="pf-work-form">
+    <h2>Add work</h2><p class="pf-sub">Show a campaign you’re proud of — the hook, the idea and the numbers.</p>
+    <div class="frow"><label class="field"><span>Project title</span><input name="title" required maxlength="60" placeholder="Midnight Pizza Club"></label>
+      <label class="field"><span>Brand</span><input name="brand" required maxlength="60" placeholder="Domino’s Pizza LK"></label></div>
+    <div class="frow"><label class="field"><span>Platform</span><select name="platform">${Object.entries(PLAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="field"><span>Format</span><select name="type"><option>Creator campaign</option><option>Reels series</option><option>Carousel series</option><option>Short-form video</option><option>Mini-doc series</option><option>Real-time content</option></select></label></div>
+    <label class="field"><span>Hook (shown on the cover)</span><input name="hook" maxlength="80" placeholder="Things only night-shift Colombo understands."></label>
+    <div class="frow"><label class="field"><span>Views or reach</span><input name="views" maxlength="12" placeholder="4.6M"></label>
+      <label class="field"><span>Engagement rate</span><input name="er" maxlength="12" placeholder="8.1%"></label></div>
+    <label class="field"><span>The idea</span><textarea name="idea" rows="3" maxlength="600" placeholder="What was the idea, and why did it work?"></textarea></label>
+    <label class="field"><span>Link to the live post</span><input name="url" type="url" placeholder="https://"></label>
+    <div class="form-foot"><button class="btn" type="button" data-act="close-modal">Cancel</button><button class="btn blue" type="submit">Add to portfolio</button></div>
+  </form>`,'Add work',true);
+}
+document.addEventListener('submit',e=>{
+  const f=e.target,d=Object.fromEntries(new FormData(f));
+  Object.keys(d).forEach(k=>d[k]=d[k].trim());
+  if(f.id==='pf-edit-form'){
+    e.preventDefault();
+    Object.assign(PROFILE,d);
+    closeModal();route();toast('Profile updated');
+  }
+  if(f.id==='pf-work-form'){
+    e.preventDefault();
+    const kpis=[[d.views,'Views'],[d.er,'Engagement']].filter(k=>k[0]);
+    PORTFOLIO.unshift({id:'w'+Date.now(),title:d.title,brand:d.brand,platform:d.platform,type:d.type,year:new Date().getFullYear(),
+      video:d.platform!=='facebook'&&!/carousel/i.test(d.type),c:PF_COLORS[PORTFOLIO.length%PF_COLORS.length],hook:d.hook||d.title,kpis,idea:d.idea,url:/^https?:\/\//.test(d.url)?d.url:''});
+    state.pfFilter='all';closeModal();
+    if(location.hash==='#/profile/portfolio') route(); else location.hash='#/profile/portfolio';
+    toast('Added to your portfolio');
+  }
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='pf-open'){PROFILE.open=e.target.checked;route();toast(PROFILE.open?'You’re open to new campaigns':'Invites paused');}
+});
+
 /* ================= Top menu ================= */
 function renderTopNav(){
   const items=[['invites','#/',ICON.invites,'Invites'],['chats','#/chats',ICON.chats,'Chats']];
   document.getElementById('tnav').innerHTML=items.map(i=>`<a href="${i[1]}" data-root="${i[0]}" aria-label="${i[3]}" title="${i[3]}">${i[2]}</a>`).join('');
   document.getElementById('menu-btn').innerHTML=ICON.menu;
-  document.getElementById('drawer-list').innerHTML=items.map(i=>`<a class="set-row" href="${i[1]}" data-root="${i[0]}" tabindex="-1"><span class="set-ic">${i[2]}</span><span class="set-lbl">${i[3]}</span><span class="set-chev">${ICON.rowChev}</span></a>`).join('');
+  document.getElementById('drawer-list').innerHTML=[...items,['profile','#/profile',ICON.user,'Profile']].map(i=>`<a class="set-row" href="${i[1]}" data-root="${i[0]}" tabindex="-1"><span class="set-ic">${i[2]}</span><span class="set-lbl">${i[3]}</span><span class="set-chev">${ICON.rowChev}</span></a>`).join('');
   document.getElementById('search-btn').innerHTML=MICON.search;
   document.getElementById('bell-ic').innerHTML=MICON.bell;
   renderChatsBadge();
@@ -709,6 +1345,8 @@ function setSearch(open,focus=true){
 }
 /* On Chats the search lives in the chat box; on a phone with a chat open, go back to the list first */
 function toggleSearch(){
+  /* The profile has nothing to search, so open the invites search */
+  if(state.page==='profile'){state.searchOpen=true;location.hash='#/';return;}
   if(state.page==='chats'){
     if(state.chat&&matchMedia('(max-width:767px)').matches){location.hash='#/chats';setTimeout(()=>document.getElementById('cq').focus());}
     else document.getElementById('cq').focus();
@@ -721,16 +1359,21 @@ function toggleSearch(){
 const view=document.getElementById('view');
 function route(){
   const [root,id]=location.hash.replace(/^#\/?/,'').split('/');
-  const page=root==='chats'?'chats':'invites';
+  const page=root==='chats'?'chats':root==='profile'?'profile':'invites';
   const changed=page!==state.page;
+  /* Switching profile tabs keeps the page where it is, up to the tabs */
+  const keep=!changed&&page==='profile'?scrollY:0;
   state.page=page;
+  if(page==='profile') state.pfTab=PF_TABS.some(t=>t[0]===id)?id:'overview';
+  closeModal();
   state.chat=page==='chats'&&CHATS[id]?id:null;
   if(state.chat){CHATS[state.chat].unread=false;}
   document.body.classList.toggle('chat-page',page==='chats');
   document.body.classList.toggle('chat-open',page==='chats'&&!!state.chat);
-  view.innerHTML=page==='chats'?viewChats():viewInvites();
+  view.innerHTML=page==='chats'?viewChats():page==='profile'?viewProfile():viewInvites();
   if(changed){view.classList.remove('nav-in');void view.offsetWidth;view.classList.add('nav-in');}
-  window.scrollTo({top:0,behavior:'instant'});
+  const tabs=document.getElementById('pf-tabs');
+  window.scrollTo({top:keep&&tabs?Math.min(keep,tabs.getBoundingClientRect().top+scrollY-parseFloat(getComputedStyle(tabs).top)):0,behavior:'instant'});
   bindAssets(view);
   if(page==='chats'){
     refreshChats();
@@ -738,13 +1381,16 @@ function route(){
     const ta=document.getElementById('cv-text');
     if(ta&&matchMedia('(min-width:768px)').matches) ta.focus({preventScroll:true});
     document.title=(state.chat?byId(state.chat).brand+' — ':'')+'Chats — UGC Platform for Collaborators';
+  }else if(page==='profile'){
+    document.getElementById('search-btn').classList.remove('on');
+    document.title=PROFILE.name+' — Profile — UGC Platform for Collaborators';
   }else{
     renderFeed();
     setSearch(state.searchOpen,!!document.getElementById('q'));
     document.title='Invites — UGC Platform for Collaborators';
   }
   setDrawer(false);
-  document.querySelectorAll('#tnav a, #drawer-list a').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  document.querySelectorAll('#tnav a, #drawer-list a, #top-av-link').forEach(n=>{const on=n.dataset.root===page;n.classList.toggle('active',on);if(on)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
   closePop();
 }
 window.addEventListener('hashchange',route);
@@ -790,6 +1436,10 @@ document.addEventListener('click',e=>{
   if(chat) return startChat(chat.dataset.chat);
   const file=t.closest('[data-file]');
   if(file){e.preventDefault();return toast(`Downloading ${file.dataset.file}`);}
+  const work=t.closest('[data-work]');
+  if(work) return openWork(work.dataset.work);
+  const filter=t.closest('[data-filter]');
+  if(filter){state.pfFilter=filter.dataset.filter;document.getElementById('pf-panel').innerHTML=pfPortfolio();return;}
   const send=t.closest('#cv-send');
   if(send) return sendMsg();
   const act=t.closest('[data-act]');
@@ -797,6 +1447,15 @@ document.addEventListener('click',e=>{
 });
 function doAct(a){
   if(a==='soon') return toast('This screen is next to build');
+  if(a==='close-modal') return closeModal();
+  if(a==='edit-profile') return openEditProfile();
+  if(a==='add-work') return openAddWork();
+  if(a==='live') return toast('The live post opens on the platform');
+  if(a==='share'){
+    const url=location.href.split('#')[0]+'#/profile';
+    (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>toast('Profile link copied'),()=>toast('Couldn’t copy the link'));
+    return;
+  }
   if(a==='clear'){state.q='';const qi=document.getElementById('q');if(qi)qi.value='';return renderFeed();}
 }
 
@@ -807,6 +1466,7 @@ document.addEventListener('input',e=>{
   if(e.target.id==='cv-text') autosize(e.target);
 });
 document.addEventListener('keydown',e=>{
+  if(modal.classList.contains('open')){if(e.key==='Escape') closeModal();return;}
   if(e.target.id==='cv-text'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendMsg();return;}
   if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();if(state.page==='invites'&&state.searchOpen)document.getElementById('q').focus();else toggleSearch();}
   if(e.key==='Escape'){if(state.searchOpen&&document.activeElement.id==='q'){setSearch(false);document.getElementById('search-btn').focus();}closePop();if(drawer.classList.contains('open')){setDrawer(false);document.getElementById('menu-btn').focus();}}
