@@ -318,17 +318,6 @@
   .kv{display:flex;flex-direction:column;gap:6px;}
   .kv-k{font-size:12px;font-weight:500;line-height:16px;color:var(--grey-600);}
 
-  /* Services and rates */
-  .svc{display:flex;flex-direction:column;}
-  .svc-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--grey-200);}
-  .svc-row:first-child{border-top:0;padding-top:0;}
-  .svc-row:last-child{padding-bottom:0;}
-  .svc-ic{width:40px;height:40px;border-radius:12px;background:var(--blue-100);color:var(--blue-700);display:flex;align-items:center;justify-content:center;}
-  .svc-ic svg{width:20px;height:20px;}
-  .svc-name{font-size:14px;font-weight:600;line-height:20px;}
-  .svc-desc{font-size:13px;line-height:18px;color:var(--grey-600);}
-  .svc-price{text-align:right;font-size:14px;font-weight:600;line-height:20px;white-space:nowrap;}
-  .svc-price span{display:block;font-size:12px;font-weight:400;line-height:16px;color:var(--grey-600);}
 
   /* Sidebar */
   .meter{height:8px;border-radius:100px;background:var(--grey-100);overflow:hidden;}
@@ -512,9 +501,6 @@
     .pw-hook{font-size:15px;line-height:19px;}
     .pw-kpi{gap:9px;}
     .pw-kpi b{font-size:13px;line-height:16px;}
-    .svc-row{grid-template-columns:40px minmax(0,1fr);}
-    .svc-price{grid-column:2;text-align:left;}
-    .svc-price span{display:inline;margin-left:4px;}
     .modal-wrap{padding:0;align-items:flex-end;}
     .modal,.modal.narrow{width:100%;max-height:92dvh;border-radius:24px 24px 0 0;transform:translateY(40px);}
     .cs-cover{min-height:170px;padding:21px 18px 18px;}
@@ -587,10 +573,6 @@ const ICON={
   link:`<svg viewBox="0 0 24 24" fill="none"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   award:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="6" stroke="currentColor" stroke-width="2"/><path d="M8.5 13.8L7 21l5-2.5 5 2.5-1.5-7.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
   cap:`<svg viewBox="0 0 24 24" fill="none"><path d="M2 9l10-5 10 5-10 5L2 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-  bulb:`<svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0012 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  people:`<svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c.7-3 3.3-5 6.5-5s5.8 2 6.5 5M16 4.6a3.5 3.5 0 010 6.8M18 15.3c1.8.6 3.1 2.4 3.5 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-  calendar:`<svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-  chart:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   /* Social platforms */
   tiktok:`<svg viewBox="0 0 24 24"><path d="M16.6 3c.3 2.1 1.6 3.6 3.9 3.8v3.1c-1.4.1-2.7-.3-3.9-1v5.9c0 3.9-3.2 6.3-6.6 5.5-3.6-.8-5-5.4-2.6-8.1 1.2-1.4 3-2 4.9-1.7v3.2c-.5-.1-1-.2-1.5-.1-1.3.3-2 1.6-1.6 2.8.4 1.3 2 1.9 3.2 1.1.6-.4.9-1.1.9-1.9V3h3.3z" fill="currentColor"/></svg>`,
   instagram:`<svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg>`,
@@ -943,12 +925,6 @@ const PROFILE={
   tools:['Meta Business Suite','TikTok Ads Manager','CapCut','Canva','Sprout Social','Notion'],
   clients:[['dominos','Domino’s'],['pepsi','Pepsi Lanka'],['pickmeLogo','PickMe'],['','Dialog','Di'],['','Keells','Ke'],['','Elephant House','EH']],
 };
-const SERVICES=[
-  {ic:'bulb',name:'Campaign strategy & creative platform',desc:'Insight, big idea, hooks and a channel plan you can brief from.',price:'Rs. 150,000',unit:'per campaign'},
-  {ic:'people',name:'Creator campaign management',desc:'Sourcing, briefing, approvals and posting for the whole roster.',price:'12–18%',unit:'commission'},
-  {ic:'calendar',name:'Monthly content retainer',desc:'Weekly ideas, a content calendar and trend-led quick turns.',price:'Rs. 250,000',unit:'per month'},
-  {ic:'chart',name:'Social audit & reporting',desc:'What’s working, what isn’t, and the next three things to try.',price:'Rs. 75,000',unit:'one-off'},
-];
 const PLAT={tiktok:'TikTok',instagram:'Instagram',youtube:'YouTube',facebook:'Facebook'};
 const PORTFOLIO=[
   {id:'dialog',title:'Data Bundle Duets',brand:'Dialog Axiata',platform:'tiktok',type:'Duet challenge',year:2025,video:true,c:['#e11d48','#6b1f74'],
@@ -1033,7 +1009,6 @@ function strength(){
     ['Profile photo and headline',true],
     ['About you',!!PROFILE.about.trim()],
     ['Three or more portfolio pieces',PORTFOLIO.length>=3],
-    ['Services and rates',SERVICES.length>0],
     ['Website or portfolio link',!!PROFILE.website.trim(),'edit-profile'],
   ];
   return {items,pct:Math.round(items.filter(i=>i[1]).length/items.length*100)};
@@ -1087,9 +1062,6 @@ function pfOverview(){
       </section>
       <section class="pf-card"><h2 class="pf-h">Featured work<a class="more" href="#/profile/portfolio">See all ${PORTFOLIO.length}</a></h2>
         <div class="pwgrid">${PORTFOLIO.slice(0,3).map(workHTML).join('')}</div>
-      </section>
-      <section class="pf-card"><h2 class="pf-h">Services &amp; rates</h2><p class="pf-sub">Starting prices. Every brief is quoted on its scope.</p>
-        <div class="svc">${SERVICES.map(v=>`<div class="svc-row"><span class="svc-ic">${ICON[v.ic]}</span><div><div class="svc-name">${esc(v.name)}</div><div class="svc-desc">${esc(v.desc)}</div></div><div class="svc-price">${esc(v.price)}<span>${esc(v.unit)}</span></div></div>`).join('')}</div>
       </section>
     </div>
     <aside class="pf-col">
