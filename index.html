@@ -26,7 +26,6 @@
     --inv-tag:#e1e7fb; --inv-desc:#f5f5f5;
     /* availability */
     --green-100:#dcf5e6; --green-500:#12a150; --green-700:#0b6b35;
-    --star:#f5a524;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
   /* Reserve the scrollbar space on every page so short and long pages line up */
@@ -293,11 +292,10 @@
   .avail i{width:7px;height:7px;border-radius:100px;background:var(--green-500);box-shadow:0 0 0 3px rgba(18,161,80,.18);}
   .avail.off{background:var(--grey-100);color:var(--grey-600);}
   .avail.off i{background:var(--grey-500);box-shadow:none;}
-  .pf-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--grey-200);}
+  .pf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--grey-200);}
   .pf-stat{padding:15px 24px;display:flex;flex-direction:column;gap:2px;}
   .pf-stat+.pf-stat{border-left:1px solid var(--grey-200);}
-  .pf-stat b{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;color:var(--grey-800);display:flex;align-items:center;gap:4px;}
-  .pf-stat b svg{width:16px;height:16px;color:var(--star);}
+  .pf-stat b{font-size:20px;font-weight:600;line-height:26px;letter-spacing:-.01em;color:var(--grey-800);}
   .pf-stat span{font-size:12px;line-height:16px;color:var(--grey-600);}
 
   .pf-tabs{position:sticky;top:var(--header);z-index:10;display:flex;gap:4px;margin-top:12px;padding-top:6px;background:var(--grey-50);border-bottom:1px solid var(--grey-200);overflow-x:auto;scrollbar-width:none;}
@@ -428,30 +426,6 @@
   .cert b{display:block;font-size:14px;font-weight:600;line-height:20px;}
   .cert span{font-size:13px;line-height:18px;color:var(--grey-600);}
 
-  /* Reviews */
-  .stars{display:flex;gap:1px;color:var(--star);}
-  .stars svg{width:15px;height:15px;}
-  .stars .off{color:var(--grey-200);}
-  .rv-sum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;}
-  .rv-big{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-right:24px;border-right:1px solid var(--grey-200);}
-  .rv-big b{font-size:44px;font-weight:600;line-height:46px;letter-spacing:-.03em;}
-  .rv-big>span:last-child{font-size:13px;line-height:18px;color:var(--grey-600);}
-  .rv-bars{display:flex;flex-direction:column;gap:10px;}
-  .rv-bar{display:grid;grid-template-columns:130px minmax(0,1fr) 28px;gap:12px;align-items:center;font-size:13px;line-height:18px;color:var(--grey-700);}
-  .rv-bar .plat-bar{height:6px;}
-  .rv-bar b{text-align:right;font-weight:600;color:var(--grey-800);}
-  .rvgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
-  .rv{border:1px solid var(--grey-200);border-radius:24px;padding:21px;display:flex;flex-direction:column;gap:12px;}
-  .rv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  .rv-date{font-size:12px;line-height:16px;color:var(--grey-600);}
-  .rv-text{font-size:14px;line-height:22px;color:var(--grey-800);flex:1;}
-  .pf-card>.rv{border:0;padding:0;border-radius:0;}
-  .rv-who{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--grey-200);}
-  .rv-who img{width:36px;height:36px;border-radius:100px;object-fit:cover;flex-shrink:0;background:var(--grey-100);}
-  .rv-who div{flex:1;min-width:0;display:flex;flex-direction:column;}
-  .rv-who b{font-size:14px;font-weight:600;line-height:18px;}
-  .rv-who span{font-size:12px;line-height:16px;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
   /* ================= Modal (case study, edit profile, add work) ================= */
   .modal-wrap{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;}
   .modal-wrap[hidden]{display:none;}
@@ -501,9 +475,6 @@
     .invgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
     .pf-grid{grid-template-columns:minmax(0,1fr);}
     .pwgrid{grid-template-columns:repeat(3,minmax(0,1fr));}
-    .pf-stats{grid-template-columns:repeat(3,minmax(0,1fr));}
-    .pf-stat:nth-child(n+4){border-top:1px solid var(--grey-200);}
-    .pf-stat:nth-child(4){border-left:0;}
   }
   @media (max-width:767px){
     :root{--gutter:12px;}
@@ -549,10 +520,8 @@
     .pf-actions .btn{flex:1;}
     .pf-stats{grid-template-columns:repeat(2,minmax(0,1fr));}
     .pf-stat{padding:12px 18px;}
-    /* Rating spans the first row, then two rows of two */
-    .pf-stat+.pf-stat{border-left:0;border-top:1px solid var(--grey-200);}
-    .pf-stat:first-child{grid-column:1/-1;}
-    .pf-stat:nth-child(odd):not(:first-child){border-left:1px solid var(--grey-200);}
+    .pf-stat:nth-child(3){border-left:0;}
+    .pf-stat:nth-child(n+3){border-top:1px solid var(--grey-200);}
     .pf-tabs{margin:12px calc(var(--gutter) * -1) 0;padding:6px var(--gutter) 0;}
     .pf-panel{padding-top:18px;}
     .pf-card{padding:18px;border-radius:21px;}
@@ -564,10 +533,6 @@
     .svc-row{grid-template-columns:40px minmax(0,1fr);}
     .svc-price{grid-column:2;text-align:left;}
     .svc-price span{display:inline;margin-left:4px;}
-    .rvgrid{grid-template-columns:minmax(0,1fr);gap:12px;}
-    .rv-sum{grid-template-columns:minmax(0,1fr);gap:18px;}
-    .rv-big{padding:0 0 18px;border-right:0;border-bottom:1px solid var(--grey-200);}
-    .rv-bar{grid-template-columns:110px minmax(0,1fr) 28px;}
     .modal-wrap{padding:0;align-items:flex-end;}
     .modal,.modal.narrow{width:100%;max-height:92dvh;border-radius:24px 24px 0 0;transform:translateY(40px);}
     .cs-cover{min-height:170px;padding:21px 18px 18px;}
@@ -638,7 +603,6 @@ const ICON={
   play:`<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 001.5.9l12-7.5a1 1 0 000-1.8l-12-7.5A1 1 0 007 4.5z" fill="currentColor"/></svg>`,
   ext:`<svg viewBox="0 0 24 24" fill="none"><path d="M8 16L17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   link:`<svg viewBox="0 0 24 24" fill="none"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-  star:`<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="currentColor"/></svg>`,
   award:`<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="6" stroke="currentColor" stroke-width="2"/><path d="M8.5 13.8L7 21l5-2.5 5 2.5-1.5-7.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
   cap:`<svg viewBox="0 0 24 24" fill="none"><path d="M2 9l10-5 10 5-10 5L2 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   bulb:`<svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0012 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -1079,21 +1043,9 @@ const CERTS=[
   ['award','Google Analytics Certification','Google · 2023'],
   ['cap','BBA (Hons) in Marketing','University of Kelaniya · 2013 – 2017'],
 ];
-const REVIEWS=[
-  {logo:'',abbr:'Di',brand:'Dialog Axiata',who:'Brand Manager',rating:5,date:'Aug 2025',work:'Data Bundle Duets',
-    text:'Dilan didn’t just manage creators — he gave us the idea that made the campaign. The duet format was his, and it beat every benchmark we set.'},
-  {logo:'dominos',abbr:'Do',brand:'Domino’s Pizza LK',who:'Marketing Lead',rating:5,date:'Mar 2025',work:'Midnight Pizza Club',
-    text:'Clear briefs, creators who actually followed them, and a wrap report our leadership loved. We’ve already booked him for the next launch.'},
-  {logo:'',abbr:'Ke',brand:'Keells',who:'Digital Marketing Manager',rating:5,date:'Nov 2024',work:'Weekly Basket',
-    text:'The carousel series became our most-saved content ever. Fast, organised and always a step ahead on trends.'},
-  {logo:'',abbr:'EH',brand:'Elephant House',who:'Senior Brand Executive',rating:4,date:'Jun 2024',work:'Cream Soda Nostalgia',
-    text:'Great creative instinct. One shoot week slipped, but he told us early and the results more than made up for it.'},
-];
-const RATING={avg:4.9,count:27,parts:[['Creative quality',5.0],['Communication',4.9],['On-time delivery',4.8],['Value for budget',4.9]]};
-const PF_TABS=[['overview','Overview'],['portfolio','Portfolio'],['experience','Experience'],['reviews','Reviews']];
+const PF_TABS=[['overview','Overview'],['portfolio','Portfolio'],['experience','Experience']];
 const PF_COLORS=[['#e11d48','#6b1f74'],['#0ea5e9','#1e3a8a'],['#16a34a','#064e3b'],['#f59e0b','#b45309'],['#a855f7','#4338ca'],['#db2777','#6b21a8']];
 
-const stars=r=>`<span class="stars" aria-label="${r} out of 5">${[1,2,3,4,5].map(i=>`<span${i>Math.round(r)?' class="off"':''}>${ICON.star}</span>`).join('')}</span>`;
 const platChip=p=>`<span class="pw-plat">${ICON[p]}${PLAT[p]}</span>`;
 function strength(){
   const items=[
@@ -1102,7 +1054,6 @@ function strength(){
     ['Three or more portfolio pieces',PORTFOLIO.length>=3],
     ['Services and rates',SERVICES.length>0],
     ['Website or portfolio link',!!PROFILE.website.trim(),'edit-profile'],
-    ['A review from a brand',REVIEWS.length>0],
   ];
   return {items,pct:Math.round(items.filter(i=>i[1]).length/items.length*100)};
 }
@@ -1121,7 +1072,7 @@ function workHTML(w,i){
 
 function viewProfile(){
   const p=PROFILE,tab=state.pfTab;
-  const count={portfolio:PORTFOLIO.length,reviews:RATING.count};
+  const count={portfolio:PORTFOLIO.length};
   return `<div class="pf">
     <section class="pf-hero" aria-label="Profile">
       <div class="pf-main">
@@ -1137,12 +1088,11 @@ function viewProfile(){
         </div>
       </div>
       <div class="pf-stats">
-        <div class="pf-stat"><b>${RATING.avg.toFixed(1)}${ICON.star}</b><span>${RATING.count} brand reviews</span></div>
         ${p.stats.map(([v,k])=>`<div class="pf-stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}
       </div>
     </section>
     <nav class="pf-tabs" id="pf-tabs" aria-label="Profile sections">${PF_TABS.map(([id,label])=>`<a class="pf-tab${id===tab?' active':''}" href="#/profile${id==='overview'?'':'/'+id}"${id===tab?' aria-current="page"':''}>${label}${count[id]?`<span class="n">${count[id]}</span>`:''}</a>`).join('')}</nav>
-    <div class="pf-panel" id="pf-panel">${{overview:pfOverview,portfolio:pfPortfolio,experience:pfExperience,reviews:pfReviews}[tab]()}</div>
+    <div class="pf-panel" id="pf-panel">${{overview:pfOverview,portfolio:pfPortfolio,experience:pfExperience}[tab]()}</div>
   </div>`;
 }
 
@@ -1160,7 +1110,6 @@ function pfOverview(){
       <section class="pf-card"><h2 class="pf-h">Services &amp; rates</h2><p class="pf-sub">Starting prices. Every brief is quoted on its scope.</p>
         <div class="svc">${SERVICES.map(v=>`<div class="svc-row"><span class="svc-ic">${ICON[v.ic]}</span><div><div class="svc-name">${esc(v.name)}</div><div class="svc-desc">${esc(v.desc)}</div></div><div class="svc-price">${esc(v.price)}<span>${esc(v.unit)}</span></div></div>`).join('')}</div>
       </section>
-      <section class="pf-card"><h2 class="pf-h">What brands say<a class="more" href="#/profile/reviews">All reviews</a></h2>${reviewHTML(REVIEWS[0])}</section>
     </div>
     <aside class="pf-col">
       <section class="pf-card av-card">
@@ -1211,21 +1160,6 @@ function pfExperience(){
     <aside class="pf-col"><section class="pf-card"><h2 class="pf-h">Certifications &amp; education</h2>
       <div>${CERTS.map(([ic,t,s])=>`<div class="cert"><span class="cert-ic">${ICON[ic]}</span><div><b>${esc(t)}</b><span>${esc(s)}</span></div></div>`).join('')}</div>
     </section></aside>
-  </div>`;
-}
-
-function reviewHTML(r){
-  return `<article class="rv"><div class="rv-top">${stars(r.rating)}<span class="rv-date">${r.date}</span></div>
-    <p class="rv-text">“${esc(r.text)}”</p>
-    <div class="rv-who"><img data-a="${r.logo||'none'}" data-label="${r.abbr}" alt=""><div><b>${esc(r.brand)}</b><span>${esc(r.who)} · ${esc(r.work)}</span></div></div></article>`;
-}
-function pfReviews(){
-  return `<div class="pf-col">
-    <section class="pf-card"><div class="rv-sum">
-      <div class="rv-big"><b>${RATING.avg.toFixed(1)}</b>${stars(RATING.avg)}<span>${RATING.count} reviews from brands</span></div>
-      <div class="rv-bars">${RATING.parts.map(([k,v])=>`<div class="rv-bar"><span>${k}</span><span class="plat-bar"><i style="width:${v/5*100}%;background:var(--star)"></i></span><b>${v.toFixed(1)}</b></div>`).join('')}</div>
-    </div></section>
-    <div class="rvgrid">${REVIEWS.map(reviewHTML).join('')}</div>
   </div>`;
 }
 
